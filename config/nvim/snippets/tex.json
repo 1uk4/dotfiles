@@ -2,21 +2,41 @@
   "beg": {
     "prefix": ["beg"],
     "body": [
-    "\\$\\$",
     "\\begin{$1}",
     "\t$0",
-    "\\end{$1}",
-    "\\$\\$"
+    "\\end{$1}"
     ]
   },
   "example": {
     "prefix": ["ex"],
     "body": [
-    ">\\$\\$",
-    "\\begin{gathered}",
-    "\t$0",
-    "\\end{gathered}",
-    "\\$\\$"
+    "\\hfill\\break\\begin{minipage}{\\dimexpr\\textwidth-2\\fboxsep-2\\fboxrule\\relax}",
+    "\\noindent\\rule{\\textwidth}{1pt}",
+      "Ex: $1",
+    "\\noindent\\rule{\\textwidth}{1pt}",
+     "\\end{minipage}"
+    ]
+  },
+  "theorem": {
+    "prefix": ["theorem"],
+    "body": [
+      "\\hfill\\break\\noindent\\fbox{\\begin{minipage}{\\dimexpr\\textwidth-2\\fboxsep-2\\fboxrule\\relax}",
+      "Theorem: $1",
+      "\\end{minipage}}"
+    ]
+  },
+  "BMatrix" : {
+    "prefix": ["bmat"],
+    "body": [
+      "\\begin{Bmatrix}",
+      "$1",
+      "\\end{Bmatrix}"
+    ]
+  },
+  "text" : {
+    "prefix": ["text"],
+    "body": [
+      "\\text{$1}"
     ]
   },
   "Inline Math" : {
@@ -29,6 +49,12 @@
     "prefix": ["fr"],
     "body": [
       "\\frac{$1}{$2}"
+    ]
+  },
+  "Absolute" : {
+    "prefix": ["abs"],
+    "body": [
+      "|$1|"
     ]
   },
   "Squared ^2" : {
@@ -106,7 +132,7 @@
   "Line Break Katex" : {
     "prefix": ["br"],
     "body": [
-      "\\newline"
+      "\\hfill\\break"
     ]
   },
   "Cubic Interpolation Graph" : {
