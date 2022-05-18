@@ -96,6 +96,11 @@ Plug ("iamcco/markdown-preview.nvim", {["do"] = "cd app && yarn install"})
 nmap("<leader>m", ":MarkdownPreview<cr>") 
 nmap("<leader>mq", ":MarkdownPreviewStop<cr>")
 
+Plug ("lervag/vimtex")
+g.tex_flavor='latex'
+g.vimtex_view_method="skim"
+g.vimtex_quickfix_mode= 0 
+g.vimtex_view_automatic = 0
 
 Plug("elzr/vim-json", {["for"] = "json"})
 g.vim_json_syntax_conceal = 0
@@ -138,6 +143,8 @@ Plug "neovim/nvim-lspconfig"
 
 -- Helpers to install LSPs and maintain them
 Plug "williamboman/nvim-lsp-installer"
+
+Plug "Pocco81/AutoSave.nvim"
 
 -- neovim completion
 Plug "hrsh7th/cmp-nvim-lsp"
@@ -213,3 +220,4 @@ require("plugins.formatter")
 require("plugins.tabline")
 require("plugins.feline")
 require("plugins.startup")
+require("plugins.autosave")
