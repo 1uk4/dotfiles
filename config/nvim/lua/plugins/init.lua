@@ -92,7 +92,7 @@ Plug "udalov/kotlin-vim"
 
 -- Open markdown files in Marked.app - mapped to <leader>m
 -- Requires Node js and Yarn
-Plug ("iamcco/markdown-preview.nvim", {["do"] = "cd app && yarn install"})
+Plug("iamcco/markdown-preview.nvim", {["do"] = "cd app && yarn install"})
 nmap("<leader>m", ":MarkdownPreview<cr>") 
 nmap("<leader>mq", ":MarkdownPreviewStop<cr>")
 
@@ -174,9 +174,8 @@ Plug "feline-nvim/feline.nvim"
 -- automatically complete brackets/parens/quotes
 Plug "windwp/nvim-autopairs"
 
--- Run prettier and other formatters on save
-Plug "mhartington/formatter.nvim"
-
+-- Run prettier
+Plug("prettier/vim-prettier", {["do"] = "yarn install --frozen-lockfile --production"})
 -- Style the tabline without taking over how tabs and buffers work in Neovim
 Plug "alvarosevilla95/luatab.nvim"
 
@@ -216,7 +215,6 @@ require("plugins.lspconfig")
 require("plugins.completion")
 require("plugins.treesitter")
 require("plugins.nvimtree")
-require("plugins.formatter")
 require("plugins.tabline")
 require("plugins.feline")
 require("plugins.startup")
