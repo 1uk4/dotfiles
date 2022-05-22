@@ -118,13 +118,14 @@ g.vsnip_filetypes = {
   typescriptreact = {"typescript"},
   ["typescript.tsx"] = {"typescript"}
 }
-
+-- Snippets Jump Shorcut
 vim.keymap.set(
   {"i", "s"},
   "<C-l>",
   [[vsnip#jumpable(1) ? "\<Plug>(vsnip-jump-next)" : "\<C-l>"]],
   { buffer = bufnr, expr = true, replace_keycodes = true, remap = true }
 )
+-- Standard Snippets
 Plug "rafamadriz/friendly-snippets"
 -- add color highlighting to hex values
 Plug "norcalli/nvim-colorizer.lua"
@@ -178,9 +179,6 @@ Plug "windwp/nvim-autopairs"
 Plug("prettier/vim-prettier", {["do"] = "yarn install --frozen-lockfile --production"})
 -- Style the tabline without taking over how tabs and buffers work in Neovim
 Plug "alvarosevilla95/luatab.nvim"
-
--- enable copilot support for Neovim
-Plug "github/copilot.vim"
 
 -- improve the default neovim interfaces, such as refactoring
 Plug "stevearc/dressing.nvim"
