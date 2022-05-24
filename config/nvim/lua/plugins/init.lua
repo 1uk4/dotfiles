@@ -198,6 +198,8 @@ Plug("nvim-telescope/telescope-fzf-native.nvim", {["do"] = "make"})
 
 Plug "folke/trouble.nvim"
 
+Plug "vimwiki/vimwiki"
+
 plugEnd()
 
 -- Once the plugins have been loaded, Lua-based plugins need to be required and started up
