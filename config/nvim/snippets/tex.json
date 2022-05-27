@@ -10,7 +10,7 @@
   "example": {
     "prefix": ["ex"],
     "body": [
-    "\\hfill\\break\\begin{minipage}{\\dimexpr\\textwidth-2\\fboxsep-2\\fboxrule\\relax}",
+    "\\hfill\\break\\begin{minipage}{\\dimexpr\\textwidth-2\\\fboxsep-2\\fboxrule\\relax}",
     "\\noindent\\rule{\\textwidth}{1pt}",
       "Ex: $1",
     "\\noindent\\rule{\\textwidth}{1pt}",
@@ -20,7 +20,7 @@
   "theorem": {
     "prefix": ["theorem"],
     "body": [
-      "\\hfill\\break\\noindent\\fbox{\\begin{minipage}{\\dimexpr\\textwidth-2\\fboxsep-2\\fboxrule\\relax}",
+      "\\hfill\\break\\noindent\\\fbox{\\begin{minipage}{\\dimexpr\\textwidth-2\\fboxsep-2\\fboxrule\\relax}",
       "Theorem: $1",
       "\\end{minipage}}"
     ]
@@ -31,6 +31,14 @@
       "\\begin{Bmatrix}",
       "$1",
       "\\end{Bmatrix}"
+    ]
+  },
+  "pMatrix" : {
+    "prefix": ["pmat"],
+    "body": [
+      "\\begin{pmatrix}",
+      "$1",
+      "\\end{pmatrix}"
     ]
   },
   "text" : {
@@ -48,7 +56,7 @@
   "fraction" : {
     "prefix": ["fr"],
     "body": [
-      "\\frac{$1}{$2}"
+      "\\\frac{$1}{$2}"
     ]
   },
   "Absolute" : {
@@ -105,6 +113,12 @@
       "\\sum_{n=1}^{\\infty}"
     ]
   },
+  "Cancel Strikethrough" : {
+    "prefix": ["cancel"],
+    "body": [
+      "\\cancel{$1}"
+    ]
+  },
   "Square Root" : {
     "prefix": ["sqr"],
     "body": [
@@ -135,48 +149,31 @@
       "\\hfill\\break"
     ]
   },
-  "Cubic Interpolation Graph" : {
-    "prefix": ["cubicg"],
+  "Riemman Sum" : {
+    "prefix": ["riemmansumgraph"],
     "body": [
-      "```chart",
-      "{",
-        "\t\"type\": \"line\",",
-        "\t\"data\":{",
-            "\t\t\"labels\":[1,2,3,4,5,6,7,8,9,10,11,12,13],",
-            "\t\t\"datasets\": [{",
-                  "\t\t\t\"label\": \"Cubic interpolation (monotone)\",",
-                  "\t\t\t\"data\": [$1],",
-                  "\t\t\t\"borderColor\": \"#68A7AD\",",
-                  "\t\t\t\"fill\": false,",
-                  "\t\t\t\"tension\": 0.4",
-            "\t\t\t} ",
-            "\t\t]",
-      "\t},",
-      "\t\"options\": {",
-          "\t\t\"responsive\": true,",
-          "\t\t\"interaction\": {",
-              "\t\t\t\"intersect\": false",
-          "\t\t},",
-          "\t\t\"scales\": {",
-              "\t\t\t\"x\": {",
-                  "\t\t\t\t\"display\": true,",
-                  "\t\t\t\t\"title\": {",
-                      "\t\t\t\t\t\"display\": true",
-                  "\t\t\t\t}",
-              "\t\t\t},",
-              "\t\t\t\"y\": {",
-                  "\t\t\t\t\"display\": true,",
-                  "\t\t\t\t\"title\": {",
-                      "\t\t\t\t\t\"display\": true,",
-                      "\t\t\t\t\t\"text\": \"Value\"",
-                  "\t\t\t\t},",
-                  "\t\t\t\t\"suggestedMin\": -10,",
-                  "\t\t\t\t\"suggestedMax\": 200",
-              "\t\t\t}",
-            "\t\t}",
-          "\t}",
-        "}",
-    "```"
+      "\\begin{tikzpicture}[scale=1.2]",
+      "\\def\\a{1.7}",
+      "\\def\\b{5.7}",
+      "\\def\\c{3.7}",
+      "\\def\\L{0.5} % width of interval",
+      "\\pgfmathsetmacro{\\Va}{2*sin(\\a r+1)+4} \\pgfmathresult",
+      "\\pgfmathsetmacro{\\Vb}{2*sin(\\b r+1)+4} \\pgfmathresult",
+      "\\pgfmathsetmacro{\\Vc}{2*sin(\\c r+1)+4} \\pgfmathresult",
+      "\\draw[->,thick] (-0.5,0) -- (7,0) coordinate (x axis) node[below] {\\$x\\$\\};",
+      "\\draw[->,thick] (0,-0.5) -- (0,7) coordinate (y axis) node[left] {\\$ y\\$\\};",
+      "\\foreach \\f in {1.7,2.2,...,6.2} {\\pgfmathparse {2*sin(\\f r+1)+4}   \\pgfmathresult",
+      "\\draw[fill=blue!20] (\\f-\\L/2,\\pgfmathresult |- x axis) -- (\\f-\\L/2,\\pgfmathresult) -- (\\f+\\L/2,\\pgfmathresult) -- (\\f+\\L/2,\\pgfmathresult |- x axis) -- cycle;}",
+      "\\node at (\\a-\\L/2,-5pt) {\\footnotesize{\\$a=x_0\\$}};",
+      "\\node at (\\b+\\L/2+\\L,-5pt) {\\footnotesize{\\$b=x_n\\$}};",
+      "\\draw[blue] (\\c-\\L/2,0) -- (\\c-\\L/2,\\Vc) -- (\\c+\\L/2,\\Vc) -- (\\c+\\L/2,0);",
+      "\\draw[dashed] (\\c,0) node[below] {\\footnotesize{\\$\\xi_i\\$}} -- (\\c,\\Vc) -- (0,\\Vc) node[left] {\\$f(\\xi_i)\\$};",
+      "\\node at (\\a+5*\\L/2,-5pt) {\\footnotesize{\\$x_{i-1}\\$}};",
+      "\\node at (\\a+7*\\L/2,-5pt) {\\footnotesize{\\$x_i\\$}};",
+      "\\node at (\\a+5*\\L,-5pt) {\\footnotesize{\\$x_{i+1}\\$}};",
+      "\\draw[blue,thick,smooth,samples=100,domain=1.45:6.2] plot(\\x,{2*sin(\\x r+1)+4});",
+      "\\filldraw[black] (\\c,\\Vc) circle (.03cm);",
+      "\\end{tikzpicture}"
     ]
   }
 }
