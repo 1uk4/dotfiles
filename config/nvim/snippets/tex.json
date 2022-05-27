@@ -10,7 +10,7 @@
   "example": {
     "prefix": ["ex"],
     "body": [
-    "\\hfill\\break\\begin{minipage}{\\dimexpr\\textwidth-2\\\fboxsep-2\\fboxrule\\relax}",
+    "\\hfill\\break\\begin{minipage}{\\dimexpr\\textwidth-2\\fboxsep-2\\fboxrule\\relax}",
     "\\noindent\\rule{\\textwidth}{1pt}",
       "Ex: $1",
     "\\noindent\\rule{\\textwidth}{1pt}",
@@ -20,7 +20,7 @@
   "theorem": {
     "prefix": ["theorem"],
     "body": [
-      "\\hfill\\break\\noindent\\\fbox{\\begin{minipage}{\\dimexpr\\textwidth-2\\fboxsep-2\\fboxrule\\relax}",
+      "\\hfill\\break\\noindent\\fbox{\\begin{minipage}{\\dimexpr\\textwidth-2\\fboxsep-2\\fboxrule\\relax}",
       "Theorem: $1",
       "\\end{minipage}}"
     ]
@@ -56,7 +56,7 @@
   "fraction" : {
     "prefix": ["fr"],
     "body": [
-      "\\\frac{$1}{$2}"
+      "\\frac{$1}{$2}"
     ]
   },
   "Absolute" : {
@@ -174,6 +174,28 @@
       "\\draw[blue,thick,smooth,samples=100,domain=1.45:6.2] plot(\\x,{2*sin(\\x r+1)+4});",
       "\\filldraw[black] (\\c,\\Vc) circle (.03cm);",
       "\\end{tikzpicture}"
+    ]
+  },
+  "Cartesian Plane Graph" : {
+    "prefix": ["ctg"],
+    "body": [
+      "\\begin{figure*}[htp]",
+      "\\begin{center}",
+      "\\begin{tikzpicture}[scale=1.2]",
+      "\\draw[->,thick] (-0.5,0) -- (7,0) coordinate (x axis) node[below] {\\$x\\$};",
+      "\\draw[->,thick] (0,-2.5) -- (0,2.5) coordinate (y axis) node[left] {\\$y\\$};",
+      "\\draw[dashed] (4,0) node[below] {\\footnotesize{\\$N\\$}} -- (4,1) -- (0,1) node[left] {\\$x\\$};",
+      "\\filldraw[black] (4,1) circle (.05cm);",
+      "\\draw[blue,thick,smooth,samples=100,domain=1.45:6.2] plot(\\x,{sin(\\x r+1)});",
+      "\\filldraw[black] (1,1.5) circle (.05cm);",
+      "\\filldraw[black] (2,-1.5) circle (.05cm);",
+      "\\filldraw[black] (3,-1) circle (.05cm);",
+      "\\filldraw[black] (5,0.9) circle (.05cm);",
+      "\\filldraw[black] (6,0.5) circle (.05cm);",
+      "\\filldraw[black] (7,0.7) circle (.05cm);",
+      "\\end{tikzpicture}",
+      "\\end{center}",
+      "\\end{figure*}"
     ]
   }
 }
