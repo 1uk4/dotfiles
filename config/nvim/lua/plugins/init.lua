@@ -56,7 +56,7 @@ nmap("<leader>gb", ":G blame<cr>")
 Plug "mattn/emmet-vim"
 
 -- match tags in html, similar to paren support
-Plug("gregsexton/MatchTag", {["for"] = "html"})
+Plug("gregsexton/MatchTag", {["for"] = {"typescript", "typescript.tsx", "javascript", "javascript.jsx", "html"}})
 
 -- html5 support
 Plug("othree/html5.vim", {["for"] = "html"})
@@ -77,6 +77,7 @@ Plug "itchyny/vim-qfedit"
 Plug "tpope/vim-liquid"
 
 Plug("othree/yajs.vim", {["for"] = {"javascript", "javascript.jsx", "html"}})
+
 -- Plug 'pangloss/vim-javascript', { 'for': ['javascript', 'javascript.jsx', 'html'] }
 Plug("moll/vim-node", {["for"] = "javascript"})
 Plug "MaxMEllon/vim-jsx-pretty"
@@ -101,6 +102,7 @@ g.tex_flavor='latex'
 g.vimtex_view_method="skim"
 g.vimtex_quickfix_mode= 0 
 g.vimtex_view_automatic = 0
+
 
 Plug("elzr/vim-json", {["for"] = "json"})
 g.vim_json_syntax_conceal = 0
@@ -189,6 +191,14 @@ Plug "nvim-telescope/telescope-rg.nvim"
 
 -- Startup screen for Neovim
 Plug "startup-nvim/startup.nvim"
+
+-- enable copilot support for Neovim
+Plug "github/copilot.vim"
+-- if a copilot-aliased version of node exists from fnm, use that
+local copilot_node_path = env.FNM_DIR .. "/aliases/copilot/bin/node"
+if utils.file_exists(copilot_node_path) then
+  g.copilot_node_path = copilot_node_path
+end
 
 -- fzf
 Plug "$HOMEBREW_PREFIX/opt/fzf"
