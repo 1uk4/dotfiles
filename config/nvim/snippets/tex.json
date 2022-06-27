@@ -17,6 +17,18 @@
      "\\end{minipage}"
     ]
   },
+  "Odd Quarter" : {
+    "prefix": ["oddq"],
+    "body": [
+      "0.125, 0.375, 0.625,0.875"
+    ]
+  }, 
+  "Even Quarter" : {
+    "prefix": ["evenq"],
+    "body": [
+      "0.25, 0.5, 0.75"
+    ]
+  },
   "theorem": {
     "prefix": ["theorem"],
     "body": [
@@ -25,20 +37,22 @@
       "\\end{minipage}}"
     ]
   },
-  "BMatrix" : {
+  "bMatrix" : {
     "prefix": ["bmat"],
     "body": [
-      "\\begin{Bmatrix}",
-      "$1",
-      "\\end{Bmatrix}"
+      "\\begin{bmatrix}$1\\end{bmatrix}"
+    ]
+  },
+    "BMatrix" : {
+    "prefix": ["Bmat"],
+    "body": [
+      "\\begin{Bmatrix}$1\\end{Bmatrix}"
     ]
   },
   "pMatrix" : {
     "prefix": ["pmat"],
     "body": [
-      "\\begin{pmatrix}",
-      "$1",
-      "\\end{pmatrix}"
+      "\\begin{pmatrix}$1\\end{pmatrix}"
     ]
   },
   "text" : {
@@ -188,6 +202,29 @@
       "\\filldraw[black] (4,1) circle (.05cm);",
       "\\draw[blue,thick,smooth,samples=100,domain=1.45:6.2] plot(\\x,{sin(\\x r+1)});",
       "\\filldraw[black] (1,1.5) circle (.05cm);",
+      "\\filldraw[black] (2,-1.5) circle (.05cm);",
+      "\\filldraw[black] (3,-1) circle (.05cm);",
+      "\\filldraw[black] (5,0.9) circle (.05cm);",
+      "\\filldraw[black] (6,0.5) circle (.05cm);",
+      "\\filldraw[black] (7,0.7) circle (.05cm);",
+      "\\end{tikzpicture}",
+      "\\end{center}",
+      "\\end{figure*}"
+    ]
+  },
+  "Parametric Plane Graph" : {
+    "prefix": ["ppg"],
+    "body": [
+      "\\begin{figure*}[htp]",
+      "\\begin{center}",
+      "\\begin{tikzpicture}[scale=1.2]",
+      "\\draw[->,thick] (-0.5,0) -- (7,0) coordinate (x axis) node[below] {\\$x\\$};",
+      "\\draw[->,thick] (0,-2.5) -- (0,2.5) coordinate (y axis) node[left] {\\$y\\$};",
+"\\draw[blue,thick,samples=100,domain=0:6,variable=\\t] plot (\\t,{sqrt(\\t)}) [arrow inside={}{0.25,0.5,0.75}];",
+      "\\filldraw[black] (4,1) circle (.05cm);",
+      "\\draw[blue,thick,smooth,samples=100,domain=1.45:6.2] plot(\\x,{sin(\\x r+1)}) node[above] {\\$C\\$};",
+      "\\filldraw[black] (1,1.5) circle (.05cm);",
+      "\\node[below right=1pt of {(0,0)}, outer sep=1pt,fill=white] {t=0};",
       "\\filldraw[black] (2,-1.5) circle (.05cm);",
       "\\filldraw[black] (3,-1) circle (.05cm);",
       "\\filldraw[black] (5,0.9) circle (.05cm);",
