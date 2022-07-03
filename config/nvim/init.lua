@@ -115,7 +115,7 @@ opt.showcmd = true -- show incomplete commands
 opt.showmode = true -- don't show which mode disabled for PowerLine
 opt.wildmode = {"list", "longest"} -- complete files like a shell
 opt.shell = env.SHELL
-opt.cmdheight = 1 -- command bar height
+opt.cmdheight = 1 -- hide command bar height when not used
 opt.title = true -- set terminal title
 opt.showmatch = true -- show matching braces
 opt.mat = 2 -- how many tenths of a second to blink
@@ -215,9 +215,9 @@ nnoremap("<C-y>", "3<c-y>")
 
 -- moving up and down work as you would expect
 nnoremap("j", 'v:count == 0 ? "gj" : "j"', {expr = true})
+nnoremap("$", 'v:count == 0 ? "g$" : "$"', {expr = true})
 nnoremap("k", 'v:count == 0 ? "gk" : "k"', {expr = true})
 nnoremap("^", 'v:count == 0 ? "g^" :  "^"', {expr = true})
-nnoremap("$", 'v:count == 0 ? "g$" : "$"', {expr = true})
 
 -- custom text objects
 -- inner-line
