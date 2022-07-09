@@ -228,6 +228,19 @@ setup_macos() {
     fi
 }
 
+setup_hosts_file(){
+    read -r -p "Overwrite /etc/hosts with the ad-blocking hosts file from someonewhocares.org? (from ./configs/hosts/hosts file) [y|N] " response
+    if [[ $response =~ (yes|y|Y) ]];then
+        echo "cp /etc/hosts /etc/hosts.backup"
+        sudo cp /etc/hosts /etc/hosts.backup
+        echo "cp ./configs/hosts/hosts /etc/hosts"
+        sudo cp ./config/hosts/hosts /etc/hosts
+        echo "Your /etc/hosts file has been updated. Last version is saved in /etc/hosts.backup"
+    else
+        echo "skipped";
+    fi
+}
+
 case "$1" in
     backup)
         backup
@@ -250,6 +263,9 @@ case "$1" in
     macos)
         setup_macos
         ;;
+    hostfiles)
+        setup_hosts_file
+        ;;
     all)
         setup_symlinks
         setup_terminfo
@@ -257,9 +273,10 @@ case "$1" in
         setup_shell
         setup_git
         setup_macos
+        setup_hosts_file
         ;;
     *)
-        echo -e $"\nUsage: $(basename "$0") {backup|link|git|homebrew|shell|terminfo|macos|all}\n"
+        echo -e $"\nUsage: $(basename "$0") {backup|link|git|homebrew|shell|terminfo|macos|hostfiles|all}\n"
         exit 1
         ;;
 esac
