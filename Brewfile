@@ -23,6 +23,8 @@ if OS.mac?
     cask "spotify"
     cask "docker"
     cask "keepassxc"
+    cask "onionshare"
+    cask "tor-browser"
 elsif OS.linux?
     brew "xclip" # access to clipboard (similar to pbcopy/pbpaste)
 end

@@ -126,7 +126,8 @@ Tmux is a terminal multiplexor which lets you create windows and splits in the t
 A Dockerfile exists in the repository as a testing ground for linux support. To set up the image, make sure you have Docker installed and then run the following command.
 
 ```bash
-docker build -t dotfiles --force-rm --build-arg PRIVATE_KEY="$(cat ~/.ssh/id_rsa)" --build-arg PUBLIC_KEY="$(cat ~/.ssh/id_rsa.pub)" .
+docker build -t dotfiles --force-rm --build-arg PRIVATE_KEY="$(cat ~/.ssh/id_lukaflores)" --build-arg PUBLIC_KEY="$(cat
+~/.ssh/id_lukaflores.pub)" .
 ```
 
 This should create a `dotfiles` image which will set up the base environment with the dotfiles repo cloned. To run, execute the following command.
