@@ -1,20 +1,13 @@
 # Dotfiles
 
-Welcome to my world. This is a collection of vim, tmux, and zsh configurations. Interested in a video walkthrough of the dotfiles? Check out my talk, [vim + tmux](https://www.youtube.com/watch?v=5r6yzFEXajQ).
 
-Obviously this setup works for me, a JavaScript developer on macOS, but this particular setup may not work for you. If this particular setup doesn't work for you, please steal ideas from this and if you like, contribute back tips, tricks, and other tidbits via Pull Requests if you like!
+### ShortCuts
 
-![capture-20220105092039](https://user-images.githubusercontent.com/293805/148242417-07630ec0-4468-4be4-8644-de319a1b279a.png)
+Inside .tex files
+- \lv [ Opens Viewer Skim]
+- \ll [ Starts Latex Compiler]
+- \le [ Opens Latex Errors]
 
-## Initial Setup and Installation
-
-### Backup
-
-First, you may want to backup any existing files that exist so this doesn't overwrite your work.
-
-Run `install/backup.sh` to backup all symlinked files to a `~/dotfiles-backup` directory.
-
-This will not delete any of these files, and the install scripts will not overwrite any existing. After the backup is complete, you can delete the files from your home directory to continue installation.
 
 ### Installation
 
@@ -39,7 +32,6 @@ Next, the install script will perform a check to see if it is running on an OSX 
 ## Terminal Capabilities
 
 In order to properly support italic fonts in and out of tmux, a couple of terminal capabilities need to be described. Run the following from the root of the project:
-
 ```bash
 tic -x resources/xterm-256color-italic.terminfo
 tic -x resources/tmux.terminfo
@@ -136,7 +128,3 @@ docker run -it --rm dotfiles
 ```
 
 This will open a bash shell in the container which can then be used to manually test the dotfiles installation process with linux.
-
-## Questions
-
-If you have questions, notice issues,  or would like to see improvements, please open a new [discussion](https://github.com/nicknisi/dotfiles/discussions/new) and I'm happy to help you out!
