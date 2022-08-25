@@ -155,6 +155,12 @@ opt.fcs = "eob: "
 g.mapleader = ","
 opt.pastetoggle = "<leader>v"
 
+-- Inkscape 
+vim.keymap.set("i", "<c-f>", [[:slient exec '.!inkscape-figures create "'.getline('.').'" "'.b:vimtex.root.'/figures/"'<CR><CR> w<CR>]], { noremap = true, silent = true})
+
+vim.keymap.set('n', "<c-f>", [['.!inkscape-figures edit "'.b:vimtex.root.'/figures/" > /dev/null 2>&1&'<CR><CR>:redraw!<CR>]], { noremap = true, silent = true})
+
+
 nnoremap("Q", "<nop>")
 imap("jk", "<Esc>")
 nmap("<leader>,", ":w<cr>")
@@ -235,7 +241,6 @@ nmap("<leader>3", "<Plug>HiInterestingWord3")
 nmap("<leader>4", "<Plug>HiInterestingWord4")
 nmap("<leader>5", "<Plug>HiInterestingWord5")
 nmap("<leader>6", "<Plug>HiInterestingWord6")
-
 -- open current buffer in a new tab
 nmap("gTT", ":tab sb<cr>")
 
