@@ -35,6 +35,10 @@
       "\\end{minipage}"
     ]
   },
+  "Spacing": {
+    "prefix": ["spacing"],
+    "body": ["\\newline \\newline \\newline"]
+  },
   "Odd Quarter": {
     "prefix": ["oddq"],
     "body": ["0.125, 0.375, 0.625,0.875"]

@@ -156,9 +156,8 @@ g.mapleader = ","
 opt.pastetoggle = "<leader>v"
 
 -- Inkscape 
-vim.keymap.set("i", "<c-f>", [[:slient exec '.!inkscape-figures create "'.getline('.').'" "'.b:vimtex.root.'/figures/"'<CR><CR> w<CR>]], { noremap = true, silent = true})
-
-vim.keymap.set('n', "<c-f>", [['.!inkscape-figures edit "'.b:vimtex.root.'/figures/" > /dev/null 2>&1&'<CR><CR>:redraw!<CR>]], { noremap = true, silent = true})
+vim.api.nvim_set_keymap("i", "<c-f>", [['<cmd>!inkscape-figures create "'.getline('.').'" "'.b:vimtex.root.'/figures/"'<CR><CR>:w<CR>]], { noremap = true, silent = true})
+vim.api.nvim_set_keymap('n', "<c-f>", [['<cmd>!inkscape-figures edit "'.b:vimtex.root.'/figures/" > /dev/null 2>&1 &'<CR><CR>:redraw!<CR>]], { noremap = true, silent = true})
 
 
 nnoremap("Q", "<nop>")

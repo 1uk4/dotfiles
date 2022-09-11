@@ -53,6 +53,9 @@ formatter.setup(
       json = {
         prettier_config
       },
+      latex = {
+        prettier_config
+      },
       typescript = {
         prettier_config,
         deno_config
@@ -79,7 +82,7 @@ local group = vim.api.nvim_create_augroup("LspConfig", {clear = true})
 vim.api.nvim_create_autocmd(
   "BufWritePost",
   {
-    pattern = {"*.lua", "*.ts", "*.tsx", "*.js", "*.jsx", "*.json"},
+    pattern = {"*.lua", "*.ts", "*.tsx", "*.js", "*.jsx", "*.json","*.tex"},
     command = "FormatWrite",
     group = group
   }
