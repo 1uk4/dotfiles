@@ -165,6 +165,11 @@ imap("jk", "<Esc>")
 nmap("<leader>,", ":w<cr>")
 nmap("<space>", ":set hlsearch! hlsearch?<cr>")
 
+
+
+-- Todo Comments 
+nmap("<leader>do", ":TodoLocList<cr>")
+
 nmap("<leader><space>", [[:%s/\s\+$<cr>]])
 nmap("<leader><space><space>", [[:%s/\n\{2,}/\r\r/g<cr>]])
 

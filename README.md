@@ -7,7 +7,7 @@ Inside .tex files
 - \lv [ Opens Viewer Skim]
 - \ll [ Starts Latex Compiler]
 - \le [ Opens Latex Errors]
-
+- ,do [ Opens Todo Panel]
 
 ### Installation
 
