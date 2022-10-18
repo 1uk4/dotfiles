@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-while getopts u:a:f: flag
-do
-    case "${flag}" in
-        f) filename=${OPTARG};;
-    esac
-done
-find $filename -maxdepth 0 -type d -exec zip -r "{}" "{}" \;

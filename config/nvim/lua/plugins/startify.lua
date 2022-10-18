@@ -4,6 +4,7 @@ local fn = vim.fn
 
 g.startify_files_number = 10
 g.startify_change_to_dir = 0
+
 local ascii = {
   [[          ____                                         ]],
   [[         /___/\_                                       ]],

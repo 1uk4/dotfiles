@@ -1,3 +1,4 @@
+ 
 export ZSH=$DOTFILES/zsh
 
 if [[ -d $DOTFILES/zsh/functions ]]; then
@@ -209,6 +210,7 @@ alias clsym="find -L . -name . -o -type d -prune -o -type l -exec rm {} +"
 # git aliases
 alias gs='git s'
 alias glog="git l"
+alias lg='lazygit'
 
 # tmux aliases
 alias ta='tmux attach'

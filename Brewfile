@@ -1,40 +1,41 @@
+# Using Brew to Install
+
+
 if OS.mac?
-    # taps
-    tap "homebrew/cask"
-    tap "homebrew/cask-fonts"
+	# taps
+	tap "homebrew/cask"
+    	tap "homebrew/cask-fonts"	
 
-    brew "noti" # utility to display notifications from scripts
-    brew "trash" # rm, but put in the trash rather than completely delete
+	# Packages
+	brew "trash" # rm, but put in the trash rather than completely delete
 
-    # Applications
-    cask "kitty" # a better terminal emulator
-    cask "imageoptim" # a tool to optimize images
+	# Applications
+	cask "kitty" # a better terminal emulator
+	cask "docker"
+    	cask "keepassxc"
+	cask "postman"
+	cask "spotify"
+	cask "min"
 
-    # Fonts
-    cask "font-fira-code"
-    cask "font-jetbrains-mono"
-    cask "font-cascadia-mono"
-    cask "font-3270-nerd-font"
-    cask "protonvpn"
-    cask "postman"
-    cask "brave-browser"
-    cask "firefox"
-    cask "thinkorswim"
-    cask "spotify"
-    cask "docker"
-    cask "keepassxc"
-    cask "onionshare"
-    cask "tor-browser"
+	#Fonts
+	cask "font-fira-code"
+    	cask "font-jetbrains-mono"
+    	cask "font-cascadia-mono"
+    	cask "font-3270-nerd-font"
+
 elsif OS.linux?
-    brew "xclip" # access to clipboard (similar to pbcopy/pbpaste)
+    	brew "xclip" # access to clipboard (similar to pbcopy/pbpaste)
 end
 
+# taps
 tap "homebrew/bundle"
 tap "homebrew/core"
 
-# packages
+#Packages
+
 brew "bat" # better cat
 brew "cloc" # lines of code counter
+brew "lazygit" # Terminal UI for git
 brew "git-delta" # a better git diff
 brew "entr" # file watcher / command runner
 brew "fd" # find alternative
@@ -46,17 +47,15 @@ brew "grep" # grep (latest)
 brew "highlight" # code syntax highlighting
 brew "htop" # a top alternative
 brew "jq" # work with JSON files in shell scripts
+brew "vim" # Vim (latest)
+brew "wget" # internet file retriever
+brew "htop" # a top alternative
 brew "neofetch" # pretty system info
 brew "neovim" # A better vim
-brew "python" # python (latst)
-brew "ripgrep" # very fast file searcher
-brew "fnm" # Fast Node version manager
-brew "shellcheck" # diagnostics for shell sripts
-brew "tmux" # terminal multiplexer
-brew "tree" # pretty-print directory contents
-brew "vim" # Vim (latest)
-brew "wdiff" # word differences in text files
-brew "wget" # internet file retriever
-brew "z" # switch between most used directories
+brew "python" # python (latest)
 brew "zsh" # zsh (latest)
-brew "qrencode" # Terminal QRcode generator
+brew "z" # switch between most used directories	
+
+
+
+
