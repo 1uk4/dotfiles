@@ -1,5 +1,5 @@
-local lspkind = require("lspkind")
 local cmp = require("cmp")
+local lspkind = require("lspkind")
 
 vim.o.completeopt = "menu,menuone,noselect"
 
