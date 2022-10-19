@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+
+if [ -z "$1" ]; then
+	echo "Add a filename to command"
+
+	else
+	echo "
+
+\documentclass{report}
+
+\input{~/.config/latex_template/preamble.tex}
+\input{~/.config/latex_template/macros.tex}
+\input{~/.config/latex_template/letterfonts.tex}
+
+\title{\Huge{{INSERT CLASS NAME}}}
+\author{\huge{Luka FLores}}
+\date{}
+
+\begin{document}
+
+\maketitle
+\newpage% or \cleardoublepage
+% \pdfbookmark[<level>]{<title>}{<dest>}
+\pdfbookmark[section]{\contentsname}{toc}
+\tableofcontents
+\pagebreak
+
+
+\end{document}
+" >> $1.tex
+
+fi
