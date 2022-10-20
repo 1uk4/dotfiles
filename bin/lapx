@@ -4,8 +4,9 @@ if [ -z "$1" ]; then
 	echo "Add a filename to command"
 
 	else
-	echo "
 
+	mkdir -p -- "$1" && cd -P -- "$1";
+	echo "
 \documentclass{report}
 
 \input{~/.config/latex_template/preamble.tex}
