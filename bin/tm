@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+# Tmux session manager
+# Usage: tm
+
 
 # abort if we're already inside a TMUX session
 [ "$TMUX" == "" ] || exit 0
