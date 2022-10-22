@@ -1,0 +1,13 @@
+#!/bin/bash
+# moves "up" n directories whilst in /a/very/deeply/nested/path/somewhere
+# Usage: up 3
+
+LIMIT=$1
+P=$PWD
+
+for ((i=1; i <= LIMIT; i++))
+do
+    P=$P/..
+done
+cd $P
+$SHELL
