@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 # Creates a folder with a latex.tex file with the template below
-# Usage: tm filename
+# Usage: lxf filename
 
 
 if [ -z "$1" ]; then
-	echo "Add a filename to command"
+	echo "Add a filename to command: lxf filename"
 
 	else
 
