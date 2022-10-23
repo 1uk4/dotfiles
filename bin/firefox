@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+
+# Runs Firefox on a docker container inside the http://localhost:5800
+# Usage: firefox [Port Number]
+
+if [ $1 == "kill" ]; then
+	if docker ps -a | grep firefox -q; then
+		echo "Killing All Firefox Instances"
+		docker stop $(docker ps -a | grep firefox | awk '{print $1}')
+		docker rm $(docker ps -a | grep firefox | awk '{print $1}')
+	else 
+		echo "No Firefox Instances to Kill"
+	fi
+else
+	# Checks for existing firefox instances
+	if docker ps -a | grep 'firefox-'$1 -q; then
+		echo "Stopping Existing Firefox Instance : Port $1"
+		docker stop firefox-$1 | grep -q .;
+		docker rm firefox-$1 | grep -q .;
+	fi
+	
+	
+	if [ -z "$1" ]; then
+		echo "Add a Port Number to command : firefox 5600"
+	else
+		if netstat -anp tcp | grep '[0-9].'$1' ' -q; then
+				echo "Port $1 is being used, Choose a different Port"
+		    else 
+				docker run -d --name=firefox-$1 \
+					-p $1:5800 \
+		    		-v /Users/lukaflores/datas:/config:rw \
+		    		--shm-size 2g \
+		    		jlesage/firefox 
+				echo "http://localhost:$1"
+		fi
+	fi
+fi
