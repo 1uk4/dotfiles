@@ -71,7 +71,8 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+[![Work Space][workspace]](https://github.com/lukaflores/dotfiles/resources/images/workspace.png)
+[![Lazy Git][lazygit]](https://github.com/lukaflores/dotfiles/resources/images/lazygit.png)
 
 Dotfiles are highly personalized to the individual. I encourage anyone who is starting the process creating dotfiles to find inspiration in the others, whilst creating something unique to themselves. 
 
