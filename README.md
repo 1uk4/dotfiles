@@ -5,12 +5,15 @@
 <!-- PROJECT LOGO -->
 
 <h3 align="center">Dotfiles</h3>
-
-<img src="/resources/images/lazygit.png" alt="Logo" width="600" height="400">
-<img src="/resources/images/workspace.png" alt="Logo" width="600" height="400">
+  <p align="center"> My life inside the terminal 💻 </p>
+  
+  <a align="center">
+    <img src="/resources/images/lazygit.png" alt="Logo" width="600" height="400">
+    <img src="/resources/images/workspace.png" alt="Logo" width="600" height="400">
+  </a>
+  
 
   <p align="center">
-	My life inside the terminal 💻 
     <br />
     <a href="https://github.com/lukaflores/dotfiles ">View Demo</a>
     ·
