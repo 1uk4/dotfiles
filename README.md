@@ -4,7 +4,7 @@
 
 <!-- PROJECT LOGO -->
 
-<h3 align="center">Dotfiles</h3>
+<h2 align="center">Dotfiles</h2>
   <p align="center"> 
     My life inside the terminal 💻 
     <br />
