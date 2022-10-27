@@ -7,10 +7,8 @@
 <h3 align="center">Dotfiles</h3>
   <p align="center"> My life inside the terminal 💻 </p>
   
-  <a align="center">
-    <img src="/resources/images/lazygit.png" alt="Logo" width="600" height="400">
-    <img src="/resources/images/workspace.png" alt="Logo" width="600" height="400">
-  </a>
+  <img align="center" src="/resources/images/lazygit.png" alt="Logo" width="600" height="400">
+  <img align="center" src="/resources/images/workspace.png" alt="Logo" width="600" height="400">
   
 
   <p align="center">
