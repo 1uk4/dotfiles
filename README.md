@@ -8,9 +8,9 @@
   <p align="center"> 
     My life inside the terminal 💻 
     <br />
-    <img src="/resources/images/workspace.png" alt="Logo" width="600" height="400">
+    <img src="/resources/images/workspace.png" alt="Logo" width="700" height="450">
     <br />
-    <img src="/resources/images/lazygit.png" alt="logo" width="600" height="400">
+    <img src="/resources/images/lazygit.png" alt="logo" width="700" height="450">
     <br />
   </p>
 
@@ -21,34 +21,6 @@
     <a href="https://github.com/lukaflores/dotfiles/issues">Request Feature</a>
   </p>
 </div>
-
-
-<!-- TABLE OF CONTENTS -->
-<details>
-  <summary>Table of Contents</summary>
-  <ol>
-    <li>
-      <a href="#about-the-project">About The Project</a>
-      <ul>
-        <li><a href="#built-with">Built With</a></li>
-      </ul>
-    </li>
-    <li>
-      <a href="#getting-started">Getting Started</a>
-      <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#installation">Installation</a></li>
-      </ul>
-    </li>
-    <li><a href="#usage">Usage</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#license">License</a></li>
-    <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgments">Acknowledgments</a></li>
-  </ol>
-</details>
-
 
 
 <!-- ABOUT THE PROJECT -->
@@ -76,7 +48,6 @@ The easiest way to install the XCode Command Line Tools in OSX 10.9+ is to open 
   ```sh
     xcode-select --install
   ``` 
-[follow the prompts](http://osxdaily.com/2014/02/12/install-command-line-tools-mac-os-x/).
 
 ### Installation
 
