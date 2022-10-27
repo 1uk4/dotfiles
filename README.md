@@ -6,6 +6,9 @@
 
 <h3 align="center">Dotfiles</h3>
 
+<img src="/resources/images/lazygit.png" alt="Logo" width="600" height="400">
+<img src="/resources/images/workspace.png" alt="Logo" width="600" height="400">
+
   <p align="center">
 	My life inside the terminal 💻 
     <br />
@@ -48,10 +51,6 @@
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
-
-<img src="/resources/images/lazygit.png" alt="Logo" width="300" height="300">
-    
-<img src="/resources/images/workspace.png" alt="Logo" width="300" height="300">
 
 Dotfiles are highly personalized to the individual. I encourage anyone who is starting the process creating dotfiles to find inspiration in the others, whilst creating something unique to themselves. 
 
