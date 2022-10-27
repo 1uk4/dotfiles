@@ -4,10 +4,14 @@
 
 <!-- PROJECT LOGO -->
 
-<h2 align="center">Dotfiles</h2>
+<div>
+  <h2 align="center">Dotfiles</h2>
+  
   <p align="center"> 
     My life inside the terminal 💻 
+  </p>
     <br />
+  <p align="center"> 
     <img src="/resources/images/workspace.png" alt="Logo" width="700" height="450">
     <br />
     <img src="/resources/images/lazygit.png" alt="logo" width="700" height="450">
