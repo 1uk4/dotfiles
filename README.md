@@ -8,19 +8,14 @@
   <p align="center"> 
     My life inside the terminal 💻 
     <br />
-    <img src="/resources/images/lazygit.png" alt="Logo" width="600" height="400">
-    <br />
     <img src="/resources/images/workspace.png" alt="Logo" width="600" height="400">
     <br />
+    <img src="/resources/images/lazygit.png" alt="logo" width="600" height="400">
+    <br />
   </p>
-  
-  
-  
 
   <p align="center">
     <br />
-    <a href="https://github.com/lukaflores/dotfiles ">View Demo</a>
-    ·
     <a href="https://github.com/lukaflores/dotfiles/issues">Report Bug</a>
     ·
     <a href="https://github.com/lukaflores/dotfiles/issues">Request Feature</a>
@@ -59,29 +54,12 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-Dotfiles are highly personalized to the individual. I encourage anyone who is starting the process creating dotfiles to find inspiration in the others, whilst creating something unique to themselves. 
+Dotfiles are highly personalized to the individual. I encourage anyone who is starting the process of creating dotfiles to find inspiration in the others whilst starting from scratch. 
 
+Note: Before installing, please look through the code and understand. It will alter prexisting configurations.
 
-
-Here's a blank template to get started: To avoid retyping too much info. Do a search and replace with your text editor for the following: `github_username`, `repo_name`, `twitter_handle`, `linkedin_username`, `email_client`, `email`, `project_title`, `project_description`
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
-### Built With
-
-* [![Next][Next.js]][Next-url]
-* [![React][React.js]][React-url]
-* [![Vue][Vue.js]][Vue-url]
-* [![Angular][Angular.io]][Angular-url]
-* [![Svelte][Svelte.dev]][Svelte-url]
-* [![Laravel][Laravel.com]][Laravel-url]
-* [![Bootstrap][Bootstrap.com]][Bootstrap-url]
-* [![JQuery][JQuery.com]][JQuery-url]
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 
 
 <!-- GETTING STARTED -->
@@ -92,30 +70,30 @@ To get a local copy up and running follow these simple example steps.
 
 ### Prerequisites
 
-This is an example of how to list things you need to use the software and how to install them.
-* npm
+You need to have [XCode](https://developer.apple.com/downloads/index.action?=xcode) or, at the very minimum, the [XCode Command Line Tools](https://developer.apple.com/downloads/index.action?=command%20line%20tools), which are available as a much smaller download.
+
+The easiest way to install the XCode Command Line Tools in OSX 10.9+ is to open up a terminal, type 
   ```sh
-  npm install npm@latest -g
-  ```
+    xcode-select --install
+  ``` 
+[follow the prompts](http://osxdaily.com/2014/02/12/install-command-line-tools-mac-os-x/).
 
 ### Installation
 
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
+1. Clone the repo
    ```sh
-   git clone https://github.com/github_username/repo_name.git
+   git clone https://github.com/lukaflores/dotfiles.git
    ```
-3. Install NPM packages
+2. Move Repository to `~/code` 
    ```sh
-   npm install
+    mv dotfiles ~/code 
    ```
-4. Enter your API in `config.js`
-   ```js
-   const API_KEY = 'ENTER YOUR API';
+3. Use install script  
+   ```sh
+   ./install.sh all
    ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 
 
 <!-- USAGE EXAMPLES -->
@@ -126,39 +104,6 @@ Use this space to show useful examples of how a project can be used. Additional 
 _For more examples, please refer to the [Documentation](https://example.com)_
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
-<!-- ROADMAP -->
-## Roadmap
-
-- [ ] Feature 1
-- [ ] Feature 2
-- [ ] Feature 3
-    - [ ] Nested Feature
-
-See the [open issues](https://github.com/github_username/repo_name/issues) for a full list of proposed features (and known issues).
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
-<!-- CONTRIBUTING -->
-## Contributing
-
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
-
-If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
-Don't forget to give the project a star! Thanks again!
-
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 
 
 <!-- LICENSE -->
