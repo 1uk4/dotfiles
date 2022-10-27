@@ -1,6 +1,4 @@
-# ~/.tmuxinator/sample.yml
-
-name: school
+name: workspace 
 root: ~/
 
 
