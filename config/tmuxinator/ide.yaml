@@ -1,0 +1,17 @@
+# ~/.tmuxinator/sample.yml
+
+name: school
+root: ~/
+
+
+windows:
+  - ide:
+       root: ~/
+       layout: main-horizontal
+       panes:
+         - #empty
+         - #empty
+         - #empty
+  - dotfiles: 
+       root: ~/code/
+  - htop: htop 

@@ -32,6 +32,7 @@ tap "homebrew/bundle"
 tap "homebrew/core"
 
 #Packages
+brew "tmuxinator"
 brew "yt-dlp" # Youtube MP4 Downloader
 brew "bat" # better cat
 brew "cloc" # lines of code counter
