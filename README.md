@@ -88,7 +88,7 @@ The easiest way to install the XCode Command Line Tools in OSX 10.9+ is to open 
    ```sh
     mv dotfiles ~/code 
    ```
-3. Use install script  
+3. Use install script (Don't provide a parameter to see options) 
    ```sh
    ./install.sh all
    ```
@@ -99,9 +99,34 @@ The easiest way to install the XCode Command Line Tools in OSX 10.9+ is to open 
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+### Tmux
 
-_For more examples, please refer to the [Documentation](https://example.com)_
+To start a tmux session you can use the script: In Terminal `tm`
+  or 
+Use my Workspace template: In Terminal `tmuxinator ide`
+
+#### Keybindings
+Tmux Bind: Control a
+
+In order to use following commands it must be prefaced by Tmux Bind
+e.g Control a + g
+
+- Open Lazy Git: `Tmux Bind + g`
+- Move between Panes: `Tmux Bind + (h,j,k,l)` 
+
+### Nvim
+
+
+### Latex
+
+- Compile Latex File: `\ll`
+- Open PDF viewer (Skim): `\lv`
+- Open Error Buffer: `\le`
+
+### Markdown
+
+- Open Markdown Server: `, m `
+
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
