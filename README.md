@@ -89,6 +89,7 @@ e.g `ctrl a + g`
 
 - Open Lazy Git: `Tmux Bind + g`
 - Move between Panes: `Tmux Bind + (h,j,k,l)` 
+- Open Calcurse: `Tmux Bind + j`
 
 ### Nvim
 The follwing commands are inside nvim, which can be enter through `vim .`
