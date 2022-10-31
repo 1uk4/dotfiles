@@ -86,6 +86,9 @@ setw -g mouse on
 # Display lazygit
 bind -r g display-popup -d '#{pane_current_path}' -w80% -h80% -E lazygit
 
+# Display calcurse
+bind -r j display-popup -d '#{pane_current_path}' -w80% -h80% -E calcurse
+
 # set vi mode for copy mode
 setw -g mode-keys vi
 # more settings to make copy-mode more vim-like
