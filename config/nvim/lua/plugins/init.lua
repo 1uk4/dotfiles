@@ -35,8 +35,6 @@ Plug "tpope/vim-rhubarb"
 nmap("<leader>gr", ":Gread<cr>")
 nmap("<leader>gb", ":G blame<cr>")
 
--- Lspsaga
-Plug 'glepnir/lspsaga.nvim'
 
 -- general plugins
 -- Plug 'pangloss/vim-javascript', { 'for': ['javascript', 'javascript.jsx', 'html'] }
