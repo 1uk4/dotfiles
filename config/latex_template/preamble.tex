@@ -582,6 +582,32 @@
 	#1,
 }
 
+
+%================================
+% CODE BOX
+%================================
+\usepackage[most]{tcolorbox}
+\usepackage{inconsolata}
+\usepackage{listings}
+
+
+\newtcblisting[auto counter]{code}[2][]{
+	breakable,
+	rounded corners, 
+	fonttitle=\bfseries, 
+	colframe=myb, 
+	colback=white,
+	listing only, 
+	listing options={
+		basicstyle=\ttfamily, 
+		numbers=left,
+		xleftmargin=5.0ex,
+		#1
+		}, 
+	title= Code \thetcbcounter: #2
+}
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % SELF MADE COMMANDS
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -600,6 +626,13 @@
 \newcommand{\qs}[2]{\begin{question}{#1}{}#2\end{question}}
 \newcommand{\pf}[2]{\begin{myproof}[#1]#2\end{myproof}}
 \newcommand{\nt}[1]{\begin{note}#1\end{note}}
+%\newcommand{\cde}[3]{\begin{code}#1{#2}#3\end{code}}
+
+
+
+
+
+
 
 \newcommand*\circled[1]{\tikz[baseline=(char.base)]{
 		\node[shape=circle,draw,inner sep=1pt] (char) {#1};}}

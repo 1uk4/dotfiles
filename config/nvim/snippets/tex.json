@@ -63,6 +63,14 @@
     "prefix": ["proof"],
     "body": ["\\pf{$1}{$2}"]
   },
+  "code" : {
+    "prefix": ["code"],
+    "body": [
+      "\\begin{code}[language=$1]{$2}",
+      "$3",
+      "\\end{code}"
+    ]
+  },
   "bMatrix": {
     "prefix": ["bmat"],
     "body": ["\\begin{bmatrix}$1\\end{bmatrix}"]
