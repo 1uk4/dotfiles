@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# Inspiration https://wilsonmar.github.io/dotfiles/
 
 # Include Variables
 source ./installscripts/shell-variables.sh
