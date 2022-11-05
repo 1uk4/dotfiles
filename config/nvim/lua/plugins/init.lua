@@ -149,6 +149,7 @@ Plug "hrsh7th/nvim-cmp"
 
 -- treesitter enables an AST-like understanding of files
 Plug("nvim-treesitter/nvim-treesitter", {["do"] = ":TSUpdate"})
+
 -- show treesitter nodes
 Plug "nvim-treesitter/playground"
 -- enable more advanced treesitter-aware text objects
