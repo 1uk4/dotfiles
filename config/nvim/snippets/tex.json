@@ -57,7 +57,7 @@
   },
   "note": {
     "prefix": ["note"],
-    "body": ["\\nt{$1}{$2}"]
+    "body": ["\\nt{$1}"]
   },
   "proof": {
     "prefix": ["proof"],
@@ -90,6 +90,12 @@
   "Inline Math": {
     "prefix": ["im"],
     "body": ["\\$$1\\$"]
+  },
+  "Inline Code" : {
+    "prefix": ["ic"],
+    "body": [
+      "\\verb|$1|"
+    ]
   },
   "fraction": {
     "prefix": ["fr"],
