@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<dict>
+		<key>Activate</key>
+		<string>Normal</string>
+		<key>CreationDate</key>
+		<real>689472060.05809903</real>
+		<key>Macros</key>
+		<array>
+			<dict>
+				<key>Actions</key>
+				<array>
+					<dict>
+						<key>Action</key>
+						<string>MoveAndResize</string>
+						<key>ActionUID</key>
+						<integer>786</integer>
+						<key>HeightExpression</key>
+						<string>SCREENVISIBLE(Main,Height)</string>
+						<key>HorizontalExpression</key>
+						<string>SCREENVISIBLE(Main,Left)</string>
+						<key>MacroActionType</key>
+						<string>ManipulateWindow</string>
+						<key>TargetApplication</key>
+						<dict/>
+						<key>Targeting</key>
+						<string>FrontWindow</string>
+						<key>TargetingType</key>
+						<string>Front</string>
+						<key>VerticalExpression</key>
+						<string>SCREENVISIBLE(Main,Top)</string>
+						<key>WidthExpression</key>
+						<string>SCREENVISIBLE(Main,Width)*50%</string>
+						<key>WindowIndexExpression</key>
+						<string>2</string>
+						<key>WindowName</key>
+						<string></string>
+					</dict>
+				</array>
+				<key>CreationDate</key>
+				<real>689541116.57330596</real>
+				<key>ModificationDate</key>
+				<real>689541746.81075597</real>
+				<key>Name</key>
+				<string>Resize Left</string>
+				<key>Triggers</key>
+				<array>
+					<dict>
+						<key>FireType</key>
+						<string>Pressed</string>
+						<key>KeyCode</key>
+						<integer>4</integer>
+						<key>MacroTriggerType</key>
+						<string>HotKey</string>
+						<key>Modifiers</key>
+						<integer>6144</integer>
+					</dict>
+				</array>
+				<key>UID</key>
+				<string>BCFF498F-79C5-4F17-BF5F-1452A2A1E1D4</string>
+			</dict>
+		</array>
+		<key>Name</key>
+		<string>Macro Group</string>
+		<key>ToggleMacroUID</key>
+		<string>4DD57C66-C8CC-4AD2-AB9C-864D28DE3A7D</string>
+		<key>UID</key>
+		<string>F5037A57-F9D5-4ADD-966B-5501EB26CA3D</string>
+	</dict>
+</array>
+</plist>
