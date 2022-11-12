@@ -24,6 +24,10 @@ setup_shell(){
 	bash ${DOTFILES}/installscripts/setup-shell.sh
 }
 
+setup_git(){
+	bash ${DOTFILES}/installscripts/setup-git.sh
+}
+
 setup_hosts(){
 	bash ${DOTFILES}/installscripts/setup-hosts.sh
 }
@@ -33,7 +37,7 @@ case "$1" in
     macos)
         setup_macos
         ;;
-    homebrew)
+    brew)
 	setup_homebrew
 	;;
     link)
@@ -45,6 +49,9 @@ case "$1" in
     shell)
 	setup_shell
 	;;
+    git)
+	setup_git
+	;;
     hosts)
 	setup_hosts
 	;;
@@ -55,9 +62,10 @@ case "$1" in
 	setup_terminfo
 	setup_shell
 	setup_hosts
+	setup_git
         ;;
     *)
-        echo -e $"\nUsage: $(basename "$0") {link|homebrew|shell|terminfo|macos|hosts|all}\n"
+        echo -e $"\nUsage: $(basename "$0") {link|brew|shell|terminfo|macos|hosts|git|all}\n"
         exit 1
         ;;
 esac
