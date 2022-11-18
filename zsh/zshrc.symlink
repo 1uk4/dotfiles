@@ -4,8 +4,6 @@ export ZSH=$DOTFILES/zsh
 if [[ -d $DOTFILES/zsh/functions ]]; then
     for func in $DOTFILES/zsh/functions/*(:t); autoload -U $func
 fi
-export HOMEBREW_GITHUB_API_KEY=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
-
 
 ########################################################
 # Configuration

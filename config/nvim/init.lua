@@ -169,7 +169,6 @@ nmap("<space>", ":set hlsearch! hlsearch?<cr>")
 
 -- Todo Comments 
 nmap("<leader>do", ":TodoLocList<cr>")
-
 nmap("<leader><space>", [[:%s/\s\+$<cr>]])
 nmap("<leader><space><space>", [[:%s/\n\{2,}/\r\r/g<cr>]])
 
@@ -234,7 +233,7 @@ nnoremap("^", 'v:count == 0 ? "g^" :  "^"', {expr = true})
 xmap("il", ":<c-u>normal! g_v^<cr>")
 omap("il", ":<c-u>normal! g_v^<cr>")
 -- around line
-vmap("al", ":<c-u>normal! $v0<cr>")
+vmap("al", ":<c-u>normal! $v7<cr>")
 omap("al", ":<c-u>normal! $v0<cr>")
 
 -- interesting word mappings
@@ -245,6 +244,7 @@ nmap("<leader>3", "<Plug>HiInterestingWord3")
 nmap("<leader>4", "<Plug>HiInterestingWord4")
 nmap("<leader>5", "<Plug>HiInterestingWord5")
 nmap("<leader>6", "<Plug>HiInterestingWord6")
+
 -- open current buffer in a new tab
 nmap("gTT", ":tab sb<cr>")
 
@@ -257,6 +257,7 @@ end
 
 cmd [[syntax on]]
 cmd [[filetype plugin indent on]]
+
 -- make the highlighting of tabs and other non-text less annoying
 cmd [[highlight SpecialKey ctermfg=19 guifg=#333333]]
 cmd [[highlight NonText ctermfg=19 guifg=#333333]]
@@ -265,7 +266,10 @@ cmd [[highlight NonText ctermfg=19 guifg=#333333]]
 cmd [[highlight Comment cterm=italic term=italic gui=italic]]
 cmd [[highlight htmlArg cterm=italic term=italic gui=italic]]
 cmd [[highlight xmlAttrib cterm=italic term=italic gui=italic]]
+
 -- highlight Type cterm=italic term=italic gui=italic
 cmd [[highlight Normal ctermbg=none]]
+
 -- make the StatusLine background match the GalaxyLine styles
 cmd("hi StatusLine guibg=" .. colors.bg)
+
