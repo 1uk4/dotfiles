@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+
+# Clean Notes Directory for Unused Files
+
+find ~/notes -name "*.aux" | while read line; do
+    echo "Processing file '$line'"
+    rm $line
+done
+
+find ~/notes -name "*.log"  | while read line; do
+    echo "Processing file '$line'"
+    rm $line
+done
+find ~/notes -name "*.fls"  | while read line; do
+    echo "Processing file '$line'"
+    rm $line
+done
+find ~/notes -name "*.out"  | while read line; do
+    echo "Processing file '$line'"
+    rm $line
+done
+find ~/notes -name "*.fdb_latexmk"  | while read line; do
+    echo "Processing file '$line'"
+    rm $line
+done
+find ~/notes -name "*.synctex*"  | while read line; do
+    echo "Processing file '$line'"
+    rm $line
+done
+find ~/notes -name "*.listing"  | while read line; do
+    echo "Processing file '$line'"
+    rm $line
+done
+find ~/notes -name "*.toc"  | while read line; do
+    echo "Processing file '$line'"
+    rm $line
+done
+
+
+
