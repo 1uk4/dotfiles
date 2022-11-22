@@ -15,6 +15,12 @@
     "prefix": ["evenq"],
     "body": ["0.25, 0.5, 0.75"]
   },
+  "Scientific Notation" : {
+    "prefix": ["sn"],
+    "body": [
+      "\\num{$1}"
+    ]
+  },
   "theorem": {
     "prefix": ["theorem"],
     "body": ["\\thm{$1}{$2}"]
