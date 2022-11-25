@@ -21,6 +21,12 @@
       "\\num{$1}"
     ]
   },
+  "Check Mark" : {
+    "prefix": ["check"],
+    "body": [
+      "\\qquad\\checkmark"
+    ]
+  },
   "theorem": {
     "prefix": ["theorem"],
     "body": ["\\thm{$1}{$2}"]
