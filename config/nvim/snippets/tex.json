@@ -27,6 +27,12 @@
       "\\qquad\\checkmark"
     ]
   },
+  "Integral Line" : {
+    "prefix": ["itl"],
+    "body": [
+      "\\Biggr|_{$1}^{$2}"
+    ]
+  },
   "theorem": {
     "prefix": ["theorem"],
     "body": ["\\thm{$1}{$2}"]
