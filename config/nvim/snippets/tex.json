@@ -21,6 +21,18 @@
       "\\num{$1}"
     ]
   },
+  "bracket" : {
+    "prefix": ["()"],
+    "body": [
+      "\\left($1\\right"
+    ]
+  },
+  "square bracket" : {
+    "prefix": ["[]"],
+    "body": [
+      "\\left[$1\\right"
+    ]
+  },
   "Check Mark" : {
     "prefix": ["check"],
     "body": [
@@ -88,18 +100,6 @@
       "$3",
       "\\end{code}"
     ]
-  },
-  "bMatrix": {
-    "prefix": ["bmat"],
-    "body": ["\\begin{bmatrix}$1\\end{bmatrix}"]
-  },
-  "BMatrix": {
-    "prefix": ["Bmat"],
-    "body": ["\\begin{Bmatrix}$1\\end{Bmatrix}"]
-  },
-  "pMatrix": {
-    "prefix": ["pmat"],
-    "body": ["\\begin{pmatrix}$1\\end{pmatrix}"]
   },
   "text": {
     "prefix": ["text"],
