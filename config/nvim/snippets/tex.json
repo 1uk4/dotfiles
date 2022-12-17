@@ -27,6 +27,12 @@
       "\\left($1\\right"
     ]
   },
+  "Absolute" : {
+    "prefix": ["||"],
+    "body": [
+      "\\left|$1\\right|"
+    ]
+  },
   "square bracket" : {
     "prefix": ["[]"],
     "body": [
@@ -112,16 +118,12 @@
   "Inline Code" : {
     "prefix": ["ic"],
     "body": [
-      "\\verb|$1|"
+      "\\texttt{$1}"
     ]
   },
   "fraction": {
     "prefix": ["fr"],
     "body": ["\\frac{$1}{$2}"]
-  },
-  "Absolute": {
-    "prefix": ["abs"],
-    "body": ["|$1|"]
   },
   "Squared ^2": {
     "prefix": ["sr"],

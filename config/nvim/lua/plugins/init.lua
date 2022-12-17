@@ -35,6 +35,7 @@ Plug "tpope/vim-rhubarb"
 nmap("<leader>gr", ":Gread<cr>")
 nmap("<leader>gb", ":G blame<cr>")
 
+Plug "kamykn/spelunker.vim"
 
 -- general plugins
 -- Plug 'pangloss/vim-javascript', { 'for': ['javascript', 'javascript.jsx', 'html'] }
