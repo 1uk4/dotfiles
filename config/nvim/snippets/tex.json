@@ -1,0 +1,256 @@
+{
+  "beg": {
+    "prefix": ["beg"],
+    "body": ["\\begin{$1}", "\t$0", "\\end{$1}"]
+  },
+  "Spacing": {
+    "prefix": ["spacing"],
+    "body": ["\\newline \\newline \\newline"]
+  },
+  "Odd Quarter": {
+    "prefix": ["oddq"],
+    "body": ["0.125, 0.375, 0.625,0.875"]
+  },
+  "Even Quarter": {
+    "prefix": ["evenq"],
+    "body": ["0.25, 0.5, 0.75"]
+  },
+  "Scientific Notation" : {
+    "prefix": ["sn"],
+    "body": [
+      "\\num{$1}"
+    ]
+  },
+  "bracket" : {
+    "prefix": ["()"],
+    "body": [
+      "\\left($1\\right"
+    ]
+  },
+  "Absolute" : {
+    "prefix": ["||"],
+    "body": [
+      "\\left|$1\\right|"
+    ]
+  },
+  "square bracket" : {
+    "prefix": ["[]"],
+    "body": [
+      "\\left[$1\\right"
+    ]
+  },
+  "Check Mark" : {
+    "prefix": ["check"],
+    "body": [
+      "\\qquad\\checkmark"
+    ]
+  },
+  "Integral Line" : {
+    "prefix": ["itl"],
+    "body": [
+      "\\Biggr|_{$1}^{$2}"
+    ]
+  },
+  "theorem": {
+    "prefix": ["theorem"],
+    "body": ["\\thm{$1}{$2}"]
+  },
+  "example": {
+    "prefix": ["examp"],
+    "body": ["\\ex{$1}{$2}"]
+  },
+  "question": {
+    "prefix": ["question"],
+    "body": ["\\qs{$1}{$2}"]
+  },
+  "Corollary": {
+    "prefix": ["cor"],
+    "body": ["\\cor{$1}{$2}"]
+  },
+  "Lenma": {
+    "prefix": ["mlenma"],
+    "body": ["\\mlenma{$1}{$2}"]
+  },
+  "Prop": {
+    "prefix": ["mprop"],
+    "body": ["\\mprop{$1}{$2}"]
+  },
+  "claim": {
+    "prefix": ["claim"],
+    "body": ["\\clm{$1}{$2}"]
+  },
+  "wconc": {
+    "prefix": ["wc"],
+    "body": ["\\wc{$1}{$2}"]
+  },
+  "Defintion": {
+    "prefix": ["def"],
+    "body": ["\\dfn{$1}{$2}"]
+  },
+  "theoremcon": {
+    "prefix": ["theoremcon"],
+    "body": ["\\thmcon{$1}{$2}"]
+  },
+  "note": {
+    "prefix": ["note"],
+    "body": ["\\nt{$1}"]
+  },
+  "proof": {
+    "prefix": ["proof"],
+    "body": ["\\pf{$1}{$2}"]
+  },
+  "code" : {
+    "prefix": ["code"],
+    "body": [
+      "\\begin{code}[language=$1]{$2}",
+      "$3",
+      "\\end{code}"
+    ]
+  },
+  "text": {
+    "prefix": ["text"],
+    "body": ["\\text{$1}"]
+  },
+  "Inline Math": {
+    "prefix": ["im"],
+    "body": ["\\$$1\\$"]
+  },
+  "Inline Code" : {
+    "prefix": ["ic"],
+    "body": [
+      "\\texttt{$1}"
+    ]
+  },
+  "fraction": {
+    "prefix": ["fr"],
+    "body": ["\\frac{$1}{$2}"]
+  },
+  "Squared ^2": {
+    "prefix": ["sr"],
+    "body": ["^2"]
+  },
+  "Cubed ^3": {
+    "prefix": ["cb"],
+    "body": ["^3"]
+  },
+  "SuperScript": {
+    "prefix": ["td"],
+    "body": ["^{$1}$0"]
+  },
+  "Greek Mu": {
+    "prefix": ["mu"],
+    "body": ["\\mu_{$1}"]
+  },
+  "Vector Harpoon": {
+    "prefix": ["vec"],
+    "body": ["\\overrightharpoon{$1}"]
+  },
+  "Dot Product": {
+    "prefix": ["do"],
+    "body": ["\\cdot"]
+  },
+  "Integral": {
+    "prefix": ["in"],
+    "body": ["\\int_{$1}^{$2}"]
+  },
+  "Summation": {
+    "prefix": ["sum"],
+    "body": ["\\sum_{n=1}^{\\infty}"]
+  },
+  "Cancel Strikethrough": {
+    "prefix": ["cancel"],
+    "body": ["\\cancel{$1}"]
+  },
+  "Square Root": {
+    "prefix": ["sqr"],
+    "body": ["\\sqrt[2$1]{$2}"]
+  },
+  "Limit n -> Infinity": {
+    "prefix": ["lim"],
+    "body": ["\\lim_{n$1 \\to \\infty$2}"]
+  },
+  "Infinity": {
+    "prefix": ["inf"],
+    "body": ["\\infty"]
+  },
+  "Pi": {
+    "prefix": ["pi"],
+    "body": ["\\pi"]
+  },
+  "Line Break Katex": {
+    "prefix": ["br"],
+    "body": ["\\hfill\\break"]
+  },
+  "Riemman Sum": {
+    "prefix": ["riemmansumgraph"],
+    "body": [
+      "\\begin{tikzpicture}[scale=1.2]",
+      "\\def\\a{1.7}",
+      "\\def\\b{5.7}",
+      "\\def\\c{3.7}",
+      "\\def\\L{0.5} % width of interval",
+      "\\pgfmathsetmacro{\\Va}{2*sin(\\a r+1)+4} \\pgfmathresult",
+      "\\pgfmathsetmacro{\\Vb}{2*sin(\\b r+1)+4} \\pgfmathresult",
+      "\\pgfmathsetmacro{\\Vc}{2*sin(\\c r+1)+4} \\pgfmathresult",
+      "\\draw[->,thick] (-0.5,0) -- (7,0) coordinate (x axis) node[below] {\\$x\\$\\};",
+      "\\draw[->,thick] (0,-0.5) -- (0,7) coordinate (y axis) node[left] {\\$ y\\$\\};",
+      "\\foreach \\f in {1.7,2.2,...,6.2} {\\pgfmathparse {2*sin(\\f r+1)+4}   \\pgfmathresult",
+      "\\draw[fill=blue!20] (\\f-\\L/2,\\pgfmathresult |- x axis) -- (\\f-\\L/2,\\pgfmathresult) -- (\\f+\\L/2,\\pgfmathresult) -- (\\f+\\L/2,\\pgfmathresult |- x axis) -- cycle;}",
+      "\\node at (\\a-\\L/2,-5pt) {\\footnotesize{\\$a=x_0\\$}};",
+      "\\node at (\\b+\\L/2+\\L,-5pt) {\\footnotesize{\\$b=x_n\\$}};",
+      "\\draw[blue] (\\c-\\L/2,0) -- (\\c-\\L/2,\\Vc) -- (\\c+\\L/2,\\Vc) -- (\\c+\\L/2,0);",
+      "\\draw[dashed] (\\c,0) node[below] {\\footnotesize{\\$\\xi_i\\$}} -- (\\c,\\Vc) -- (0,\\Vc) node[left] {\\$f(\\xi_i)\\$};",
+      "\\node at (\\a+5*\\L/2,-5pt) {\\footnotesize{\\$x_{i-1}\\$}};",
+      "\\node at (\\a+7*\\L/2,-5pt) {\\footnotesize{\\$x_i\\$}};",
+      "\\node at (\\a+5*\\L,-5pt) {\\footnotesize{\\$x_{i+1}\\$}};",
+      "\\draw[blue,thick,smooth,samples=100,domain=1.45:6.2] plot(\\x,{2*sin(\\x r+1)+4});",
+      "\\filldraw[black] (\\c,\\Vc) circle (.03cm);",
+      "\\end{tikzpicture}"
+    ]
+  },
+  "Cartesian Plane Graph": {
+    "prefix": ["ctg"],
+    "body": [
+      "\\begin{figure*}[htp]",
+      "\\begin{center}",
+      "\\begin{tikzpicture}[scale=1.2]",
+      "\\draw[->,thick] (-0.5,0) -- (7,0) coordinate (x axis) node[below] {\\$x\\$};",
+      "\\draw[->,thick] (0,-2.5) -- (0,2.5) coordinate (y axis) node[left] {\\$y\\$};",
+      "\\draw[dashed] (4,0) node[below] {\\footnotesize{\\$N\\$}} -- (4,1) -- (0,1) node[left] {\\$x\\$};",
+      "\\filldraw[black] (4,1) circle (.05cm);",
+      "\\draw[blue,thick,smooth,samples=100,domain=1.45:6.2] plot(\\x,{sin(\\x r+1)});",
+      "\\filldraw[black] (1,1.5) circle (.05cm);",
+      "\\filldraw[black] (2,-1.5) circle (.05cm);",
+      "\\filldraw[black] (3,-1) circle (.05cm);",
+      "\\filldraw[black] (5,0.9) circle (.05cm);",
+      "\\filldraw[black] (6,0.5) circle (.05cm);",
+      "\\filldraw[black] (7,0.7) circle (.05cm);",
+      "\\end{tikzpicture}",
+      "\\end{center}",
+      "\\end{figure*}"
+    ]
+  },
+  "Parametric Plane Graph": {
+    "prefix": ["ppg"],
+    "body": [
+      "\\begin{figure*}[htp]",
+      "\\begin{center}",
+      "\\begin{tikzpicture}[scale=1.2]",
+      "\\draw[->,thick] (-0.5,0) -- (7,0) coordinate (x axis) node[below] {\\$x\\$};",
+      "\\draw[->,thick] (0,-2.5) -- (0,2.5) coordinate (y axis) node[left] {\\$y\\$};",
+      "\\draw[blue,thick,samples=100,domain=0:6,variable=\\t] plot (\\t,{sqrt(\\t)}) [arrow inside={}{0.25,0.5,0.75}];",
+      "\\filldraw[black] (4,1) circle (.05cm);",
+      "\\draw[blue,thick,smooth,samples=100,domain=1.45:6.2] plot(\\x,{sin(\\x r+1)}) node[above] {\\$C\\$};",
+      "\\filldraw[black] (1,1.5) circle (.05cm);",
+      "\\node[below right=1pt of {(0,0)}, outer sep=1pt,fill=white] {t=0};",
+      "\\filldraw[black] (2,-1.5) circle (.05cm);",
+      "\\filldraw[black] (3,-1) circle (.05cm);",
+      "\\filldraw[black] (5,0.9) circle (.05cm);",
+      "\\filldraw[black] (6,0.5) circle (.05cm);",
+      "\\filldraw[black] (7,0.7) circle (.05cm);",
+      "\\end{tikzpicture}",
+      "\\end{center}",
+      "\\end{figure*}"
+    ]
+  }
+}
