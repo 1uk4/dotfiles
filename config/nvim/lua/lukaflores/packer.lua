@@ -48,15 +48,11 @@ return require('packer').startup(function(use)
 
             -- Snippets
             { 'L3MON4D3/LuaSnip' },
-            { 'rafamadriz/friendly-snippets' },
+            --{ 'rafamadriz/friendly-snippets' },
         }
     }
-
     -- Latex
     use('lervag/vimtex')
 
-    -- Snippets
-    use("L3MON4D3/LuaSnip")
-    use("saadparwaiz1/cmp_luasnip")
 
 end)

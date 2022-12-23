@@ -19,6 +19,20 @@ lsp.configure('sumneko_lua', {
     }
 })
 
+---
+-- Snippet engine setup
+---
+
+local luasnip = require('luasnip')
+
+luasnip.config.set_config({
+  region_check_events = 'InsertEnter',
+  delete_check_events = 'InsertLeave'
+})
+
+require('luasnip.loaders.from_vscode').lazy_load()
+require("luasnip.loaders.from_snipmate").lazy_load()
+
 local cmp = require('cmp')
 local cmp_select = {behavior = cmp.SelectBehavior.Select}
 local cmp_mappings = lsp.defaults.cmp_mappings({
@@ -29,7 +43,27 @@ local cmp_mappings = lsp.defaults.cmp_mappings({
   ['<C-y>'] = cmp.mapping.confirm({ select = true }),
   -- Starts the Completion
   ["<C-Space>"] = cmp.mapping.complete(),
+
+  -- go to next placeholder in the snippet
+  ['<C-d>'] = cmp.mapping(function(fallback)
+      if luasnip.jumpable(1) then
+          luasnip.jump(1)
+      else
+          fallback()
+      end
+  end, {'i', 's'}),
+
+  -- go to previous placeholder in the snippet
+  ['<C-b>'] = cmp.mapping(function(fallback)
+      if luasnip.jumpable(-1) then
+          luasnip.jump(-1)
+      else
+          fallback()
+      end
+  end, {'i', 's'}),
+
 })
+
 
 -- disable completion with tab
 -- this helps with copilot setup
@@ -37,7 +71,18 @@ cmp_mappings['<Tab>'] = nil
 cmp_mappings['<S-Tab>'] = nil
 
 lsp.setup_nvim_cmp({
-  mapping = cmp_mappings
+  mapping = cmp_mappings,
+  snippet = {
+    expand = function(args)
+      luasnip.lsp_expand(args.body)
+    end,
+  },
+  sources = {
+    {name = 'path'},
+    {name = 'nvim_lsp', keyword_length = 3},
+    {name = 'buffer', keyword_length = 3},
+    {name = 'luasnip', keyword_length = 2},
+  },
 })
 
 

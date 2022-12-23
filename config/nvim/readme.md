@@ -24,16 +24,17 @@ Ctrl - n -- Item 3 in Menu
 
 Ctrl - s -- Item 4 in Menu
 
+
 Undo Tree
 Leader U - Open Undo Tree
-
 
 Vim Fugitive
 Leader gs -- Git Status
 
-
 LSP
-
 Leader gd -- Go to Defintion
+Leader s -- Search and Replace word that cursor is on
 
+LuaSnips
+Ctrl - d -- Jump to Next 
 
