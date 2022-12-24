@@ -1,4 +1,41 @@
 
+
+snippet chapter "\chapter{}" bA
+	\\chapter{${1:title}}
+
+snippet section "\section{}" bA
+	\\section{${1:title}}
+
+snippet subsection "\subsection{}" bA
+	\\subsection{${1:title}}
+
+snippet xchapter "\chapter*{}" bA
+	\\chapter*{${1:title}}
+
+snippet xsection "\section*{}" bA
+	\\section*{${1:title}}
+
+snippet xsubsection "\subsection*{}" bA
+	\\subsection*{${1:title}}
+
+snippet setcounter "\setcounter{}{}" bA
+	\\setcounter{${1:type}}{${2:count}}
+
+snippet ic "Inline Code" b
+	\\verb|${1:InlineCode}|
+
+snippet br "Line Break" b
+	\\hfill\\break
+
+snippet sn "Scientific Notation" b
+	\\num{${1:1e-3}}
+
+snippet code "Code Block" b
+	\\begin{code}[language=${1:c}]{${2:description}}
+	${3:code}
+	\\end{code}
+
+
 snippet beg "begin{} / end{}" bA
 	\\begin{$1}
 		$0

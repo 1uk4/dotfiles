@@ -37,8 +37,8 @@ local cmp = require('cmp')
 local cmp_select = {behavior = cmp.SelectBehavior.Select}
 local cmp_mappings = lsp.defaults.cmp_mappings({
   -- Completion Menu Previous and Next
-  ['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
-  ['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
+  ['<C-k>'] = cmp.mapping.select_prev_item(cmp_select),
+  ['<C-j>'] = cmp.mapping.select_next_item(cmp_select),
   -- Completion Accept
   ['<C-y>'] = cmp.mapping.confirm({ select = true }),
   -- Starts the Completion
