@@ -46,3 +46,12 @@ vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><
 -- Make file executable from file with leader x
 vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true })
 
+-- Run build script
+vim.keymap.set("n", "<leader>c", "<cmd>!./build.sh<CR>")
+-- Run output script
+vim.keymap.set("n", "<leader>v", "<cmd>!./output.sh<CR>")
+-- Run build and output script
+vim.keymap.set("n", "<leader>b", "<cmd>!./build.sh && ./output.sh<CR>")
+
+
+
