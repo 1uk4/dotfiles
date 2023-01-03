@@ -35,17 +35,17 @@ require("luasnip.loaders.from_snipmate").lazy_load()
 
 local cmp = require('cmp')
 local cmp_select = {behavior = cmp.SelectBehavior.Select}
+
 local cmp_mappings = lsp.defaults.cmp_mappings({
   -- Completion Menu Previous and Next
   ['<C-k>'] = cmp.mapping.select_prev_item(cmp_select),
   ['<C-j>'] = cmp.mapping.select_next_item(cmp_select),
   -- Completion Accept
-  ['<C-y>'] = cmp.mapping.confirm({ select = true }),
+  ['<CR>'] = cmp.mapping.confirm({ select = true }),
   -- Starts the Completion
   ["<C-Space>"] = cmp.mapping.complete(),
-
   -- go to next placeholder in the snippet
-  ['<C-d>'] = cmp.mapping(function(fallback)
+  ['<Tab>'] = cmp.mapping(function(fallback)
       if luasnip.jumpable(1) then
           luasnip.jump(1)
       else
@@ -54,7 +54,7 @@ local cmp_mappings = lsp.defaults.cmp_mappings({
   end, {'i', 's'}),
 
   -- go to previous placeholder in the snippet
-  ['<C-b>'] = cmp.mapping(function(fallback)
+  ['<S-Tab>'] = cmp.mapping(function(fallback)
       if luasnip.jumpable(-1) then
           luasnip.jump(-1)
       else
@@ -67,8 +67,8 @@ local cmp_mappings = lsp.defaults.cmp_mappings({
 
 -- disable completion with tab
 -- this helps with copilot setup
-cmp_mappings['<Tab>'] = nil
-cmp_mappings['<S-Tab>'] = nil
+--cmp_mappings['<Tab>'] = nil
+--cmp_mappings['<S-Tab>'] = nil
 
 lsp.setup_nvim_cmp({
   mapping = cmp_mappings,

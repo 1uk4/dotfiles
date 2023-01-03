@@ -2,6 +2,32 @@
 snippet im "$$ $1 $$" bA
 	\$${1:Inline Math}\$
 
+
+snippet fr "\frac{}{}" bA
+	\\frac{$1}{$2}$3
+
+snippet ex "\ex{}{}" bA
+	\\ex{$1}{$2}
+
+snippet qs "\qs{}{}" bA
+	\\qs{$1}{$2}
+
+snippet ctg "Cartesian Graph" bA
+      \\begin{tikzpicture}[scale=1.2],
+      \\draw[->,thick] (-0.5,0) -- (7,0) coordinate (x axis) node[below] {\$x\$};,
+      \\draw[->,thick] (0,-2.5) -- (0,2.5) coordinate (y axis) node[left] {\$y\$};,
+      \\draw[dashed] (4,0) node[below] {\\footnotesize{\$N\$}} -- (4,1) -- (0,1) node[left] {\$x\$};,
+      \\filldraw[black] (4,1) circle (.05cm);,
+      \\draw[blue,thick,smooth,samples=100,domain=1.45:6.2] plot(\x,{sin(\x r+1)});,
+      \\filldraw[black] (1,1.5) circle (.05cm);,
+      \\filldraw[black] (2,-1.5) circle (.05cm);,
+      \\filldraw[black] (3,-1) circle (.05cm);,
+      \\filldraw[black] (5,0.9) circle (.05cm);,
+      \\filldraw[black] (6,0.5) circle (.05cm);,
+      \\filldraw[black] (7,0.7) circle (.05cm);,
+      \\end{tikzpicture},
+
+
 snippet chapter "\chapter{}" bA
 	\\chapter{${1:title}}
 
@@ -533,7 +559,6 @@ snippet HH "H" iA
 
 snippet DD "D" iA
 	\mathbb{D}
-
 
 # vim:ft=snippets
 
