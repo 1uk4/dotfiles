@@ -1,16 +1,42 @@
 
 snippet im "$$ $1 $$" bA
-	\$${1:Inline Math}\$
+	\$$1\$$0
 
+snippet tt "\text{}" bA
+	\\text{$1}$0
 
 snippet fr "\frac{}{}" bA
-	\\frac{$1}{$2}$3
+	\\frac{$1}{$2}$0
 
 snippet ex "\ex{}{}" bA
-	\\ex{$1}{$2}
+	\\ex{$1}{$2}$0
 
 snippet qs "\qs{}{}" bA
-	\\qs{$1}{$2}
+	\\qs{$1}{$2}$0
+
+snippet thm "\thm{}{}" bA
+	\\thm{$1}{$2}$0
+
+snippet defintion "\dfn{}{}" bA
+	\\dfn{$1}{$2}$0
+
+snippet [ "[]" bA
+	\\left[ $1\right]$0
+
+snippet | "||" bA
+	\\left| $1\right|$0
+
+
+snippet int "\int_{}^{}" bA
+	\\int_{$1}^{$2}$0
+
+
+snippet ibp "Integration by parts" bA
+    \\begin{cases}
+        u = $1 \\rightarrow du = $2 \\\\
+        dv = $3 \\rightarrow v = $4 \\\\
+    \\end{cases}
+
 
 snippet ctg "Cartesian Graph" bA
       \\begin{tikzpicture}[scale=1.2],
@@ -75,26 +101,6 @@ snippet ... "ldots" iA
 	\ldots
 
 
-snippet table "Table environment" b
-	\begin{table}[${1:htpb}]
-		\centering
-		\caption{${2:caption}}
-		\label{tab:${3:label}}
-		\begin{tabular}{${5:c}}
-		$0${5/((?<=.)c|l|r)|./(?1: & )/g}
-		\end{tabular}
-	\end{table}
-
-
-snippet fig "Figure environment" b
-	\begin{figure}[${1:htpb}]
-		\centering
-		${2:\includegraphics[width=0.8\textwidth]{$3}}
-		\caption{${4:$3}}
-		\label{fig:${5:${3/\W+/-/g}}}
-	\end{figure}
-
-
 snippet enum "Enumerate" bA
 	\begin{enumerate}
 		\item $0
@@ -113,10 +119,6 @@ snippet desc "Description" b
 	\end{description}
 
 
-snippet pac "Package" b
-	\usepackage[${1:options}]{${2:package}}$0
-
-
 snippet => "implies" Ai
 	\implies
 
@@ -128,36 +130,18 @@ snippet =< "implied by" Ai
 snippet iff "iff" Ai
 	\iff
 
-
-snippet mk "Math" wA
-	$${1}$
-
-
 snippet dm "Math" wA
 	\[
 	${1:${VISUAL}}
-	.\] $0
-
+	\] $0
 
 snippet ali "Align" bA
 	\begin{align*}
 		${1:${VISUAL}}
-	.\end{align*}
-
-
-
-snippet // "Fraction" iA
-	\\frac{$1}{$2}$0
-
-
-snippet / "Fraction" i
-	\\frac{${VISUAL}}{$1}$0
+	\end{align*}
 
 
 priority 1000
-snippet math "mathematicablock" w
-	math $1 math$0
-
 
 snippet == "equals" iA
 	&= $1 \\\\
@@ -173,14 +157,6 @@ snippet ceil "ceil" iA
 
 snippet floor "floor" iA
 	\left\lfloor $1 \right\rfloor$0
-
-
-snippet pmat "pmat" iA
-	\begin{pmatrix} $1 \end{pmatrix} $0
-
-
-snippet bmat "bmat" iA
-	\begin{bmatrix} $1 \end{bmatrix} $0
 
 
 snippet () "left( right)" iA
@@ -401,11 +377,6 @@ snippet invs "inverse" iA
 
 snippet compl "complement" iA
 	^{c}
-
-
-snippet \\\ "setminus" iA
-	\setminus
-
 
 
 snippet >> ">>" iA
