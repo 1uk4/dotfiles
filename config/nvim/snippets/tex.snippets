@@ -1,4 +1,7 @@
 
+snippet infty "\infty" bA
+	\\infty$0
+
 snippet im "$$ $1 $$" bA
 	\$$1\$$0
 
@@ -12,7 +15,8 @@ snippet ex "\ex{}{}" bA
 	\\ex{$1}{$2}$0
 
 snippet qs "\qs{}{}" bA
-	\\qs{$1}{$2}$0
+	%% QUESTION $1
+	\\qs{$2}{$3}$0
 
 snippet thm "\thm{}{}" bA
 	\\thm{$1}{$2}$0
@@ -26,17 +30,14 @@ snippet [ "[]" bA
 snippet | "||" bA
 	\\left| $1\right|$0
 
-
 snippet int "\int_{}^{}" bA
 	\\int_{$1}^{$2}$0
-
 
 snippet ibp "Integration by parts" bA
     \\begin{cases}
         u = $1 \\rightarrow du = $2 \\\\
         dv = $3 \\rightarrow v = $4 \\\\
     \\end{cases}
-
 
 snippet ctg "Cartesian Graph" bA
       \\begin{tikzpicture}[scale=1.2],
@@ -52,7 +53,6 @@ snippet ctg "Cartesian Graph" bA
       \\filldraw[black] (6,0.5) circle (.05cm);,
       \\filldraw[black] (7,0.7) circle (.05cm);,
       \\end{tikzpicture},
-
 
 snippet chapter "\chapter{}" bA
 	\\chapter{${1:title}}
@@ -89,43 +89,35 @@ snippet code "Code Block" b
 	${3:code}
 	\\end{code}
 
-
 snippet beg "begin{} / end{}" bA
 	\\begin{$1}
 		$0
 	\\end{$1}
 
-
 priority 100
-snippet ... "ldots" iA
+snippet ... "ldots" bA
 	\ldots
-
 
 snippet enum "Enumerate" bA
 	\begin{enumerate}
 		\item $0
 	\end{enumerate}
 
-
 snippet item "Itemize" bA
 	\begin{itemize}
 		\item $0
 	\end{itemize}
-
 
 snippet desc "Description" b
 	\begin{description}
 		\item[$1] $0
 	\end{description}
 
-
 snippet => "implies" Ai
 	\implies
 
-
 snippet =< "implied by" Ai
 	\impliedby
-
 
 snippet iff "iff" Ai
 	\iff
@@ -140,169 +132,127 @@ snippet ali "Align" bA
 		${1:${VISUAL}}
 	\end{align*}
 
-
 priority 1000
 
-snippet == "equals" iA
+snippet == "equals" bA
 	&= $1 \\\\
 
-
-snippet != "equals" iA
+snippet != "equals" bA
 	\neq 
 
-
-snippet ceil "ceil" iA
+snippet ceil "ceil" bA
 	\left\lceil $1 \right\rceil $0
 
-
-snippet floor "floor" iA
+snippet floor "floor" bA
 	\left\lfloor $1 \right\rfloor$0
 
-
-snippet () "left( right)" iA
+snippet () "left( right)" bA
 	\left( ${1:${VISUAL}} \right) $0
-
 
 snippet lr "left( right)" i
 	\left( ${1:${VISUAL}} \right) $0
 
-
 snippet lr( "left( right)" i
 	\left( ${1:${VISUAL}} \right) $0
-
 
 snippet lr| "left| right|" i
 	\left| ${1:${VISUAL}} \right| $0
 
-
 snippet lr{ "left\{ right\}" i
 	\left\\{ ${1:${VISUAL}} \right\\} $0
-
 
 snippet lrb "left\{ right\}" i
 	\left\\{ ${1:${VISUAL}} \right\\} $0
 
-
 snippet lr[ "left[ right]" i
 	\left[ ${1:${VISUAL}} \right] $0
 
-
-snippet lra "leftangle rightangle" iA
+snippet lra "leftangle rightangle" bA
 	\left<${1:${VISUAL}} \right>$0
 
-
-snippet conj "conjugate" iA
+snippet conj "conjugate" bA
 	\overline{$1}$0
-
 
 snippet sum "sum" w
 	\sum_{n=${1:1}}^{${2:\infty}} ${3:a_n z^n}
 
-
 snippet taylor "taylor" w
 	\sum_{${1:k}=${2:0}}^{${3:\infty}} ${4:c_$1} (x-a)^$1 $0
-
 
 snippet lim "limit" w
 	\lim_{${1:n} \to ${2:\infty}} 
 
-
 snippet limsup "limsup" w
 	\limsup_{${1:n} \to ${2:\infty}} 
-
 
 snippet prod "product" w
 	\prod_{${1:n=${2:1}}}^{${3:\infty}} ${4:${VISUAL}} $0
 
-
 snippet part "d/dx" w
 	\frac{\partial ${1:V}}{\partial ${2:x}} $0
 
-
-snippet sq "\sqrt{}" iA
+snippet sq "\sqrt{}" bA
 	\sqrt{${1:${VISUAL}}} $0
 
-
-snippet sr "^2" iA
+snippet sr "^2" bA
 	^2
 
-
-snippet cb "^3" iA
+snippet cb "^3" bA
 	^3
 
-
-snippet td "to the ... power" iA
+snippet td "to the ... power" bA
 	^{$1}$0
 
-
-snippet rd "to the ... power" iA
+snippet rd "to the ... power" bA
 	^{($1)}$0
 
-
-snippet __ "subscript" iA
+snippet __ "subscript" bA
 	_{$1}$0
 
-
-snippet ooo "\infty" iA
+snippet ooo "\infty" bA
 	\infty
-
 
 snippet rij "mrij" i
 	(${1:x}_${2:n})_{${3:$2}\\in${4:\\N}}$0
 
-
-snippet <= "leq" iA
+snippet <= "leq" bA
 	\le 
 
-
-snippet >= "geq" iA
+snippet >= "geq" bA
 	\ge 
 
-
-snippet EE "geq" iA
+snippet EE "geq" bA
 	\exists 
 
-
-snippet AA "forall" iA
+snippet AA "forall" bA
 	\forall 
 
-
-snippet xnn "xn" iA
+snippet xnn "xn" bA
 	x_{n}
 
-
-snippet ynn "yn" iA
+snippet ynn "yn" bA
 	y_{n}
 
-
-
-snippet xii "xi" iA
+snippet xii "xi" bA
 	x_{i}
 
-
-snippet yii "yi" iA
+snippet yii "yi" bA
 	y_{i}
 
-
-snippet xjj "xj" iA
+snippet xjj "xj" bA
 	x_{j}
 
-
-snippet yjj "yj" iA
+snippet yjj "yj" bA
 	y_{j}
 
-
-snippet xp1 "x" iA
+snippet xp1 "x" bA
 	x_{n+1}
 
-
-snippet xmm "x" iA
+snippet xmm "x" bA
 	x_{m}
 
-
-snippet R0+ "R0+" iA
+snippet R0+ "R0+" bA
 	\\R_0^+
-
 
 snippet plot "Plot" w
 	\begin{figure}[$1]
@@ -320,215 +270,145 @@ snippet plot "Plot" w
 		\label{${9:$8}}
 	\end{figure}
 
-
 snippet nn "Tikz node" w
 	\node[$5] (${1/[^0-9a-zA-Z]//g}${2}) ${3:at (${4:0,0}) }{$${1}$};
 	$0
 
-
-snippet mcal "mathcal" iA
+snippet mcal "mathcal" bA
 	\mathcal{$1}$0
 
-
-snippet lll "l" iA
+snippet lll "l" bA
 	\ell
 
-
-snippet nabl "nabla" iA
+snippet nabl "nabla" bA
 	\nabla 
 
-
-snippet xx "cross" iA
+snippet xx "cross" bA
 	\times 
 
-
 priority 100
-snippet ** "cdot" iA
+snippet ** "cdot" bA
 	\cdot 
 
-
-snippet norm "norm" iA
+snippet norm "norm" bA
 	\|$1\|$0
 
 priority 300
 snippet dint "integral" wA
 	\int_{${1:-\infty}}^{${2:\infty}} ${3:${VISUAL}} $0
 
-
 priority 100
-snippet -> "to" iA
+snippet -> "to" bA
 	\to 
 
-
 priority 200
-snippet <-> "leftrightarrow" iA
+snippet <-> "leftrightarrow" bA
 	\leftrightarrow
 
-
-snippet !> "mapsto" iA
+snippet !> "mapsto" bA
 	\mapsto 
 
-
-
-snippet invs "inverse" iA
+snippet invs "inverse" bA
 	^{-1}
 
-
-
-snippet compl "complement" iA
+snippet compl "complement" bA
 	^{c}
 
-
-snippet >> ">>" iA
+snippet >> ">>" bA
 	\gg
 
-
-
-snippet << "<<" iA
+snippet << "<<" bA
 	\ll
 
-
-
-
-snippet ~~ "~" iA
+snippet ~~ "~" bA
 	\sim 
-
-
 
 snippet set "set" wA
 	\\{$1\\} $0
 
-
-
-snippet || "mid" iA
+snippet || "mid" bA
 	 \mid 
-
-
 
 snippet cc "subset" Ai
 	\subset 
 
-
-
-snippet notin "not in " iA
+snippet notin "not in " bA
 	\not\in 
 
-
-
-snippet inn "in " iA
+snippet inn "in " bA
 	\in 
 
-
-
-snippet NN "n" iA
+snippet NN "n" bA
 	\N
 
-
-
-snippet Nn "cap" iA
+snippet Nn "cap" bA
 	\cap 
 
-
-
-snippet UU "cup" iA
+snippet UU "cup" bA
 	\cup 
 
-
-
-snippet uuu "bigcup" iA
+snippet uuu "bigcup" bA
 	\bigcup_{${1:i \in ${2: I}}} $0
 
-
-
-snippet nnn "bigcap" iA
+snippet nnn "bigcap" bA
 	\bigcap_{${1:i \in ${2: I}}} $0
 
-
-
-snippet OO "emptyset" iA
+snippet OO "emptyset" bA
 	\O
 
-
-
-snippet RR "real" iA
+snippet RR "real" bA
 	\R
 
-
-
-snippet QQ "Q" iA
+snippet QQ "Q" bA
 	\Q
 
-
-snippet ZZ "Z" iA
+snippet ZZ "Z" bA
 	\Z
 
-
-
-snippet <! "normal" iA
+snippet <! "normal" bA
 	\triangleleft 
 
-
-
-snippet <> "hokje" iA
+snippet <> "hokje" bA
 	\diamond 
-
-
-
 
 snippet '(?<!i)sts' "text subscript" irA
 	_\text{$1} $0
 
-
-
-snippet tt "text" iA
+snippet tt "text" bA
 	\text{$1}$0
-
-
 
 snippet case "cases" wA
 	\begin{cases}
 		$1
 	\end{cases}
 
-
-
-snippet SI "SI" iA
+snippet SI "SI" bA
 	\SI{$1}{$2}
 
-
-
-snippet bigfun "Big function" iA
+snippet bigfun "Big function" bA
 	\begin{align*}
 		$1: $2 &\longrightarrow $3 \\\\
 		$4 &\longmapsto $1($4) = $0
-	.\end{align*}
+	\end{align*}
 
-
-
-snippet cvec "column vector" iA
+snippet cvec "column vector" bA
 	\begin{pmatrix} ${1:x}_${2:1}\\\\ \vdots\\\\ $1_${2:n} \end{pmatrix}
 
-
-
 priority 10
-snippet "bar" "bar" riA
+snippet "bar" "bar" rbA
 	\overline{$1}$0
 
 priority 10
-snippet "hat" "hat" riA
+snippet "hat" "hat" rbA
 	\hat{$1}$0
 
-snippet letw "let omega" iA
+snippet letw "let omega" bA
 	Let $\Omega \subset \C$ be open.
 
-
-
-snippet HH "H" iA
+snippet HH "H" bA
 	\mathbb{H}
 
-
-
-snippet DD "D" iA
+snippet DD "D" bA
 	\mathbb{D}
 
 # vim:ft=snippets
