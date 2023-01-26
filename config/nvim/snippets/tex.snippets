@@ -16,7 +16,9 @@ snippet ex "\ex{}{}" bA
 
 snippet qs "\qs{}{}" bA
 	%% QUESTION $1
-	\\qs{$2}{$3}\\hfill\\break$0
+	\\qs{$2}{
+		$3
+	}\\hfill\\break$0
 
 snippet thm "\thm{}{}" bA
 	\\thm{$1}{$2}\\hfill\\break$0
@@ -41,6 +43,16 @@ snippet ibp "Integration by parts" bA
         u = $1 \\rightarrow du = $2 \\\\
         dv = $3 \\rightarrow v = $4 \\\\
     \\end{cases}
+
+snippet taylor "Taylor Series Setup" bA
+	\\begin{align*}
+		f(x) = $1 &\\rightarrow f(0) = $2
+		f'(x) = $3 & \\rightarrow f'(0) = $4 
+		f''(x) = $5 & \\rightarrow f''(0) = $6 
+		f^{(3)}(x) = $7 & \\rightarrow f^{(3)}(0) = $8
+		f^{(4)}(x) = $9 & \\rightarrow f(0) = $10 
+	\\end{align*}
+
 
 snippet ctg "Cartesian Graph" bA
       \\begin{tikzpicture}[scale=1.2],
@@ -328,9 +340,6 @@ snippet ~~ "~" bA
 
 snippet set "set" wA
 	\\{$1\\} $0
-
-snippet || "mid" bA
-	 \mid 
 
 snippet cc "subset" Ai
 	\subset 
