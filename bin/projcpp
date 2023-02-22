@@ -9,11 +9,16 @@ if [ -z "$1" ]; then
 	else
         mkdir -p -- "$1" && cd -P -- "$1";
         echo "
-#include “main.h”
+#include <iostream>
+#include <string>
+#include \"main.h\"
 
 int main()
 {
-    std::cout << "This is a test" << std::endl;
+    std::string output = \"this is a test\";
+    std::cout << output << std::endl;
+
+    return 0;
 }      
 " >> main.cpp
 
@@ -30,16 +35,26 @@ int main()
 
 set -xe
 
-gcc -Wall -Wextra -o main main.cpp
+if [ -z "\$1" ]; then
+	echo "Add a filename to command: ./build.sh filename"
 
-        " >> build.sh
+	else
+    g++ -std=c++11 -Wall -Wextra -o \$1 \$1.cpp
+
+fi
+
+         " >> build.sh
 
         echo "
-#!/bin/sh
 
-set -xe
+if [ -z "\$1" ]; then
+	echo "Add a filename to command: ./build.sh filename"
 
-./example
+	else
+    set -xe
+    ./\$1
+fi
+
         " >> output.sh
 
 
