@@ -1,0 +1,25 @@
+snippet rcc "React Comment" bA
+	{/*$1*/}$0	
+
+snippet div "Divider" bA
+	<div classname="$1">$2</div>$0
+
+snippet main "Main" bA
+	<main>$1</main>$0
+
+snippet input "input" bA
+	<input>$1</input>$0
+
+snippet tsrfc "Typescript React Functional Component" bA
+	import React from 'react';
+
+	const ${1:Component Name} : React.FC<{ ${2:TypeName} : ${3:Type} }> = (props) => {
+	  return (
+		<div>
+		$4
+		</div>
+	  );
+	};
+
+	export default $1;
+
