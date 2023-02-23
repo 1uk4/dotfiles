@@ -4,7 +4,7 @@
 if OS.mac?
 	# taps
 	tap "homebrew/cask"
-    	tap "homebrew/cask-fonts"	
+   	tap "homebrew/cask-fonts"	
 
 	# Packages
 	brew "trash" # rm, but put in the trash rather than completely delete
@@ -12,10 +12,8 @@ if OS.mac?
 	# Applications
 	cask "kitty" # a better terminal emulator
 	cask "docker"
-    	cask "keepassxc"
-	cask "postman"
+   	cask "keepassxc"
 	cask "spotify"
-	cask "min"
 
 	#Fonts
 	cask "font-hack-nerd-font"
@@ -29,7 +27,6 @@ tap "homebrew/bundle"
 tap "homebrew/core"
 
 #Packages
-brew "calcurse"
 brew "tmuxinator"
 brew "yt-dlp" # Youtube MP4 Downloader
 brew "bat" # better cat
