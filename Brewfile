@@ -14,6 +14,7 @@ if OS.mac?
 	cask "docker"
    	cask "keepassxc"
 	cask "spotify"
+    cask "inkscape"
 
 	#Fonts
 	cask "font-hack-nerd-font"
@@ -51,6 +52,7 @@ brew "neovim" # A better vim
 brew "python" # python (latest)
 brew "zsh" # zsh (latest)
 brew "z" # switch between most used directories	
+brew "fswatch" #For Inkscape Watcher
 
 
 

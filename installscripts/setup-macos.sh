@@ -11,8 +11,8 @@ if [[ "$(uname)" == "Darwin" ]]; then
 
 	echo "Terminal "
 
-        echo " - Only use UTF-8 in Terminal.app"
-        defaults write com.apple.terminal StringEncodings -array 4
+    echo " - Only use UTF-8 in Terminal.app"
+    defaults write com.apple.terminal StringEncodings -array 4
 
 	echo " - Enable Secure Keyboard Entry in Terminal.app "
 	# See: https://security.stackexchange.com/a/47786/8918
@@ -101,22 +101,22 @@ if [[ "$(uname)" == "Darwin" ]]; then
 	echo "Hardware: Keyboard - Screen"
 
 	echo " - Enable subpixel font rendering on non-Apple LCDs"
-        defaults write NSGlobalDomain AppleFontSmoothing -int 2
+    defaults write NSGlobalDomain AppleFontSmoothing -int 2
 
-        echo " - Disable press-and-hold for keys in favor of key repeat"
-        defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
+    echo " - Disable press-and-hold for keys in favor of key repeat"
+    defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
 
-        echo " - Set a blazingly fast keyboard repeat rate"
-        defaults write NSGlobalDomain KeyRepeat -float 0.1
+    echo " - Set a blazingly fast keyboard repeat rate"
+    defaults write NSGlobalDomain KeyRepeat -float 0.9 
 
-        echo " - Set a shorter Delay until key repeat"
-        defaults write NSGlobalDomain InitialKeyRepeat -int 15
+    echo " - Set a shorter Delay until key repeat"
+    defaults write NSGlobalDomain InitialKeyRepeat -int 15
 
-        echo " - Enable tap to click (Trackpad)"
-        defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -bool true
-	
-        echo " - Enable full keyboard access for all controls (e.g. enable Tab in modal dialogs)"
-        defaults write NSGlobalDomain AppleKeyboardUIMode -int 3
+    echo " - Enable tap to click (Trackpad)"
+    defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -bool true
+
+    echo " - Enable full keyboard access for all controls (e.g. enable Tab in modal dialogs)"
+    defaults write NSGlobalDomain AppleKeyboardUIMode -int 3
 
 
 	# Dock
