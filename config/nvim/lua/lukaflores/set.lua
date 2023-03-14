@@ -9,6 +9,10 @@ vim.opt.shiftwidth = 4
 vim.opt.expandtab = true
 vim.opt.smartindent = true
 
+-- Spelling
+vim.opt.spell = true
+vim.opt.spelllang = "en_us"
+
 -- Line Wrap
 vim.opt.wrap = false
 

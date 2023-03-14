@@ -6,3 +6,11 @@ Automate
 * Install Rectangle with Commands
 	* CTRL + Option (h,j,k,l)
 * Keyboard Maestro Config 
+
+
+
+
+
+
+
+

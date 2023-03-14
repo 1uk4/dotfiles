@@ -30,11 +30,11 @@ vim.keymap.set({ "n", "v" }, "<leader>d", [["_d]])
 
 vim.keymap.set("n", "Q", "<nop>")
 
-
 vim.keymap.set("n", "<C-f>", [[:.r !inkscape-figures create <C-r><C-L> %:p:h/figures <C-M>]])
 vim.keymap.set("n", "<C-l>", [[:!inkscape-figures edit %:p:h/figures/ > /dev/null 2>&1 <CR> ]])
 
-
+-- Spell Check
+vim.keymap.set("i", "<C-k>", "<c-g>u<Esc>[s1z=`]a<c-g>u")
 
 -- Format
 vim.keymap.set("n", "<leader>f", vim.lsp.buf.format)
