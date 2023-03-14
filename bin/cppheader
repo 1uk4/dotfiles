@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+# Creates a folder with a cpp Project file with the template below
+# Usage: cppheader filename
+
+
+if [ -z "$1" ]; then
+        echo "Add a filename to command: projcpp filename"
+	else
+        name=$(echo "$1_H" | tr '[a-z]' '[A-Z]')
+
+#Create Header File
+        echo "
+#ifndef $name
+#define $name 
+
+
+#endif //$name
+        " >> $1.h
+
+        echo "
+#include \"$1.h\" 
+        " >> $1.cpp
+
+# Edit Makefile
+sed -i '' "s/g++ -g -std=c++11 -Wall -Wextra -v/g++ -g -std=c++11 -Wall -Wextra -v $1.o/g" Makefile
+sed -i '' "s/g++ -c -std=c++11 -g main.cpp/g++ -c -std=c++11 -g main.cpp\n\n$1.o: $1.cpp\n\tg++ -c -std=c++11 -g $1.cpp/g" Makefile
+
+fi

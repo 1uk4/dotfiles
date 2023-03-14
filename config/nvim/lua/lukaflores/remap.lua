@@ -30,8 +30,13 @@ vim.keymap.set({ "n", "v" }, "<leader>d", [["_d]])
 
 vim.keymap.set("n", "Q", "<nop>")
 
+-- Inkscape Figure Shortcuts
 vim.keymap.set("n", "<C-f>", [[:.r !inkscape-figures create <C-r><C-L> %:p:h/figures <C-M>]])
 vim.keymap.set("n", "<C-l>", [[:!inkscape-figures edit %:p:h/figures/ > /dev/null 2>&1 <CR> ]])
+
+
+--CPP Header Creation
+vim.keymap.set("n", "<leader>h", [[:.r !cppheader <C-r><C-w> <C-M>]])
 
 -- Spell Check
 vim.keymap.set("i", "<C-k>", "<c-g>u<Esc>[s1z=`]a<c-g>u")
@@ -52,11 +57,11 @@ vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><
 vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true })
 
 -- Run build script
-vim.keymap.set("n", "<leader>c", "<cmd>!./build.sh %:t:r<CR>")
+vim.keymap.set("n", "<leader>c", "<cmd>! make <CR>")
 -- Run output script
-vim.keymap.set("n", "<leader>v", "<cmd>!./output.sh %:t:r<CR>")
+vim.keymap.set("n", "<leader>v", "<cmd>!./output<CR>")
 -- Run build and output script
-vim.keymap.set("n", "<leader>b", "<cmd>!./build.sh %:t:r && ./output.sh %:t:r<CR>")
+vim.keymap.set("n", "<leader>b", "<cmd>! make && ./output<CR>")
 
 
 
