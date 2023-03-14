@@ -118,6 +118,13 @@ In terminal with `vimu`
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+### FreshRss
+
+``
+docker run -d --restart unless-stopped --log-opt max-size=10m -p 9090:80 -e TZ=America/Los_Angeles -e 'CRON_MIN=1,31' -v freshrss_data:/var/www/FreshRSS/data -v freshrss_extensions:/var/www/FreshRSS/extensions --name freshrss freshrss/freshrss
+``
+
+
 
 
 <!-- CONTACT -->
