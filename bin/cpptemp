@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+
+# Creates a folder with a cpp Project file with the template below
+# Usage: projcpp filename
+
+
+if [ -z "$1" ]; then
+        echo "Add a filename to command: projcpp filename"
+	else
+        mkdir -p -- "$1" && cd -P -- "$1";
+        echo "
+#include <iostream>
+#include <string>
+#include \"main.h\"
+
+int main()
+{
+    std::string output = \"this is a test\";
+    std::cout << output << std::endl;
+
+    return 0;
+}      
+" >> main.cpp
+
+        echo "
+#ifndef MAIN_H
+#define MAIN_H
+
+
+#endif //MAIN_H
+        " >> main.h
+
+        echo "
+
+output: main.o 
+	g++ -g -std=c++11 -Wall -Wextra -v main.o -o output
+
+main.o: main.cpp
+	g++ -c -std=c++11 -g main.cpp
+
+clean:
+	rm *.o output
+
+         " >> Makefile 
+
+fi
