@@ -33,3 +33,4 @@ yabai -m rule --add app="^Stats$" manage=off
 yabai -m rule --add app="^KeePassXC$" manage=off
 yabai -m rule --add app="^Calculator$" manage=off
 yabai -m rule --add app="^Spotify$" manage=off
+yabai -m rule --add app="^Stickies$" manage=off
