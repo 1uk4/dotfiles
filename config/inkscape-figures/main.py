@@ -34,12 +34,10 @@ def beautify(name):
 
 def latex_template(name, title):
     return '\n'.join((
-        r"\begin{figure}[ht]",
-        r"    \centering",
+        r"\begin{align*}",
         rf"    \incfig{{{name}}}",
-        rf"    \caption{{{title}}}",
         rf"    \label{{fig:{name}}}",
-        r"\end{figure}"))
+        r"\end{align*}"))
 
 # From https://stackoverflow.com/a/67692
 def import_file(name, path):
