@@ -34,10 +34,12 @@ def beautify(name):
 
 def latex_template(name, title):
     return '\n'.join((
-        r"\begin{align*}",
+        r"\begin{figure}[ht]",
+        r"    \centering",
         rf"    \incfig{{{name}}}",
+        rf"    \caption{{{title}}}",
         rf"    \label{{fig:{name}}}",
-        r"\end{align*}"))
+        r"\end{figure}"))
 
 # From https://stackoverflow.com/a/67692
 def import_file(name, path):
@@ -50,7 +52,7 @@ def import_file(name, path):
 
 # Load user config
 
-user_dir = Path(user_config_dir("inkscape-figures", "Castel"))
+user_dir = Path(user_config_dir("inkscape-figures", "lukaflores"))
 
 if not user_dir.is_dir():
     user_dir.mkdir()
