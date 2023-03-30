@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+
+# Creates a folder with a cpp Project file with the template below
+# Usage: projcpp filename
+
+
+if [ -z "$1" ]; then
+        echo "Add a filename to command: tscpp filename"
+	else
+        mkdir -p -- "$1" && cd -P -- "$1";
+
+        echo "
+
+interface IFoo {
+    message: string;
+
+};
+
+function main(foo: IFoo): string {
+    return foo.message;
+};
+
+console.log(main({message: \"This is a test message\"}))
+
+        " >> $1.ts
+
+
+        echo "
+#!/bin/sh
+
+set -xe
+
+if [ -z "\$1" ]; then
+	echo "Add a filename to command: ./build.sh filename"
+
+	else
+    ts-node $1.ts
+fi
+         " >> build.sh
+
+
+        chmod +x build.sh
+
+
+fi

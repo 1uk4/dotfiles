@@ -43,4 +43,26 @@ clean:
 
          " >> Makefile 
 
+
+        echo "
+#!/bin/sh
+
+set -xe
+
+make
+         " >> build.sh
+
+        echo "
+
+set -xe
+
+./output
+
+        " >> output.sh
+
+
+        chmod +x build.sh
+
+        chmod +x output.sh
+
 fi
