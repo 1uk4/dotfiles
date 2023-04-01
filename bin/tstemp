@@ -35,6 +35,10 @@ if [ -z "\$1" ]; then
 
 	else
     ts-node $1.ts
+
+    time ( ts-node $1.ts) >&1 1>/dev/null 
+
+
 fi
          " >> build.sh
 

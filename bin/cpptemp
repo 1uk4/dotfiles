@@ -50,6 +50,7 @@ clean:
 set -xe
 
 make
+time (make) >&1 1>/dev/null
          " >> build.sh
 
         echo "
@@ -57,6 +58,8 @@ make
 set -xe
 
 ./output
+time (./output) >&1 1>/dev/null
+
 
         " >> output.sh
 
