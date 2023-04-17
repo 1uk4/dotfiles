@@ -8,7 +8,7 @@ echo $yesterday_date
 if [ -e ~/notes/todo/${today_date}.txt ]
 then
 
-    vim ~/notes/todo/$today_date.txt
+    nvim ~/notes/todo/$today_date.txt
 
 else
 
@@ -22,9 +22,19 @@ else
                  }
                /TODO BEGIN/ { f = 1 }' ~/notes/todo/$yesterday_date.txt) 
 
+        yesterday_timeless_todo=$(awk 'f { if (/TIMELESS END/){
+                        printf "%s", buf; f = 0; buf=""
+                    } else
+                        buf = buf $0 ORS
+                 }
+               /TIMELESS BEGIN/ { f = 1 }' ~/notes/todo/$yesterday_date.txt) 
+
+
+
     else
         echo "No Todo List Yesterday"
         yesterday_todo=""
+        yesterday_timeless_todo=""
     fi
 
 
@@ -56,9 +66,14 @@ FINISHED TODO:
     - 
     -
 
+===== TIMELESS BEGIN  ======
+${yesterday_timeless_todo}
+===== TIMELESS END  ======
+
+
 " > ~/notes/todo/$today_date.txt
 
-    vim ~/notes/todo/$today_date.txt
+    nvim ~/notes/todo/$today_date.txt
 fi
 
 
