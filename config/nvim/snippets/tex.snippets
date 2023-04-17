@@ -8,6 +8,18 @@ snippet bold "\textbf{}" bA
 snippet tilde "\widetilde" bA
 	\\widetilde{$1}$0
 
+snippet partx "Partial of x" bA
+	\\frac{\\partial}{\partial x}$0
+
+snippet party "Partial of y" bA
+	\\frac{\\partial}{\partial y}$0
+
+snippet underbrace "UnderBrace" bA
+	\\underbrace{$1}_{$1}$0
+	
+snippet sol "Solution" bA
+	\\textbf{Solution:}
+
 snippet im "$$ $1 $$" bA
 	\$$1\$$0
 
@@ -70,6 +82,10 @@ snippet qs "\qs{}{}" bA
 	\\qs{$2}{
 		$3
 	}\\hfill\\break$0
+
+snippet corollary "\cor{}{}" bA
+	\\cor{$1}{$2}\\hfill\\break$0
+
 
 snippet thm "\thm{}{}" bA
 	\\thm{$1}{$2}\\hfill\\break$0
