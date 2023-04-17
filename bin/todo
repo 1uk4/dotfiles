@@ -8,7 +8,7 @@ echo $yesterday_date
 if [ -e ~/notes/todo/${today_date}.txt ]
 then
 
-    nvim ~/notes/todo/$today_date.txt
+    nvim -O ~/notes/todo/$today_date.txt ~/notes/todo/goal.txt
 
 else
 
@@ -56,6 +56,8 @@ ${today_date} : AGENDA
 
 ==================================
 
+====== ACTION TOWARDS GOALS ======  
+==================================
 
 
 ====== TODO BEGIN ======
@@ -73,7 +75,7 @@ ${yesterday_timeless_todo}
 
 " > ~/notes/todo/$today_date.txt
 
-    nvim ~/notes/todo/$today_date.txt
+    nvim -O ~/notes/todo/$today_date.txt ~/notes/todo/goal.txt
 fi
 
 
