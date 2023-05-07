@@ -1,0 +1,9 @@
+set hidden true
+set ignorecase true
+
+cmd open ${{
+	case $(file --mime-type "$f" -bL ) in
+		text/*) nvim "$fx";;
+		application/pdf) zathura "$f" & > /dev/null ;;
+	esac
+}}
