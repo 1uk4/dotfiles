@@ -148,7 +148,7 @@ async_register_callback vcs_info git_status_done
 
 add-zsh-hook precmd () {
     print -P "\n%F{005}%~ $(node_prompt)"
-    async_job vcs_info git_status "$PWD"
+     vcs_info git_status "$PWD" #  This line included this at the front async_job idk what it does
 }
 
 

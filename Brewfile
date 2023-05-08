@@ -28,6 +28,7 @@ tap "homebrew/bundle"
 tap "homebrew/core"
 
 #Packages
+brew "ripgrep"
 brew "tmuxinator"
 brew "yt-dlp" # Youtube MP4 Downloader
 brew "bat" # better cat
