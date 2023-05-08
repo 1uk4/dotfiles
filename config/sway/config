@@ -215,3 +215,10 @@ bar {
 }
 
 include /etc/sway/config.d/*
+
+# Keyboard Changes
+input "type:keyboard" {
+	xkb_options ctrl:nocaps
+}
+
+
