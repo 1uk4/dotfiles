@@ -1,5 +1,5 @@
 -- This file can be loaded by calling `lua require('plugins')` from your init.vim
-vim.cmd [[packadd packer.nvim]]
+vim.cmd.packadd('packer.nvim')
 
 return require('packer').startup(function(use)
     -- Packer can manage itself
@@ -28,6 +28,19 @@ return require('packer').startup(function(use)
     -- Vim Fugitive
     use('tpope/vim-fugitive')
 
+    -- Trouble
+    use {
+      "folke/trouble.nvim",
+      requires = "nvim-tree/nvim-web-devicons",
+      config = function()
+        require("trouble").setup {
+          -- your configuration comes here
+          -- or leave it empty to use the default settings
+          -- refer to the configuration section below
+        }
+      end
+    }
+
 
     -- LSP
     use {
@@ -53,6 +66,11 @@ return require('packer').startup(function(use)
     }
     -- Latex
     use('lervag/vimtex')
+
+
+   -- Zen Mode
+    use("folke/zen-mode.nvim")
+
 
 
 end)
