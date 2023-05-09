@@ -22,6 +22,8 @@ return require('packer').startup(function(use)
     -- Harpoon the Primeagen Plugin - File Navigation
     use('theprimeagen/harpoon')
 
+    use('nvim-lua/plenary.nvim')
+
     -- Undo Tree -- Leader U
     use('mbbill/undotree')
 

@@ -151,10 +151,10 @@ export LESS_TERMCAP_mr=$(tput rev)
 export LESS_TERMCAP_mh=$(tput dim)
 
 # source z.sh if it exists
-zpath="$(brew --prefix)/etc/profile.d/z.sh"
-if [ -f "$zpath" ]; then
-    source "$zpath"
-fi
+#zpath="$(brew --prefix)/etc/profile.d/z.sh"
+#if [ -f "$zpath" ]; then
+#    source "$zpath"
+#fi
 
 ########################################################
 # Aliases
