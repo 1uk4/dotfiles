@@ -5,7 +5,7 @@
 <!-- PROJECT LOGO -->
 
 <div>
-  <h2 align="center">Dotfiles</h2>
+  <h2 align="center">Dotfiles (README not up to date)</h2>
   
   <p align="center"> 
     My life inside the terminal 💻 

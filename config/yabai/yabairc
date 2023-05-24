@@ -35,3 +35,5 @@ yabai -m rule --add app="^Calculator$" manage=off
 yabai -m rule --add app="^Spotify$" manage=off
 yabai -m rule --add app="^Stickies$" manage=off
 yabai -m rule --add app="^Inkscape$" manage=off
+yabai -m rule --add app="^IVPN$" manage=off
+yabai -m rule --add app="^Zoom$" manage=off
