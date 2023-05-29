@@ -3,13 +3,8 @@ npm-debug.log
 
 plug.vim.old
 
-config/nvim/spell
-config/nvim/shada
-config/nvim/plugged
-config/nvim/plugin
-config/nvim/autoload/plug.vim
-vim/vim.symlink/spell/
-vim/vim.symlink/plugged/
+config/nvim/plugged/*
+config/nvim/plugin/*
 
 .DS_Store
 Brewfile.lock.json
