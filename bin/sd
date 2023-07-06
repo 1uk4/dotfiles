@@ -7,15 +7,23 @@ dir=$(ls -1 ~/notes/edu/dir)
 
 index=1
 
-echo "0: New Study Material"
+echo "============================================================================"
+echo " " 
+echo "      r: Open Resource List"
+echo "      0: New Study Material"
+echo " " 
+echo "============================================================================"
+echo " " 
 
 for file in $dir; do
-    echo "$index: $file"
+    echo "      $index: $file"
     index=$((index + 1))
 done
 
 echo " "
-echo "Enter Number Associated with Study Material: "
+echo "============================================================================"
+echo " "
+echo "Enter Character Associated with Study Material: "
 
 completed=0
 
@@ -26,12 +34,11 @@ while [[ $completed == 0 ]]; do
     idx=1
 
     for file in $dir; do
-        
 
         if [[ $idx == $number ]]; then
             echo "$file"
 
-            nvim -O ~/notes/edu/dir/$file/$file.tex 
+            nvim  ~/notes/edu/dir/$file/$file.tex +split +terminal 
 
             completed=1
         fi
@@ -44,13 +51,53 @@ while [[ $completed == 0 ]]; do
         echo "What is the title?"
         read title
 
+        title=${title// /-}
+
+
         cd ~/notes/edu/dir/
 
         lxf $title
 
-        nvim -O ~/notes/edu/dir/$title/$title.tex 
+        cd ./$title
+
+        mkdir source
+
+        cd source
+
+
+            echo "
+        \documentclass{report}
+
+        \input{~/.config/latex_template/preamble.tex}
+        \input{~/.config/latex_template/macros.tex}
+        \input{~/.config/latex_template/letterfonts.tex}
+
+        \title{\Huge{{INSERT CLASS NAME}}}
+        \author{\huge{Luka Flores}}
+        \date{}
+
+        \begin{document}
+
+        \maketitle
+        \newpage% or \cleardoublepage
+        % \pdfbookmark[<level>]{<title>}{<dest>}
+        \pdfbookmark[section]{\contentsname}{toc}
+        \tableofcontents
+        \pagebreak
+
+
+        \end{document}
+        " >> $title-source.tex
+
+        nvim  ~/notes/edu/dir/$title/$title.tex +split +terminal
 
         completed=1
+    fi
+
+    if [[ $number == "r" ]]; then
+        clear
+        completed=1
+        break
     fi
 
     if [[ completed == 0 ]]; then 
@@ -59,4 +106,64 @@ while [[ $completed == 0 ]]; do
 done
 
 
+if [[ $number == "r" ]]; then
+        echo " "
+        echo "=========================== Resource List =================================="
+        echo ""
 
+        index=1
+
+        for file in $dir; do
+
+            sourceFile=$(ls -1 ~/notes/edu/dir/$file/source)
+
+
+            for source in $sourceFile; do
+
+                if [[ $(head -c 4 ~/notes/edu/dir/$file/source/$source) == "%PDF" ]]; then
+                    echo "      $index: $source"
+                    index=$((index + 1))
+                fi
+            done
+        done
+
+    echo " "
+    echo "============================================================================"
+    echo " "
+    echo "Enter Number Associated with Study Material: "
+
+    completed=0
+
+    while [[ $completed == 0 ]]; do 
+
+        read number
+
+        idx=1
+
+        for file in $dir; do
+            
+            sourceFile=$(ls -1 ~/notes/edu/dir/$file/source)
+
+            for source in $sourceFile; do
+
+                if [[ $(head -c 4 ~/notes/edu/dir/$file/source/$source) == "%PDF" ]]; then
+
+                    if [[ $idx == $number ]]; then
+
+                        open -a Preview ~/notes/edu/dir/$file/source/$source
+
+                        completed=1
+                    fi
+
+                    idx=$((idx + 1))
+                fi
+            done
+        done
+
+        if [[ completed == 0 ]]; then 
+            echo "This index is not in the list, try again:"
+        fi 
+    done
+
+
+fi
