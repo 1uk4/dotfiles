@@ -10,6 +10,7 @@ index=1
 echo "============================================================================"
 echo " " 
 echo "      r: Open Resource List"
+echo "      c: Complete Source"
 echo "      0: New Study Material"
 echo " " 
 echo "============================================================================"
@@ -100,6 +101,12 @@ while [[ $completed == 0 ]]; do
         break
     fi
 
+    if [[ $number == "c" ]]; then
+        clear
+        completed=1
+        break
+    fi
+
     if [[ completed == 0 ]]; then 
         echo "This index is not in the list, try again:"
     fi 
@@ -107,22 +114,28 @@ done
 
 
 if [[ $number == "r" ]]; then
-        echo " "
-        echo "=========================== Resource List =================================="
-        echo ""
+
+    echo " "
+    echo "=========================== Resource List =================================="
+    echo " "
 
         index=1
 
         for file in $dir; do
-
             sourceFile=$(find ~/notes/edu/dir/$file/source -maxdepth 1 -type f -execdir echo '{}' ';')
 
             for source in $sourceFile; do
 
+                # If a file is a pdf or html show in list
                 if [[ "${source##*.}" == "pdf" || "${source##*.}" == "html" ]]; then
-                    echo "      $index: $source"
-                    index=$((index + 1))
+                    # If not in completefile then show
+                    if ! grep -Fxq "${source}" ~/notes/edu/completedFile.txt ; then
+                        echo "      $index: $source"
+                        index=$((index + 1))
+                    fi
                 fi
+
+
             done
         done
 
@@ -145,28 +158,35 @@ if [[ $number == "r" ]]; then
 
             for source in $sourceFile; do
 
-                if [[ "${source##*.}" == "pdf" ]]; then
+                # If PDF open with Previewer
 
-                    if [[ $idx == $number ]]; then
+                if ! grep -Fxq "${source}" ~/notes/edu/completedFile.txt ; then
 
-                        open -a Preview ~/notes/edu/dir/$file/source/$source
+                    if [[ "${source##*.}" == "pdf" ]]; then
 
-                        completed=1
+                        if [[ $idx == $number ]]; then
+
+                            open -a Preview ~/notes/edu/dir/$file/source/$source
+
+                            completed=1
+                        fi
+
+                        idx=$((idx + 1))
                     fi
 
-                    idx=$((idx + 1))
-                fi
+                    # If html open 
 
-                if [[ "${source##*.}" == "html" ]]; then
+                    if [[ "${source##*.}" == "html" ]]; then
 
-                    if [[ $idx == $number ]]; then
+                        if [[ $idx == $number ]]; then
 
-                        open ~/notes/edu/dir/$file/source/$source
+                            open ~/notes/edu/dir/$file/source/$source
 
-                        completed=1
+                            completed=1
+                        fi
+
+                        idx=$((idx + 1))
                     fi
-
-                    idx=$((idx + 1))
                 fi
 
             done
@@ -176,6 +196,91 @@ if [[ $number == "r" ]]; then
             echo "This index is not in the list, try again:"
         fi 
     done
-
-
 fi
+
+if [[ $number == "c" ]]; then
+
+    echo " "
+    echo "=========================== Uncompleted Sources =================================="
+    echo " "
+
+        index=1
+
+        for file in $dir; do
+            sourceFile=$(find ~/notes/edu/dir/$file/source -maxdepth 1 -type f -execdir echo '{}' ';')
+
+            for source in $sourceFile; do
+
+                # If a file is a pdf or html show in list
+                if [[ "${source##*.}" == "pdf" || "${source##*.}" == "html" ]]; then
+                    # If not in completefile then show
+                    if ! grep -Fxq "${source}" ~/notes/edu/completedFile.txt ; then
+                        echo "      $index: $source"
+                        index=$((index + 1))
+                    fi
+                fi
+
+
+            done
+        done
+
+    echo " "
+    echo "============================================================================"
+    echo " "
+    echo "Enter Number Associated with Study you would like to Archive: "
+
+    completed=0
+
+    while [[ $completed == 0 ]]; do 
+
+        read number
+
+        idx=1
+
+        for file in $dir; do
+            
+            sourceFile=$(find ~/notes/edu/dir/$file/source -maxdepth 1 -type f -execdir echo '{}' ';')
+
+            for source in $sourceFile; do
+
+                # If PDF open with Previewer
+
+                if ! grep -Fxq "${source}" ~/notes/edu/completedFile.txt ; then
+
+                    if [[ "${source##*.}" == "pdf" ]]; then
+
+                        if [[ $idx == $number ]]; then
+
+                            echo "${source}" >> ~/notes/edu/completedFile.txt;
+
+                            completed=1
+                        fi
+
+                        idx=$((idx + 1))
+                    fi
+
+                    # If html open 
+
+                    if [[ "${source##*.}" == "html" ]]; then
+
+                        if [[ $idx == $number ]]; then
+
+                            echo "${source}" >> ~/notes/edu/completedFile.txt;
+
+                            completed=1
+                        fi
+
+                        idx=$((idx + 1))
+                    fi
+                fi
+
+            done
+        done
+
+        if [[ completed == 0 ]]; then 
+            echo "This index is not in the list, try again:"
+        fi 
+    done
+fi
+
+
