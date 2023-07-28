@@ -115,12 +115,11 @@ if [[ $number == "r" ]]; then
 
         for file in $dir; do
 
-            sourceFile=$(ls -1 ~/notes/edu/dir/$file/source)
-
+            sourceFile=$(find ~/notes/edu/dir/$file/source -maxdepth 1 -type f -execdir echo '{}' ';')
 
             for source in $sourceFile; do
 
-                if [[ $(head -c 4 ~/notes/edu/dir/$file/source/$source) == "%PDF" ]]; then
+                if [[ "${source##*.}" == "pdf" || "${source##*.}" == "html" ]]; then
                     echo "      $index: $source"
                     index=$((index + 1))
                 fi
@@ -142,11 +141,11 @@ if [[ $number == "r" ]]; then
 
         for file in $dir; do
             
-            sourceFile=$(ls -1 ~/notes/edu/dir/$file/source)
+            sourceFile=$(find ~/notes/edu/dir/$file/source -maxdepth 1 -type f -execdir echo '{}' ';')
 
             for source in $sourceFile; do
 
-                if [[ $(head -c 4 ~/notes/edu/dir/$file/source/$source) == "%PDF" ]]; then
+                if [[ "${source##*.}" == "pdf" ]]; then
 
                     if [[ $idx == $number ]]; then
 
@@ -157,6 +156,19 @@ if [[ $number == "r" ]]; then
 
                     idx=$((idx + 1))
                 fi
+
+                if [[ "${source##*.}" == "html" ]]; then
+
+                    if [[ $idx == $number ]]; then
+
+                        open ~/notes/edu/dir/$file/source/$source
+
+                        completed=1
+                    fi
+
+                    idx=$((idx + 1))
+                fi
+
             done
         done
 

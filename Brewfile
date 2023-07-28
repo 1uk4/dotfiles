@@ -10,10 +10,11 @@ if OS.mac?
 	brew "trash" # rm, but put in the trash rather than completely delete
 
 	# Applications
-	cask "kitty" # a better terminal emulator
+	cask "alacritty" # a better terminal emulator
 	cask "docker"
    	cask "keepassxc"
 	cask "spotify"
+    cask "anaconda"
     cask "inkscape"
 
 	#Fonts
