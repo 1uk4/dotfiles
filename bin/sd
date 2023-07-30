@@ -166,7 +166,7 @@ if [[ $number == "r" ]]; then
             for source in $sourceFile; do
 
 
-                if ! grep -Fxq "${source}" ~/notes/edu/completedFile.txt ; then
+                if ! grep -Fxq "${source}" ~/notes/edu/archivedSources.txt ; then
 
                     # If PDF open with Previewer
 
