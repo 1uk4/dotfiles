@@ -1,0 +1,295 @@
+#!/usr/bin/env bash
+# Study Session manager
+# Usage: sd
+
+dir=$(ls -1 ~/notes/edu/dir)
+
+
+index=1
+
+echo "============================================================================"
+echo " " 
+echo "      r: Open Resource List"
+echo "      a: Archive a Source"
+echo "      s: Show All Archived Sources"
+echo "      0: New Study Material"
+echo " " 
+echo "============================================================================"
+echo " " 
+
+for file in $dir; do
+    echo "      $index: $file"
+    index=$((index + 1))
+done
+
+echo " "
+echo "============================================================================"
+echo " "
+echo "Enter Character Associated with Study Material: "
+
+completed=0
+
+while [[ $completed == 0 ]]; do 
+
+    read number
+
+    idx=1
+
+    for file in $dir; do
+
+        if [[ $idx == $number ]]; then
+            echo "$file"
+
+            nvim  ~/notes/edu/dir/$file/$file.tex +split +terminal 
+
+            completed=1
+        fi
+
+        idx=$((idx + 1))
+    done
+
+    if [[ $number == 0 ]]; then
+        echo " "
+        echo "What is the title?"
+        read title
+
+        title=${title// /-}
+
+
+        cd ~/notes/edu/dir/
+
+        lxf $title
+
+        cd ./$title
+
+        mkdir source
+
+        cd source
+
+
+            echo "
+        \documentclass{report}
+
+        \input{~/.config/latex_template/preamble.tex}
+        \input{~/.config/latex_template/macros.tex}
+        \input{~/.config/latex_template/letterfonts.tex}
+
+        \title{\Huge{{INSERT CLASS NAME}}}
+        \author{\huge{Luka Flores}}
+        \date{}
+
+        \begin{document}
+
+        \maketitle
+        \newpage% or \cleardoublepage
+        % \pdfbookmark[<level>]{<title>}{<dest>}
+        \pdfbookmark[section]{\contentsname}{toc}
+        \tableofcontents
+        \pagebreak
+
+
+        \end{document}
+        " >> $title-source.tex
+
+        nvim  ~/notes/edu/dir/$title/$title.tex +split +terminal
+
+        completed=1
+    fi
+
+    if [[ $number == "r" ]]; then
+        clear
+        completed=1
+        break
+    fi
+
+    if [[ $number == "a" ]]; then
+        clear
+        completed=1
+        break
+    fi
+
+    if [[ $number == "s" ]]; then
+        clear
+        completed=1
+        break
+    fi
+
+    if [[ completed == 0 ]]; then 
+        echo "This index is not in the list, try again:"
+    fi 
+done
+
+
+if [[ $number == "r" ]]; then
+
+    echo " "
+    echo "=========================== Resource List =================================="
+    echo " "
+
+        index=1
+
+        for file in $dir; do
+            sourceFile=$(find ~/notes/edu/dir/$file/source -maxdepth 1 -type f -execdir echo '{}' ';')
+
+            for source in $sourceFile; do
+
+                # If a file is a pdf or html show in list
+                if [[ "${source##*.}" == "pdf" || "${source##*.}" == "html" ]]; then
+                    # If not in completefile then show
+                    if ! grep -Fxq "${source}" ~/notes/edu/archivedSources.txt ; then
+                        echo "      $index: $source"
+                        index=$((index + 1))
+                    fi
+                fi
+
+
+            done
+        done
+
+    echo " "
+    echo "============================================================================"
+    echo " "
+    echo "Enter Number Associated with Study Material: "
+
+    completed=0
+
+    while [[ $completed == 0 ]]; do 
+
+        read number
+
+        idx=1
+
+        for file in $dir; do
+            
+            sourceFile=$(find ~/notes/edu/dir/$file/source -maxdepth 1 -type f -execdir echo '{}' ';')
+
+            for source in $sourceFile; do
+
+
+                if ! grep -Fxq "${source}" ~/notes/edu/archivedSources.txt ; then
+
+                    # If PDF open with Previewer
+
+                    if [[ "${source##*.}" == "pdf" ]]; then
+
+                        if [[ $idx == $number ]]; then
+
+                            open -a Preview ~/notes/edu/dir/$file/source/$source
+
+                            completed=1
+                        fi
+
+                        idx=$((idx + 1))
+                    fi
+
+                    # If html open 
+                    if [[ "${source##*.}" == "html" ]]; then
+
+                        if [[ $idx == $number ]]; then
+
+                            open ~/notes/edu/dir/$file/source/$source
+
+                            completed=1
+                        fi
+
+                        idx=$((idx + 1))
+                    fi
+                fi
+
+            done
+        done
+
+        if [[ completed == 0 ]]; then 
+            echo "This index is not in the list, try again:"
+        fi 
+    done
+fi
+
+if [[ $number == "a" ]]; then
+
+    echo " "
+    echo "=========================== Unarchived Sources =================================="
+    echo " "
+
+        index=1
+
+        for file in $dir; do
+            sourceFile=$(find ~/notes/edu/dir/$file/source -maxdepth 1 -type f -execdir echo '{}' ';')
+
+            for source in $sourceFile; do
+
+                # If a file is a pdf or html show in list
+                if [[ "${source##*.}" == "pdf" || "${source##*.}" == "html" ]]; then
+                    # If not in completefile then show
+                    if ! grep -Fxq "${source}" ~/notes/edu/archivedSources.txt ; then
+                        echo "      $index: $source"
+                        index=$((index + 1))
+                    fi
+                fi
+
+
+            done
+        done
+
+    echo " "
+    echo "============================================================================"
+    echo " "
+    echo "Enter Number Associated with Study you would like to Archive: "
+
+    completed=0
+
+    while [[ $completed == 0 ]]; do 
+
+        read number
+
+        idx=1
+
+        for file in $dir; do
+            
+            sourceFile=$(find ~/notes/edu/dir/$file/source -maxdepth 1 -type f -execdir echo '{}' ';')
+
+            for source in $sourceFile; do
+
+                # If PDF open with Previewer
+
+                if ! grep -Fxq "${source}" ~/notes/edu/archivedSources.txt ; then
+
+                    if [[ "${source##*.}" == "pdf" || "${source##*.}" == "html" ]]; then
+
+                        if [[ $idx == $number ]]; then
+
+                            echo "${source}" >> ~/notes/edu/archivedSources.txt;
+
+                            completed=1
+                        fi
+
+                        idx=$((idx + 1))
+                    fi
+                fi
+
+            done
+        done
+
+        if [[ completed == 0 ]]; then 
+            echo "This index is not in the list, try again:"
+        fi 
+    done
+fi
+
+
+if [[ $number == "s" ]]; then
+
+    echo " "
+    echo "=========================== Archived Sources =================================="
+    echo " "
+
+    file=~/notes/edu/archivedSources.txt
+    while read -r line; do
+        echo -e "       \xE2\x9C\x94 $line\n"
+    done < $file
+
+    echo " "
+    echo "============================================================================"
+    echo " "
+fi
+

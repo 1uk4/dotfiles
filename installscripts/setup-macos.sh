@@ -107,7 +107,7 @@ if [[ "$(uname)" == "Darwin" ]]; then
     defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
 
     echo " - Set a blazingly fast keyboard repeat rate"
-    defaults write NSGlobalDomain KeyRepeat -float 0.9 
+    defaults write NSGlobalDomain KeyRepeat -float 20 
 
     echo " - Set a shorter Delay until key repeat"
     defaults write NSGlobalDomain InitialKeyRepeat -int 15
