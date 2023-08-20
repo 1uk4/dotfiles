@@ -175,7 +175,7 @@ if [[ $number == "r" ]]; then
                         if [[ $idx == $number ]]; then
 
                             if [[ "$OSTYPE" == "linux-gnu"* ]]; then 
-                                zathura ~/notes/edu/dir/$file/source/$source
+                                zathura ~/notes/edu/dir/$file/source/$source | xargs swaymsg exec --
                             elif [[ "$OSTYPE" == "darwin"* ]]; then 
                                 open -a Preview ~/notes/edu/dir/$file/source/$source
                             else
@@ -196,7 +196,7 @@ if [[ $number == "r" ]]; then
                             if [[ "$OSTYPE" == "linux-gnu"* ]]; then 
                                 qutebrowser ~/notes/edu/dir/$file/source/$source | xargs swaymsg exec --
                             elif [[ "$OSTYPE" == "darwin"* ]]; then 
-                                open ~/notes/edu/dir/$file/source/$source
+                                open ~/notes/edu/dir/$file/source/$source 
                             else
                                 echo "Error Identifying OS"
                             fi
