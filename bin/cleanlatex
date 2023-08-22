@@ -37,4 +37,3 @@ find ~/notes -name "*.toc"  | while read line; do
 done
 
 
-
