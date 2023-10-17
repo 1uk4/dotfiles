@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+MAC="00:12:A1:70:48:B6"
+
+echo "connect ${MAC}" | bluetoothctl
+
