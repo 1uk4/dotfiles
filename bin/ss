@@ -1,28 +1,76 @@
 #!/usr/bin/env bash
 # Study Session manager
 # Usage: sd
+##########################################################
+#TODO:
+# - Force Subject Number to be within Array
+##########################################################
+
+
+workingDir=""
+
 
 ####### HELPER FUNCTIONS ########
+#
+
+createAssignment(){
+
+        title=$1
+        cd $workingDir 
+        lxf $title
+        cd ./$title
+
+        # CREATE ASSIGNMENT SOURCE FILE 
+
+        mkdir source
+        cd source
+
+            echo "
+        \documentclass{report}
+
+        \input{~/.config/latex_template/preamble.tex}
+        \input{~/.config/latex_template/macros.tex}
+        \input{~/.config/latex_template/letterfonts.tex}
+
+        \title{\Huge{{INSERT CLASS NAME}}}
+        \author{\huge{Luka Flores}}
+        \date{}
+
+        \begin{document}
+
+        \maketitle
+        \newpage% or \cleardoublepage
+        % \pdfbookmark[<level>]{<title>}{<dest>}
+        \pdfbookmark[section]{\contentsname}{toc}
+        \tableofcontents
+        \pagebreak
+
+
+        \end{document}
+        " >> $title-source.tex
+
+        # Create Notes ASSIGNMENT FILE
+        nvim  $workingDir/$title/$title.tex +split +terminal
+}
+
+
 
 showDirectory(){
 
-    index=1
-    dir=$(ls -1 ~/notes/edu/$1)
-    arrDir=($dir)
-    subDir=$(ls -1 ~/notes/edu/$1/${arrDir[DIRINDEX]})
+    workingDir=~/notes/edu/$1
+    arrDir=($(ls -1 $workingDir))
     DIRINDEX=$2
+    echostring=" SUBJECTS: "
 
-    if ! [[ -z ${DIRINDEX} ]]; then
-        for file in $subDir; do
-            echo "      $index: $file"
-            index=$((index + 1))
-        done
-        return 1 
+    if ! [[ -z ${DIRINDEX} ]]; then 
+        workingDir=~/notes/edu/$1/${arrDir[DIRINDEX]} 
+        echostring=" ASSIGNMENTS OF ${arrDir[DIRINDEX]}: "
+        arrDir=($(ls -1 $workingDir))
     fi
-
-    for file in $dir; do
-        echo "      $index: $file"
-        index=$((index + 1))
+    
+    echo "$echostring"
+    for index in ${!arrDir[@]}; do
+        echo "      $index: ${arrDir[$index]}"
     done
 
 }
@@ -33,13 +81,12 @@ showSubject(){
         showDirectory agnDir
     else
         ## If Subject Index is Number 
-        re='^[1-9][0-9]*$'
+        re='^[0-9][0-9]*$'
         while ! [[ $SUBJECTINDEX =~ $re ]]; do
             echo "Error: $SUBJECTINDEX ~~ Please Select a Number" 
             read SUBJECTINDEX 
         done
-        retval=$( showDirectory agnDir 1 )
-        echo "$retval"
+        showDirectory agnDir SUBJECTINDEX 
     fi
 }
 
@@ -53,7 +100,7 @@ newAssignment(){
     echo " " 
     echo "Select Title of Assignment:" 
     read assignmentTitle 
-
+    createAssignment $assignmentTitle 
 
 }
 
@@ -63,7 +110,7 @@ newAssignment(){
 
 echo "============================================================================"
 echo " " 
-echo "      0: Add New Assignment"
+echo "      n: Add New Assignment"
 echo " " 
 echo "============================================================================"
 echo " " 
@@ -80,9 +127,17 @@ while [[ $completed == 0 ]]; do
 
     read number
     
-    if [[ $number == "0" ]]; then
+    if [[ $number == "n" ]]; then
         clear
         newAssignment
+        completed=1
+        break
+    fi
+
+    re='^[0-9][0-9]*$'
+    if [[ $number =~ $re ]]; then
+        clear
+        showSubject "$number"
         completed=1
         break
     fi
