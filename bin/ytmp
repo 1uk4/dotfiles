@@ -1,3 +1,4 @@
+
 #!/bin/sh
 #
 # Downloads the embedded video on any web page straight to the desktop.
@@ -8,4 +9,5 @@
 # Usage: yt "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
 #
 #
-cd ~/Desktop && yt-dlp -S "ext" "$1"
+cd ~/Documents/Music && yt-dlp --extract-audio --audio-format mp3 --audio-quality 0 "$1"
+

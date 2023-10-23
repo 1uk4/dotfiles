@@ -55,6 +55,7 @@ brew "python" # python (latest)
 brew "zsh" # zsh (latest)
 brew "z" # switch between most used directories	
 brew "fswatch" #For Inkscape Watcher
+brew "ffmpeg"
 
 
 

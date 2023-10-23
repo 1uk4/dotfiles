@@ -1,0 +1,94 @@
+#!/usr/bin/env bash
+# Study Session manager
+# Usage: sd
+
+####### HELPER FUNCTIONS ########
+
+showDirectory(){
+
+    index=1
+    dir=$(ls -1 ~/notes/edu/$1)
+    arrDir=($dir)
+    subDir=$(ls -1 ~/notes/edu/$1/${arrDir[DIRINDEX]})
+    DIRINDEX=$2
+
+    if ! [[ -z ${DIRINDEX} ]]; then
+        for file in $subDir; do
+            echo "      $index: $file"
+            index=$((index + 1))
+        done
+        return 1 
+    fi
+
+    for file in $dir; do
+        echo "      $index: $file"
+        index=$((index + 1))
+    done
+
+}
+
+showSubject(){
+    SUBJECTINDEX=$1
+    if [[ -z ${SUBJECTINDEX} ]]; then
+        showDirectory agnDir
+    else
+        ## If Subject Index is Number 
+        re='^[1-9][0-9]*$'
+        while ! [[ $SUBJECTINDEX =~ $re ]]; do
+            echo "Error: $SUBJECTINDEX ~~ Please Select a Number" 
+            read SUBJECTINDEX 
+        done
+        retval=$( showDirectory agnDir 1 )
+        echo "$retval"
+    fi
+}
+
+newAssignment(){
+    echo "Add New Assignment"
+    showSubject
+    echo " " 
+    echo "Select a Subject Index:" 
+    read subjectIndex 
+    showSubject "$subjectIndex"
+    echo " " 
+    echo "Select Title of Assignment:" 
+    read assignmentTitle 
+
+
+}
+
+######## START OF SCRIPT ######## 
+
+
+
+echo "============================================================================"
+echo " " 
+echo "      0: Add New Assignment"
+echo " " 
+echo "============================================================================"
+echo " " 
+
+showSubject
+
+echo " "
+echo "============================================================================"
+echo " "
+echo "Enter Character Associated with Command: "
+
+completed=0
+while [[ $completed == 0 ]]; do 
+
+    read number
+    
+    if [[ $number == "0" ]]; then
+        clear
+        newAssignment
+        completed=1
+        break
+    fi
+
+    if [[ completed == 0 ]]; then 
+        echo "This index is not in the list, try again:"
+    fi 
+done
+

@@ -1,0 +1,12 @@
+#!/bin/sh
+
+# Changes MP3 Names to format of SONG NAME - ARTISTS
+
+cd ~/Documents/Music/ ls -lrt
+
+for f in *.mp3; do 
+    songName=$(echo "$f" | sed 's/.*- //;s/\.mp3$//' | sed 's/|.* //' | sed "s/[(][^)]*[)]//g" | sed "s/[[][^)]*[]]//g")
+    artistName=$(echo "$f" | sed "s/[(][^)]*[)]//g" | sed "s/[[][^)]*[]]//g" | sed 's/-.*//')
+
+    mv "$f" "$songName- $artistName.mp3"
+done
