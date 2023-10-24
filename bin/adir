@@ -61,19 +61,22 @@ showDirectory(){
         workingDir=~/notes/edu/$1/${arrDir[DIRINDEX]} 
         echostring=" ASSIGNMENTS OF ${arrDir[DIRINDEX]}: "
         arrDir=($(ls -1 $workingDir))
-        inputfile=$(find $workingDir -maxdepth 1 -mindepth 1)
-        fileinput=$(sed 's/.*\(agnDir\)/\1/g' <<< $inputfile)
-
-        if ! grep -Fxq "${fileinput}" ~/notes/edu/adir-completed.txt ; then
-            assignmentStatus="X"
-            else
-            assignmentStatus="<"
-        fi
-            
     fi
 
     echo "$echostring"
     for index in ${!arrDir[@]}; do
+
+        if ! [[ -z ${DIRINDEX} ]]; then 
+            inputfile="$workingDir/${arrDir[$index]}"
+            fileinput=$(sed 's/.*\(agnDir\)/\1/g' <<< $inputfile)
+
+            if ! grep -Fxq "${fileinput}" ~/notes/edu/adir-completed.txt ; then
+                assignmentStatus="❌"
+                else
+                assignmentStatus="✅"
+            fi
+                
+        fi
         echo  "      $index: ${arrDir[$index]} $assignmentStatus"
     done
 
