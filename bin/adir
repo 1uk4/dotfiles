@@ -45,34 +45,56 @@ openFiles(){
 
 showDirectory(){
 
+    # $1 - Directory e.g "agnDir"
+    # $2- Subject e.g "MATH42"
+    # $3 - Ask for Subject Index e.g 1 = true 0 = false
+
+    ASKSUB=$3
     workingDir=~/notes/edu/$1
     arrDir=($(ls -1 $workingDir))
     DIRINDEX=$2
     echostring=" SUBJECTS: "
+    assignmentStatus=" "
+
 
     if ! [[ -z ${DIRINDEX} ]]; then 
         workingDir=~/notes/edu/$1/${arrDir[DIRINDEX]} 
         echostring=" ASSIGNMENTS OF ${arrDir[DIRINDEX]}: "
         arrDir=($(ls -1 $workingDir))
+        inputfile=$(find $workingDir -maxdepth 1 -mindepth 1)
+        fileinput=$(sed 's/.*\(agnDir\)/\1/g' <<< $inputfile)
+
+        if ! grep -Fxq "${fileinput}" ~/notes/edu/adir-completed.txt ; then
+            assignmentStatus="X"
+            else
+            assignmentStatus="<"
+        fi
+            
     fi
-    
+
     echo "$echostring"
     for index in ${!arrDir[@]}; do
-        echo "      $index: ${arrDir[$index]}"
+        echo  "      $index: ${arrDir[$index]} $assignmentStatus"
     done
 
-    if ! [[ -z ${DIRINDEX} ]]; then 
-        echo " Select a File: ";
-        read assignmentNumber
-        workingFile=$workingDir/${arrDir[assignmentNumber]}
-        openFiles
+    if [[ $ASKSUB == 1 ]]; then
+        if ! [[ -z ${DIRINDEX} ]]; then 
+            echo " Select a File: ";
+            read assignmentNumber
+            workingFile=$workingDir/${arrDir[assignmentNumber]}
+        fi
     fi
 
 
 }
 
 showSubject(){
+
+    # $1 - Directory e.g "agnDir"
+    # $2 - Ask for Subject Index e.g 1 = true 0 = false
     SUBJECTINDEX=$1
+    ASKSUB=$2
+
     if [[ -z ${SUBJECTINDEX} ]]; then
         showDirectory agnDir
     else
@@ -82,7 +104,7 @@ showSubject(){
             echo "Error: $SUBJECTINDEX ~~ Please Select a Number" 
             read SUBJECTINDEX 
         done
-        showDirectory agnDir SUBJECTINDEX 
+        showDirectory agnDir $SUBJECTINDEX $ASKSUB
     fi
 }
 
@@ -92,7 +114,7 @@ newAssignment(){
     echo " " 
     echo "Select a Subject Index:" 
     read subjectIndex 
-    showSubject "$subjectIndex"
+    showSubject "$subjectIndex" 0
     echo " " 
     echo "Select Title of Assignment:" 
     read assignmentTitle 
@@ -100,13 +122,28 @@ newAssignment(){
 
 }
 
-######## START OF SCRIPT ######## 
+completeAssignment(){
+    echo "Complete Assignment"
+    showSubject
+    echo " " 
+    echo "Select a Subject Index:" 
+    read subjectIndex 
+    echo " " 
+    showSubject "$subjectIndex" 1
+    echo "Select an Assignment to Complete" 
+    fileinput=$(sed 's/.*\(agnDir\)/\1/g' <<< $workingFile)
+    echo "${fileinput}" >> ~/notes/edu/adir-completed.txt;
+    echo "Assignment Was Successfully Completed" 
+}
 
+
+######## START OF SCRIPT ######## 
 
 
 echo "============================================================================"
 echo " " 
 echo "      n: Add New Assignment"
+echo "      c: Complete Assignment"
 echo " " 
 echo "============================================================================"
 echo " " 
@@ -129,11 +166,19 @@ while [[ $completed == 0 ]]; do
         completed=1
         break
     fi
+    
+    if [[ $number == "c" ]]; then
+        clear
+        completeAssignment
+        completed=1
+        break
+    fi
 
     re='^[0-9][0-9]*$'
     if [[ $number =~ $re ]]; then
         clear
-        showSubject "$number"
+        showSubject "$number" 1
+        openFiles
         completed=1
         break
     fi
