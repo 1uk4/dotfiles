@@ -8,7 +8,7 @@
 
 
 workingDir=""
-
+workingFile=""
 
 ####### HELPER FUNCTIONS ########
 #
@@ -20,39 +20,27 @@ createAssignment(){
         lxf $title
         cd ./$title
 
-        # CREATE ASSIGNMENT SOURCE FILE 
-
-        mkdir source
-        cd source
-
-            echo "
-        \documentclass{report}
-
-        \input{~/.config/latex_template/preamble.tex}
-        \input{~/.config/latex_template/macros.tex}
-        \input{~/.config/latex_template/letterfonts.tex}
-
-        \title{\Huge{{INSERT CLASS NAME}}}
-        \author{\huge{Luka Flores}}
-        \date{}
-
-        \begin{document}
-
-        \maketitle
-        \newpage% or \cleardoublepage
-        % \pdfbookmark[<level>]{<title>}{<dest>}
-        \pdfbookmark[section]{\contentsname}{toc}
-        \tableofcontents
-        \pagebreak
-
-
-        \end{document}
-        " >> $title-source.tex
-
         # Create Notes ASSIGNMENT FILE
-        nvim  $workingDir/$title/$title.tex +split +terminal
+        nvim  $workingDir/$title/$title.tex
 }
 
+openFiles(){
+    files=($(find $workingFile -maxdepth 1 -type f -name "*.tex" -execdir echo '{}' ';'))
+
+    clear
+
+    for source in $files; do 
+            source=${source##.}
+
+            if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+                 zathura $workingFile${source%.*}.pdf & nvim $workingFile/$source 
+            elif [[ "$OSTYPE" == "darwin"* ]]; then
+                open -a Preview $workingFile${source%.*}.pdf & nvim $workingFile${source##.}
+            else
+                echo "Error Identifying OS"
+            fi
+    done
+}
 
 
 showDirectory(){
@@ -72,6 +60,14 @@ showDirectory(){
     for index in ${!arrDir[@]}; do
         echo "      $index: ${arrDir[$index]}"
     done
+
+    if ! [[ -z ${DIRINDEX} ]]; then 
+        echo " Select a File: ";
+        read assignmentNumber
+        workingFile=$workingDir/${arrDir[assignmentNumber]}
+        openFiles
+    fi
+
 
 }
 
