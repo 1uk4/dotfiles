@@ -35,7 +35,7 @@ openFiles(){
             if [[ "$OSTYPE" == "linux-gnu"* ]]; then
                  zathura $workingFile${source%.*}.pdf & nvim $workingFile/$source 
             elif [[ "$OSTYPE" == "darwin"* ]]; then
-                open -a Preview $workingFile${source%.*}.pdf & nvim $workingFile${source##.}
+                open -a Preview $workingFile${source%.*}.pdf & nvim $workingFile/${source##.}
             else
                 echo "Error Identifying OS"
             fi
