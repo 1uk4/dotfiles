@@ -15,8 +15,6 @@ homeDirectory=~/notes/edu
 databaseTXT="completed-notes.txt"
 
 
-
-
 ####### HELPER FUNCTIONS ########
 #
 
@@ -166,7 +164,15 @@ ProgressBar(){
             echo -n "⬜️"
         fi
     done
-    echo "    (${numCompleted//[[:blank:]]/}/$totalAgn : $percent %)    ==============="
+    ratioValue="${numCompleted//[[:blank:]]/}/$totalAgn : $percent %"
+    digitCount=${#ratioValue}
+
+    echo -n "    ($ratioValue)    "
+
+    for ((i = 0; i < 25 - $digitCount; i++)); do
+        echo -n "="
+    done
+
 }
 
 
@@ -186,6 +192,7 @@ showSubject
 echo " "
 echo "============================================================================"
 ProgressBar
+echo " "
 echo "============================================================================"
 echo " "
 echo "Enter Character Associated with Command: "
@@ -222,5 +229,4 @@ while [[ $completed == 0 ]]; do
         echo "This index is not in the list, try again:"
     fi 
 done
-
 
