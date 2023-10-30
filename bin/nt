@@ -1,4 +1,3 @@
-
 #!/usr/bin/env bash
 # Study Session manager
 # Usage: sd
@@ -14,6 +13,8 @@ workingFile=""
 subDir="dir"
 homeDirectory=~/notes/edu
 databaseTXT="completed-notes.txt"
+
+
 
 
 ####### HELPER FUNCTIONS ########
@@ -39,9 +40,9 @@ openFiles(){
             source=${source##.}
 
             if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-                qutebrowser $workingFile/source/${source%.*}.html & zathura $workingFile/source/${source%.*}.pdf & zathura $workingFile${source%.*}.pdf & nvim $workingFile/$source 
+                 zathura $workingFile${source%.*}.pdf & nvim $workingFile/$source 
             elif [[ "$OSTYPE" == "darwin"* ]]; then
-                open $workingFile/source/${source%.*}.html & open -a Preview $workingFile/source/${source%.*}.pdf & open -a Preview $workingFile/${source%.*}.pdf & nvim $workingFile/$source
+                open -a Preview $workingFile${source%.*}.pdf & nvim $workingFile/${source##.}
             else
                 echo "Error Identifying OS"
             fi
@@ -142,7 +143,30 @@ completeAssignment(){
     echo "Select an Assignment to Complete" 
     fileinput=$(sed "s/.*\($subDir\)/\1/g" <<< $workingFile)
     echo "${fileinput}" >> $homeDirectory/$databaseTXT;
-    echo "Notes Was Successfully Completed" 
+    echo "Assignment Was Successfully Completed" 
+}
+
+ProgressBar(){
+    files=($(find $homeDirectory/$subDir -maxdepth 3 -type f -name "*.tex" -execdir echo '{}' ';'))
+    numCompleted=$(wc -l < $homeDirectory/$databaseTXT)
+    totalAgn=${#files[@]}
+    percent=$(awk "BEGIN { pc=100*${numCompleted}/${totalAgn}; i=int(pc); print (pc-i<0.5)?i:i+1 }")
+    tens=$(($percent/10))
+
+    if [[ $(($percent%10)) > 5 ]]; then
+        ((tens+=1)) 
+    fi
+
+    echo -n "======= Completed:   "
+
+    for ((i = 0; i < 10; i++)); do
+        if [[ (($i < $tens)) ]]; then
+            echo -n "🟩"
+        else
+            echo -n "⬜️"
+        fi
+    done
+    echo "    (${numCompleted//[[:blank:]]/}/$totalAgn : $percent %)    ==============="
 }
 
 
@@ -160,6 +184,8 @@ echo " "
 showSubject
 
 echo " "
+echo "============================================================================"
+ProgressBar
 echo "============================================================================"
 echo " "
 echo "Enter Character Associated with Command: "
@@ -196,3 +222,5 @@ while [[ $completed == 0 ]]; do
         echo "This index is not in the list, try again:"
     fi 
 done
+
+

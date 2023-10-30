@@ -63,5 +63,8 @@ vim.keymap.set("n", "<leader>v", "<cmd>!./output.sh %:t:r<CR>")
 -- Run build and output script
 vim.keymap.set("n", "<leader>b", "<cmd>! ./build.sh %:t:r && ./output.sh %:t:r<CR>")
 
+-- 
+vim.keymap.set("n", "<leader>vpp", "<cmd>e ~/Dotfiles/nvim/config/nvim/lua/lukaflores/packer.lua<CR>");
+
 
 
