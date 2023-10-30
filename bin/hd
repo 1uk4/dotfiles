@@ -142,7 +142,7 @@ completeAssignment(){
     echo "Select an Assignment to Complete" 
     fileinput=$(sed "s/.*\($subDir\)/\1/g" <<< $workingFile)
     echo "${fileinput}" >> $homeDirectory/$databaseTXT;
-    echo "Assignment Was Successfully Completed" 
+    echo "Notes Was Successfully Completed" 
 }
 
 

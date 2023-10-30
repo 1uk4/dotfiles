@@ -141,8 +141,8 @@ completeAssignment(){
     echo " " 
     showSubject "$subjectIndex" 1
     echo "Select an Assignment to Complete" 
-    fileinput=$(sed 's/.*\(agnDir\)/\1/g' <<< $workingFile)
-    echo "${fileinput}" >> ~/notes/edu/adir-completed.txt;
+    fileinput=$(sed "s/.*\($subDir\)/\1/g" <<< $workingFile)
+    echo "${fileinput}" >> $homeDirectory/$databaseTXT;
     echo "Assignment Was Successfully Completed" 
 }
 
