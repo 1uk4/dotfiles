@@ -1,0 +1,202 @@
+#!/usr/bin/env bash
+# Study Session manager
+# Usage: sd
+
+##########################################################
+#TODO:
+# - Force Subject Number to be within Array
+##########################################################
+
+
+workingDir=""
+workingFile=""
+subDir="agnDir"
+homeDirectory=~/notes/edu
+databaseTXT="adir-completed.txt"
+
+
+
+
+####### HELPER FUNCTIONS ########
+#
+
+createAssignment(){
+
+        title=$1
+        cd $workingDir 
+        lxf $title
+        cd ./$title
+
+        # Create Notes ASSIGNMENT FILE
+        nvim  $workingDir/$title/$title.tex
+}
+
+openFiles(){
+    files=($(find $workingFile -maxdepth 1 -type f -name "*.tex" -execdir echo '{}' ';'))
+
+    clear
+
+    for source in $files; do 
+            source=${source##.}
+
+            if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+                 zathura $workingFile${source%.*}.pdf & nvim $workingFile/$source 
+            elif [[ "$OSTYPE" == "darwin"* ]]; then
+                open -a Preview $workingFile${source%.*}.pdf & nvim $workingFile/${source##.}
+            else
+                echo "Error Identifying OS"
+            fi
+    done
+}
+
+
+showDirectory(){
+
+    # $1 - Directory e.g "agnDir"
+    # $2- Subject e.g "MATH42"
+    # $3 - Ask for Subject Index e.g 1 = true 0 = false
+
+    ASKSUB=$3
+    workingDir=$homeDirectory/$1
+    arrDir=($(ls -1 $workingDir))
+    DIRINDEX=$2
+    echostring=" SUBJECTS: "
+    assignmentStatus=" "
+
+
+    if ! [[ -z ${DIRINDEX} ]]; then 
+        workingDir=$homeDirectory/$1/${arrDir[DIRINDEX]} 
+        echostring=" ASSIGNMENTS OF ${arrDir[DIRINDEX]}: "
+        arrDir=($(ls -1 $workingDir))
+    fi
+
+    echo "$echostring"
+    for index in ${!arrDir[@]}; do
+
+        if ! [[ -z ${DIRINDEX} ]]; then 
+            inputfile="$workingDir/${arrDir[$index]}"
+            fileinput=$(sed "s/.*\($subDir\)/\1/g" <<< $inputfile)
+
+            echo "$fileinput"
+
+            if ! grep -Fxq "${fileinput}" $homeDirectory/$databaseTXT ; then
+                assignmentStatus="❌"
+                else
+                assignmentStatus="✅"
+            fi
+                
+        fi
+        echo  "      $index: ${arrDir[$index]} $assignmentStatus"
+    done
+
+    if [[ $ASKSUB == 1 ]]; then
+        if ! [[ -z ${DIRINDEX} ]]; then 
+            echo " Select a File: ";
+            read assignmentNumber
+            workingFile=$workingDir/${arrDir[assignmentNumber]}
+        fi
+    fi
+
+
+}
+
+showSubject(){
+
+    # $1 - Directory e.g "agnDir"
+    # $2 - Ask for Subject Index e.g 1 = true 0 = false
+    SUBJECTINDEX=$1
+    ASKSUB=$2
+
+    if [[ -z ${SUBJECTINDEX} ]]; then
+        showDirectory $subDir
+    else
+        ## If Subject Index is Number 
+        re='^[0-9][0-9]*$'
+        while ! [[ $SUBJECTINDEX =~ $re ]]; do
+            echo "Error: $SUBJECTINDEX ~~ Please Select a Number" 
+            read SUBJECTINDEX 
+        done
+        showDirectory $subDir $SUBJECTINDEX $ASKSUB
+    fi
+}
+
+newAssignment(){
+    echo "Add New Assignment"
+    showSubject
+    echo " " 
+    echo "Select a Subject Index:" 
+    read subjectIndex 
+    showSubject "$subjectIndex" 0
+    echo " " 
+    echo "Select Title of Assignment:" 
+    read assignmentTitle 
+    createAssignment $assignmentTitle 
+
+}
+
+completeAssignment(){
+    echo "Complete Assignment"
+    showSubject
+    echo " " 
+    echo "Select a Subject Index:" 
+    read subjectIndex 
+    echo " " 
+    showSubject "$subjectIndex" 1
+    echo "Select an Assignment to Complete" 
+    fileinput=$(sed 's/.*\(agnDir\)/\1/g' <<< $workingFile)
+    echo "${fileinput}" >> ~/notes/edu/adir-completed.txt;
+    echo "Assignment Was Successfully Completed" 
+}
+
+
+######## START OF SCRIPT ######## 
+
+
+echo "============================================================================"
+echo " " 
+echo "      n: Add New Assignment"
+echo "      c: Complete Assignment"
+echo " " 
+echo "============================================================================"
+echo " " 
+
+showSubject
+
+echo " "
+echo "============================================================================"
+echo " "
+echo "Enter Character Associated with Command: "
+
+completed=0
+while [[ $completed == 0 ]]; do 
+
+    read number
+    
+    if [[ $number == "n" ]]; then
+        clear
+        newAssignment
+        completed=1
+        break
+    fi
+    
+    if [[ $number == "c" ]]; then
+        clear
+        completeAssignment
+        completed=1
+        break
+    fi
+
+    re='^[0-9][0-9]*$'
+    if [[ $number =~ $re ]]; then
+        clear
+        showSubject "$number" 1
+        openFiles
+        completed=1
+        break
+    fi
+
+    if [[ completed == 0 ]]; then 
+        echo "This index is not in the list, try again:"
+    fi 
+done
+
