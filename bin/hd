@@ -1,6 +1,8 @@
+
 #!/usr/bin/env bash
 # Study Session manager
 # Usage: sd
+
 ##########################################################
 #TODO:
 # - Force Subject Number to be within Array
@@ -9,6 +11,10 @@
 
 workingDir=""
 workingFile=""
+subDir="dir"
+homeDirectory=~/notes/edu
+databaseTXT="completed-notes.txt"
+
 
 ####### HELPER FUNCTIONS ########
 #
@@ -33,9 +39,9 @@ openFiles(){
             source=${source##.}
 
             if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-                 zathura $workingFile${source%.*}.pdf & nvim $workingFile/$source 
+                qutebrowser $workingFile/source/${source%.*}.html & zathura $workingFile/source/${source%.*}.pdf & zathura $workingFile${source%.*}.pdf & nvim $workingFile/$source 
             elif [[ "$OSTYPE" == "darwin"* ]]; then
-                open -a Preview $workingFile${source%.*}.pdf & nvim $workingFile/${source##.}
+                open $workingFile/source/${source%.*}.html & open -a Preview $workingFile/source/${source%.*}.pdf & open -a Preview $workingFile/${source%.*}.pdf & nvim $workingFile/$source
             else
                 echo "Error Identifying OS"
             fi
@@ -50,7 +56,7 @@ showDirectory(){
     # $3 - Ask for Subject Index e.g 1 = true 0 = false
 
     ASKSUB=$3
-    workingDir=~/notes/edu/$1
+    workingDir=$homeDirectory/$1
     arrDir=($(ls -1 $workingDir))
     DIRINDEX=$2
     echostring=" SUBJECTS: "
@@ -58,7 +64,7 @@ showDirectory(){
 
 
     if ! [[ -z ${DIRINDEX} ]]; then 
-        workingDir=~/notes/edu/$1/${arrDir[DIRINDEX]} 
+        workingDir=$homeDirectory/$1/${arrDir[DIRINDEX]} 
         echostring=" ASSIGNMENTS OF ${arrDir[DIRINDEX]}: "
         arrDir=($(ls -1 $workingDir))
     fi
@@ -68,9 +74,9 @@ showDirectory(){
 
         if ! [[ -z ${DIRINDEX} ]]; then 
             inputfile="$workingDir/${arrDir[$index]}"
-            fileinput=$(sed 's/.*\(agnDir\)/\1/g' <<< $inputfile)
+            fileinput=$(sed "s/.*\($subDir\)/\1/g" <<< $inputfile)
 
-            if ! grep -Fxq "${fileinput}" ~/notes/edu/adir-completed.txt ; then
+            if ! grep -Fxq "${fileinput}" $homeDirectory/$databaseTXT ; then
                 assignmentStatus="❌"
                 else
                 assignmentStatus="✅"
@@ -99,7 +105,7 @@ showSubject(){
     ASKSUB=$2
 
     if [[ -z ${SUBJECTINDEX} ]]; then
-        showDirectory agnDir
+        showDirectory $subDir
     else
         ## If Subject Index is Number 
         re='^[0-9][0-9]*$'
@@ -107,7 +113,7 @@ showSubject(){
             echo "Error: $SUBJECTINDEX ~~ Please Select a Number" 
             read SUBJECTINDEX 
         done
-        showDirectory agnDir $SUBJECTINDEX $ASKSUB
+        showDirectory $subDir $SUBJECTINDEX $ASKSUB
     fi
 }
 
@@ -134,8 +140,8 @@ completeAssignment(){
     echo " " 
     showSubject "$subjectIndex" 1
     echo "Select an Assignment to Complete" 
-    fileinput=$(sed 's/.*\(agnDir\)/\1/g' <<< $workingFile)
-    echo "${fileinput}" >> ~/notes/edu/adir-completed.txt;
+    fileinput=$(sed "s/.*\($subDir\)/\1/g" <<< $workingFile)
+    echo "${fileinput}" >> $homeDirectory/$databaseTXT;
     echo "Assignment Was Successfully Completed" 
 }
 
@@ -190,4 +196,3 @@ while [[ $completed == 0 ]]; do
         echo "This index is not in the list, try again:"
     fi 
 done
-
