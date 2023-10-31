@@ -84,7 +84,7 @@ showDirectory(){
             fi
                 
         fi
-        echo  "      $index: ${arrDir[$index]} $assignmentStatus"
+        echo  "      $assignmentStatus $index: ${arrDir[$index]} "
     done
 
     if [[ $ASKSUB == 1 ]]; then
