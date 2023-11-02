@@ -10,6 +10,7 @@
 
 workingDir=""
 workingFile=""
+fileType=".tex"
 subDir="agnDir"
 homeDirectory=~/notes/edu
 databaseTXT="completed-assignments.txt"
@@ -28,11 +29,12 @@ createAssignment(){
         cd ./$title
 
         # Create Notes ASSIGNMENT FILE
-        nvim  $workingDir/$title/$title.tex
+        nvim  $workingDir/$title/$title$fileType
+
 }
 
 openFiles(){
-    files=($(find $workingFile -maxdepth 1 -type f -name "*.tex" -execdir echo '{}' ';'))
+    files=($(find $workingFile -maxdepth 1 -type f -name "*$fileType" -execdir echo '{}' ';'))
 
     clear
 
@@ -40,9 +42,9 @@ openFiles(){
             source=${source##.}
 
             if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-                 zathura $workingFile${source%.*}.pdf & nvim $workingFile/$source 
+                 qutebrowser $workingFile/source/${source%.*}.html & zathura $workingFile/source/${source%.*}.pdf & zathura $workingFile/${source%.*}.pdf & nvim $workingFile/$source 
             elif [[ "$OSTYPE" == "darwin"* ]]; then
-                open -a Preview $workingFile${source%.*}.pdf & nvim $workingFile/${source##.}
+                open $workingFile/source/${source%.*}.html & open -a Preview $workingFile/source/${source%.*}.pdf &  open -a Preview $workingFile/${source%.*}.pdf & nvim $workingFile/${source##.}
             else
                 echo "Error Identifying OS"
             fi
@@ -147,7 +149,7 @@ completeAssignment(){
 }
 
 ProgressBar(){
-    files=($(find $homeDirectory/$subDir -maxdepth 3 -type f -name "*.tex" -execdir echo '{}' ';'))
+    files=($(find $homeDirectory/$subDir -maxdepth 3 -type f -name "*$fileType" -execdir echo '{}' ';'))
     numCompleted=$(wc -l < $homeDirectory/$databaseTXT)
     totalAgn=${#files[@]}
     percent=$(awk "BEGIN { pc=100*${numCompleted}/${totalAgn}; i=int(pc); print (pc-i<0.5)?i:i+1 }")
@@ -174,7 +176,6 @@ ProgressBar(){
     for ((i = 0; i < 25 - $digitCount; i++)); do
         echo -n "="
     done
-
 }
 
 
