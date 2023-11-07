@@ -14,6 +14,7 @@ fileType=".tex"
 subDir="agnDir"
 homeDirectory=~/notes/edu
 databaseTXT="completed-assignments.txt"
+IPdatabaseTXT="inprogress-assignments.txt"
 
 
 
@@ -80,7 +81,13 @@ showDirectory(){
             fileinput=$(sed "s/.*\($subDir\)/\1/g" <<< $inputfile)
 
             if ! grep -Fxq "${fileinput}" $homeDirectory/$databaseTXT ; then
-                assignmentStatus="❌"
+
+                if ! grep -Fxq "${fileinput}" $homeDirectory/$IPdatabaseTXT ; then
+                    assignmentStatus="❌"
+                else
+                    assignmentStatus="🔶"
+                fi
+
                 else
                 assignmentStatus="✅"
             fi
@@ -148,6 +155,20 @@ completeAssignment(){
     echo "Assignment Was Successfully Completed" 
 }
 
+inProgressAssignment(){
+    echo "Place Assignment in Progress"
+    showSubject
+    echo " " 
+    echo "Select a Subject Index:" 
+    read subjectIndex 
+    echo " " 
+    showSubject "$subjectIndex" 1
+    echo "Select an Assignment to Complete" 
+    fileinput=$(sed "s/.*\($subDir\)/\1/g" <<< $workingFile)
+    echo "${fileinput}" >> $homeDirectory/$IPdatabaseTXT;
+    echo "Assignment Was Successfully place in progress" 
+}
+
 ProgressBar(){
     files=($(find $homeDirectory/$subDir -maxdepth 3 -type f -name "*$fileType" -execdir echo '{}' ';'))
     numCompleted=$(wc -l < $homeDirectory/$databaseTXT)
@@ -178,6 +199,38 @@ ProgressBar(){
     done
 }
 
+InProgressBar(){
+    files=($(find $homeDirectory/$subDir -maxdepth 3 -type f -name "*$fileType" -execdir echo '{}' ';'))
+    numCompleted=$(wc -l < $homeDirectory/$databaseTXT)
+    numInProgress=$(wc -l < $homeDirectory/$IPdatabaseTXT)
+    totalAgn=${#files[@]}
+    numUncompleted=$((totalAgn - numCompleted))
+    percent=$(awk "BEGIN { pc=100*${numInProgress}/${numUncompleted}; i=int(pc); print (pc-i<0.5)?i:i+1 }")
+    tens=$(($percent/10))
+
+    if [[ $(($percent%10)) > 5 ]]; then
+        ((tens+=1)) 
+    fi
+
+    echo -n "===== In Progress:   "
+
+    for ((i = 0; i < 10; i++)); do
+        if [[ (($i < $tens)) ]]; then
+            echo -n "🟨"
+        else
+            echo -n "⬜️"
+        fi
+    done
+    ratioValue="${numInProgress//[[:blank:]]/}/$numUncompleted : $percent %"
+    digitCount=${#ratioValue}
+
+    echo -n "    ($ratioValue)    "
+
+    for ((i = 0; i < 25 - $digitCount; i++)); do
+        echo -n "="
+    done
+}
+
 
 ######## START OF SCRIPT ######## 
 
@@ -186,6 +239,7 @@ echo "==========================================================================
 echo " " 
 echo "      n: Add New Assignment"
 echo "      c: Complete Assignment"
+echo "      i: Place Assignment in Progress "
 echo " " 
 echo "============================================================================"
 echo " " 
@@ -193,6 +247,9 @@ echo " "
 showSubject
 
 echo " "
+echo "============================================================================"
+InProgressBar
+echo " " 
 echo "============================================================================"
 ProgressBar
 echo " "
@@ -215,6 +272,13 @@ while [[ $completed == 0 ]]; do
     if [[ $number == "c" ]]; then
         clear
         completeAssignment
+        completed=1
+        break
+    fi
+
+    if [[ $number == "i" ]]; then
+        clear
+        inProgressAssignment
         completed=1
         break
     fi
