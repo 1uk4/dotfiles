@@ -4,12 +4,12 @@
 
 workingDir=""
 workingFile=""
+globalIndex=""
 fileType=".tex"
 subDir="agnDir"
 homeDirectory=~/notes/edu
 databaseTXT="completed-assignments.txt"
 IPdatabaseTXT="inprogress-assignments.txt"
-## If Subject Index is Number 
 re='^[0-9][0-9]*$'
 
 
@@ -70,6 +70,7 @@ showDirectory(){
     fi
 
     echo "$echostring"
+
     for index in ${!arrDir[@]}; do
         if ! [[ -z ${DIRINDEX} ]]; then 
             inputfile="$workingDir/${arrDir[$index]}"
@@ -95,14 +96,15 @@ showDirectory(){
             echo " Select a File: ";
             read assignmentNumber
 
+            ## TODO: Make this one while loop
             while ! [[ $assignmentNumber =~ $re ]]; do
-                echo "Error: Please Re-Enter a Number" 
+                echo "Error: Please Re-Enter a Input" 
                 echo "$assignmentNumber"
                 read assignmentNumber 
             done
 
             while ! [[ $assignmentNumber < $((index + 1)) ]]; do
-                echo "Error: Please Re-Enter a Number" 
+                echo "Error: Please Re-Enter a Input" 
                 echo "$assignmentNumber"
                 read assignmentNumber 
             done
@@ -110,7 +112,8 @@ showDirectory(){
             workingFile=$workingDir/${arrDir[assignmentNumber]}
         fi
     fi
-
+    
+    globalIndex=$index
 
 }
 
@@ -139,7 +142,7 @@ newAssignment(){
     echo "Select Title of Assignment:" 
     read assignmentTitle 
     createAssignment $assignmentTitle 
-
+    completed=1
 }
 
 completeAssignment(){
@@ -286,14 +289,16 @@ while [[ $completed == 0 ]]; do
 
     if [[ $number =~ $re ]]; then
         clear
-        showSubject "$number" 1
-        openFiles
-        completed=1
-        break
+        if [[ $number < $((globalIndex + 1)) ]]; then
+            showSubject "$number" 1
+            openFiles
+            completed=1
+            break
+        fi
     fi
     
     if [[ $completed == 0 ]]; then 
-        echo "Error: Try again:"
+        echo "Error: Please Re-Enter a Input" 
     fi 
 done
 
