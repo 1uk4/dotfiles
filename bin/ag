@@ -1,12 +1,6 @@
 #!/usr/bin/env bash
 # Study Session manager
-# Usage: sd
-
-##########################################################
-#TODO:
-# - Force Subject Number to be within Array
-##########################################################
-
+# Usage: ag
 
 workingDir=""
 workingFile=""
@@ -15,6 +9,8 @@ subDir="agnDir"
 homeDirectory=~/notes/edu
 databaseTXT="completed-assignments.txt"
 IPdatabaseTXT="inprogress-assignments.txt"
+## If Subject Index is Number 
+re='^[0-9][0-9]*$'
 
 
 
@@ -43,7 +39,7 @@ openFiles(){
             source=${source##.}
 
             if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-                 qutebrowser $workingFile/source/${source%.*}.html & zathura $workingFile/source/${source%.*}.pdf & zathura $workingFile/${source%.*}.pdf & nvim $workingFile/$source 
+                qutebrowser $workingFile/source/${source%.*}.html & zathura $workingFile/source/${source%.*}.pdf & zathura $workingFile/${source%.*}.pdf & nvim $workingFile/$source 
             elif [[ "$OSTYPE" == "darwin"* ]]; then
                 open $workingFile/source/${source%.*}.html & open -a Preview $workingFile/source/${source%.*}.pdf &  open -a Preview $workingFile/${source%.*}.pdf & nvim $workingFile/${source##.}
             else
@@ -75,7 +71,6 @@ showDirectory(){
 
     echo "$echostring"
     for index in ${!arrDir[@]}; do
-
         if ! [[ -z ${DIRINDEX} ]]; then 
             inputfile="$workingDir/${arrDir[$index]}"
             fileinput=$(sed "s/.*\($subDir\)/\1/g" <<< $inputfile)
@@ -87,19 +82,31 @@ showDirectory(){
                 else
                     assignmentStatus="🔶"
                 fi
-
                 else
                 assignmentStatus="✅"
             fi
-                
         fi
         echo  "      $assignmentStatus $index: ${arrDir[$index]} "
     done
+
 
     if [[ $ASKSUB == 1 ]]; then
         if ! [[ -z ${DIRINDEX} ]]; then 
             echo " Select a File: ";
             read assignmentNumber
+
+            while ! [[ $assignmentNumber =~ $re ]]; do
+                echo "Error: Please Re-Enter a Number" 
+                echo "$assignmentNumber"
+                read assignmentNumber 
+            done
+
+            while ! [[ $assignmentNumber < $((index + 1)) ]]; do
+                echo "Error: Please Re-Enter a Number" 
+                echo "$assignmentNumber"
+                read assignmentNumber 
+            done
+
             workingFile=$workingDir/${arrDir[assignmentNumber]}
         fi
     fi
@@ -117,12 +124,6 @@ showSubject(){
     if [[ -z ${SUBJECTINDEX} ]]; then
         showDirectory $subDir
     else
-        ## If Subject Index is Number 
-        re='^[0-9][0-9]*$'
-        while ! [[ $SUBJECTINDEX =~ $re ]]; do
-            echo "Error: $SUBJECTINDEX ~~ Please Select a Number" 
-            read SUBJECTINDEX 
-        done
         showDirectory $subDir $SUBJECTINDEX $ASKSUB
     fi
 }
@@ -283,7 +284,6 @@ while [[ $completed == 0 ]]; do
         break
     fi
 
-    re='^[0-9][0-9]*$'
     if [[ $number =~ $re ]]; then
         clear
         showSubject "$number" 1
@@ -291,9 +291,9 @@ while [[ $completed == 0 ]]; do
         completed=1
         break
     fi
-
-    if [[ completed == 0 ]]; then 
-        echo "This index is not in the list, try again:"
+    
+    if [[ $completed == 0 ]]; then 
+        echo "Error: Try again:"
     fi 
 done
 
