@@ -2,15 +2,18 @@
 # Study Session manager
 # Usage: ag
 
+## DON'T CHANGE
 workingDir=""
 workingFile=""
+re='^[0-9][0-9]*$'
 globalIndex=""
+
+## CAN BE CHANGED BASED ON YOUR OWN SYSTEM
 fileType=".tex"
 subDir="agnDir"
 homeDirectory=~/notes/edu
 databaseTXT="completed-assignments.txt"
 IPdatabaseTXT="inprogress-assignments.txt"
-re='^[0-9][0-9]*$'
 
 
 
