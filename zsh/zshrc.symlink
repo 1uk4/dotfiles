@@ -39,11 +39,24 @@ fi
 autoload -U compinit add-zsh-hook
 compinit
 
+#PATH EXPORTS
+NODE_MODULES=$HOME/.npm                                          
+NPM_PACKAGES=$HOME/.npm-packages/bin                           
+export PATH=$PATH:$HOME/bin:$NODE_MODULES:$NPM_PACKAGES         
+
+#NVM ENABLE                                                 
+export NVM_DIR="$HOME/.nvm"                                   
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" # This loads nvm
+
+
+
 # prepend_path $HOME/npmbin/node_modules/.bin
+# prepend_path $HOME/.npm-global/bin
 prepend_path /usr/local/opt/grep/libexec/gnubin
 prepend_path /usr/local/sbin
 prepend_path $DOTFILES/bin
 prepend_path $HOME/bin
+
 
 # define the code directory
 # This is where my code exists and where I want the `c` autocomplete to work from exclusively
@@ -247,3 +260,4 @@ fi
 unset __conda_setup
 # <<< conda initialize <<<
 
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
