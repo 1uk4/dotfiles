@@ -16,8 +16,6 @@ databaseTXT="completed-assignments.txt"
 IPdatabaseTXT="inprogress-assignments.txt"
 
 
-
-
 ####### HELPER FUNCTIONS ########
 #
 
@@ -44,7 +42,7 @@ openFiles(){
             if [[ "$OSTYPE" == "linux-gnu"* ]]; then
                 qutebrowser $workingFile/source/${source%.*}.html & zathura $workingFile/source/${source%.*}.pdf & zathura $workingFile/${source%.*}.pdf & nvim $workingFile/$source 
             elif [[ "$OSTYPE" == "darwin"* ]]; then
-                open $workingFile/source/${source%.*}.html & open -a Preview $workingFile/source/${source%.*}.pdf &  open -a Preview $workingFile/${source%.*}.pdf & nvim $workingFile/${source##.}
+                open $workingFile/source/${source%.*}.html & open -a Preview $workingFile/source/${source%.*}.pdf &  open -a Preview $workingFile/${source%.*}.pdf & nvim $workingFile/$source
             else
                 echo "Error Identifying OS"
             fi
@@ -101,13 +99,13 @@ showDirectory(){
 
             ## TODO: Make this one while loop
             while ! [[ $assignmentNumber =~ $re ]]; do
-                echo "Error: Please Re-Enter a Input" 
+                echo "Error(Not a Number): Please Re-Enter a Input" 
                 echo "$assignmentNumber"
                 read assignmentNumber 
             done
 
-            while ! [[ $assignmentNumber < $((index + 1)) ]]; do
-                echo "Error: Please Re-Enter a Input" 
+            while ![[ "$assignmentNumber" -le "$index" ]]; do
+                echo "Error(Number not within list): Please Re-Enter a Input" 
                 echo "$assignmentNumber"
                 read assignmentNumber 
             done
