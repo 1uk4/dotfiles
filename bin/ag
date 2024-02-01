@@ -104,7 +104,7 @@ showDirectory(){
                 read assignmentNumber 
             done
 
-            while ![[ "$assignmentNumber" -le "$index" ]]; do
+            while ! [[ "$assignmentNumber" -le "$index" ]]; do
                 echo "Error(Number not within list): Please Re-Enter a Input" 
                 echo "$assignmentNumber"
                 read assignmentNumber 
