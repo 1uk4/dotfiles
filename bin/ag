@@ -157,6 +157,7 @@ completeAssignment(){
     echo "Select an Assignment to Complete" 
     fileinput=$(sed "s/.*\($subDir\)/\1/g" <<< $workingFile)
     echo "${fileinput}" >> $homeDirectory/$databaseTXT;
+    sed -i ".bak" -e '/$workingFile/d' $homeDirectory/$IPdatabaseTXT
     echo "Assignment Was Successfully Completed" 
 }
 

@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+cd ~/Code/nomie6-oss/nomie6-oss/ && npm run dev
