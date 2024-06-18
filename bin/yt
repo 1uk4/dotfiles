@@ -8,4 +8,4 @@
 # Usage: yt "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
 #
 #
-cd ~/Desktop && yt-dlp -S "ext" "$1"
+cd ~/Documents/Music/aamusic && yt-dlp -S "ext" "$1" -f bestaudio --audio-format mp3 --audio-quality 0  --embed-thumbnail --add-metadata -x -o "%(title)s.mp3"

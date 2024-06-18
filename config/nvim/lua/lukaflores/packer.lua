@@ -73,6 +73,4 @@ return require('packer').startup(function(use)
    -- Zen Mode
     use("folke/zen-mode.nvim")
 
-
-
 end)
