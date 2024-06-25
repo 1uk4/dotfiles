@@ -1,4 +1,21 @@
 
+
+
+UPDATE PACKER 
+
+I remove the packer_compiled rm -r plugin/packer_compiled.lua
+
+then I when back into my packer.lua or where you are installing your plugin
+
+I source it using :so
+
+after that I ran the command :PackerSync and it work
+
+
+
+
+
+
 Leader = Space
 
 Leader pf --- File Search
