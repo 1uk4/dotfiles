@@ -1,5 +1,20 @@
 #!/usr/bin/env bash
 
+# shell-variables.sh
+# This script defines common variables and functions used by the install scripts.
+#
+# Variables:
+# - DOTFILES: The path to the dotfiles repository
+# - COLOR_*: ANSI color codes for terminal output
+#
+# Functions:
+# - title: Display a section title
+# - error: Display an error message and exit
+# - warning: Display a warning message
+# - info: Display an informational message
+# - success: Display a success message
+# - get_linkables: Find all symlink files in the dotfiles repository
+
 DOTFILES="$(pwd)"
 COLOR_GRAY="\033[1;38;5;243m"
 COLOR_BLUE="\033[1;34m"

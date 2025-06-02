@@ -1,31 +1,54 @@
 #!/usr/bin/env bash
 
-# Include Variables
+# setup-git.sh
+# This script configures git with the user's name, email, and GitHub username.
+# It also sets up the appropriate git credential helper based on the platform.
+#
+# Prerequisites:
+# - git must be installed
+# - ./installscripts/shell-variables.sh must exist and define the "title" function
+
+# Include variables
 source ./installscripts/shell-variables.sh
 
+# Function to configure git credential helper on macOS
+configure_macos_credential_helper() {
+  git config --global credential.helper "osxkeychain"
+}
 
-title "Setting up Git"
+# Function to configure git credential helper on Linux/other platforms
+configure_other_credential_helper() {
+  read -rp "Save user and password to an unencrypted file to avoid writing? [y/N] " save_credentials
 
-defaultName=$(git config user.name)
-defaultEmail=$(git config user.email)
-defaultGithub=$(git config github.user)
+  if [[ $save_credentials =~ ^([Yy])$ ]]; then
+    git config --global credential.helper "store"
+  else
+    git config --global credential.helper "cache --timeout 3600"
+  fi
+}
 
-read -rp "Name [$defaultName] " name
-read -rp "Email [$defaultEmail] " email
-read -rp "Github username [$defaultGithub] " github
+# Main function
+main() {
+  title "Setting up Git"
 
-git config -f ~/.gitconfig-local user.name "${name:-$defaultName}"
-git config -f ~/.gitconfig-local user.email "${email:-$defaultEmail}"
-git config -f ~/.gitconfig-local github.user "${github:-$defaultGithub}"
+  default_name=$(git config user.name)
+  default_email=$(git config user.email)
+  default_github_username=$(git config github.user)
 
-if [[ "$(uname)" == "Darwin" ]]; then
-	git config --global credential.helper "osxkeychain"
-else
-	read -rn 1 -p "Save user and password to an unencrypted file to avoid writing? [y/N] " save
+  read -rp "Enter your name [$default_name]: " name
+  read -rp "Enter your email [$default_email]: " email
+  read -rp "Enter your GitHub username [$default_github_username]: " github_username
 
-	if [[ $save =~ ^([Yy])$ ]]; then
-		git config --global credential.helper "store"
-	else
-		git config --global credential.helper "cache --timeout 3600"
-	fi
-fi
+  git config -f ~/.gitconfig-local user.name "${name:-$default_name}"
+  git config -f ~/.gitconfig-local user.email "${email:-$default_email}"
+  git config -f ~/.gitconfig-local github.user "${github_username:-$default_github_username}"
+
+  if [[ "$(uname)" == "Darwin" ]]; then
+    configure_macos_credential_helper
+  else
+    configure_other_credential_helper
+  fi
+}
+
+# Run the main function
+main

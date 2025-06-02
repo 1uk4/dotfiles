@@ -1,7 +1,16 @@
 #!/usr/bin/env bash
 
+# setup-localenv.sh
+# This script sets up a .localenv file in the user's home directory for storing sensitive information.
+#
+# Prerequisites:
+# - ./installscripts/shell-variables.sh must exist and define the "title", "warning", "info", "success", and "error" functions
+# - $DOTFILES/localenv.template file must exist
+
+# Include variables
 source ./installscripts/shell-variables.sh
 
+# Function to set up the .localenv file
 setup_localenv() {
     title "Setting up local environment variables"
     
@@ -27,5 +36,11 @@ setup_localenv() {
     fi
 }
 
-setup_localenv
+# Main function
+main() {
+    setup_localenv
+}
+
+# Run the main function
+main
 
