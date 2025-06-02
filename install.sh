@@ -33,6 +33,10 @@ setup_hosts(){
 	bash ${DOTFILES}/installscripts/setup-hosts.sh
 }
 
+setup_localenv(){
+	bash ${DOTFILES}/installscripts/setup-localenv.sh
+}
+
 
 case "$1" in
     macos)
@@ -56,6 +60,9 @@ case "$1" in
     hosts)
 	setup_hosts
 	;;
+    localenv)
+	setup_localenv
+	;;
     all)
 	setup_macos
 	setup_homebrew
@@ -64,9 +71,10 @@ case "$1" in
 	setup_shell
 	setup_hosts
 	setup_git
+	setup_localenv
         ;;
     *)
-        echo -e $"\nUsage: $(basename "$0") {link|brew|shell|terminfo|macos|hosts|git|all}\n"
+        echo -e $"\nUsage: $(basename "$0") {link|brew|shell|terminfo|macos|hosts|git|localenv|all}\n"
         exit 1
         ;;
 esac

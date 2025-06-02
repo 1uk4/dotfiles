@@ -1,0 +1,12 @@
+# Local environment variables
+# Copy this file to ~/.localenv and add your sensitive environment variables
+# This file should NOT be tracked in your dotfiles repository
+
+# Avante.nvim API key
+export AVANTE_API_KEY="your-api-key-here"
+
+# Add other sensitive environment variables below
+# export GITHUB_TOKEN="your-github-token"
+# export AWS_ACCESS_KEY_ID="your-aws-access-key"
+# export AWS_SECRET_ACCESS_KEY="your-aws-secret-key"
+

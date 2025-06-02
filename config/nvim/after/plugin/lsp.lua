@@ -2,9 +2,16 @@ local lsp = require("lsp-zero")
 
 lsp.preset("recommended")
 
-lsp.ensure_installed({
-  'lua_ls',
-  'rust_analyzer',
+-- Use mason.nvim to install LSP servers instead of lsp.ensure_installed
+require('mason').setup({})
+require('mason-lspconfig').setup({
+  ensure_installed = {
+    'lua_ls',
+    'rust_analyzer',
+  },
+  handlers = {
+    lsp.default_setup,
+  }
 })
 
 lsp.configure('lua_ls', {

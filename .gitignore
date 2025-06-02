@@ -8,3 +8,7 @@ config/nvim/plugin/*
 
 .DS_Store
 Brewfile.lock.json
+
+# Local environment files
+.localenv
+*.local

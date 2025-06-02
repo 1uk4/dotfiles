@@ -67,6 +67,15 @@ The easiest way to install the XCode Command Line Tools in OSX 10.9+ is to open 
    ```sh
    ./install.sh all
    ```
+
+4. Set up your local environment variables
+   ```sh
+   # Copy the template file to your home directory
+   cp localenv.template ~/.localenv
+   
+   # Edit the file with your API keys and other sensitive information
+   vim ~/.localenv
+   ```
    
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>

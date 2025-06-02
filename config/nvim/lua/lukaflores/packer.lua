@@ -47,6 +47,7 @@ return require('packer').startup(function(use)
     -- LSP
     use {
         'VonHeikemen/lsp-zero.nvim',
+        branch = 'v2.x', -- Specify version 2.x
         requires = {
             -- LSP Support
             { 'neovim/nvim-lspconfig' },
@@ -72,5 +73,22 @@ return require('packer').startup(function(use)
 
    -- Zen Mode
     use("folke/zen-mode.nvim")
+
+    -- Avante
+    use {
+        'yetone/avante.nvim',
+        branch = 'main',
+        run = 'make',
+        requires = {
+            { 'nvim-treesitter/nvim-treesitter' },
+            { 'stevearc/dressing.nvim' },
+            { 'MunifTanjim/nui.nvim' },
+            { 'MeanderingProgrammer/render-markdown.nvim' },
+            { 'hrsh7th/nvim-cmp' },
+            { 'nvim-tree/nvim-web-devicons' },
+            { 'HakonHarnes/img-clip.nvim' },
+        }
+    }
+
 
 end)

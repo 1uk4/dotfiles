@@ -261,3 +261,10 @@ unset __conda_setup
 # <<< conda initialize <<<
 
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# Load local environment variables from ~/.localenv if it exists
+# This file should contain sensitive environment variables like API keys
+# and should NOT be tracked in your dotfiles repository
+if [[ -f ~/.localenv ]]; then
+    source ~/.localenv
+fi
