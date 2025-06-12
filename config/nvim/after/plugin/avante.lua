@@ -7,7 +7,7 @@ local openai_key = vim.env and vim.env.OPENAI_API_KEY and vim.env.OPENAI_API_KEY
 
 
 -- Determine which provider to use based on available keys
-local provider = "claude"
+local provider = "openai"
 local provider_config = {}
 
 if anthropic_key then
@@ -16,9 +16,6 @@ if anthropic_key then
         claude = {
             endpoint = "https://api.anthropic.com",
             model = "claude-3-7-sonnet-latest",
-            timeout = 30000,
-            temperature = 0,
-            max_tokens = 4096,
         }
     }
 elseif openai_key then
@@ -26,10 +23,7 @@ elseif openai_key then
     provider_config = {
         openai = {
             endpoint = "https://api.openai.com/v1",
-            model = "gpt-4o",
-            timeout = 30000,
-            temperature = 0,
-            max_tokens = 4096,
+            model = "gpt-4o-mini-2024-07-18",
         }
     }
 else
@@ -121,9 +115,9 @@ if status then
             claude = {
                 endpoint = "https://api.anthropic.com",
                 model = "claude-3-7-sonnet-latest",
-                timeout = 30000,
-                temperature = 0,
-                max_tokens = 4096,
+                timeout = 60000,  -- Increase timeout to avoid rate limiting
+                temperature = 0.7, -- Adjust temperature for more varied responses
+                max_tokens = 2048, -- Adjust max tokens to fit within rate limits
             }
         })
         vim.notify("Switched to Anthropic Claude", vim.log.levels.INFO)
@@ -137,7 +131,7 @@ if status then
             provider = "openai",
             openai = {
                 endpoint = "https://api.openai.com/v1",
-                model = "gpt-4o",
+                            model = "gpt-40-mini",
                 timeout = 30000,
                 temperature = 0,
                 max_tokens = 4096,
