@@ -23,7 +23,7 @@ elseif openai_key then
     provider_config = {
         openai = {
             endpoint = "https://api.openai.com/v1",
-            model = "gpt-4o-mini-2024-07-18",
+            model = "o3-mini",
         }
     }
 else
@@ -115,9 +115,6 @@ if status then
             claude = {
                 endpoint = "https://api.anthropic.com",
                 model = "claude-3-7-sonnet-latest",
-                timeout = 60000,  -- Increase timeout to avoid rate limiting
-                temperature = 0.7, -- Adjust temperature for more varied responses
-                max_tokens = 2048, -- Adjust max tokens to fit within rate limits
             }
         })
         vim.notify("Switched to Anthropic Claude", vim.log.levels.INFO)
@@ -131,10 +128,7 @@ if status then
             provider = "openai",
             openai = {
                 endpoint = "https://api.openai.com/v1",
-                            model = "gpt-40-mini",
-                timeout = 30000,
-                temperature = 0,
-                max_tokens = 4096,
+                model = "o3-mini",
             }
         })
         vim.notify("Switched to OpenAI GPT", vim.log.levels.INFO)
