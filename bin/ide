@@ -1,0 +1,81 @@
+#!/usr/bin/env bash
+
+# IDE Script - Opens nvim with opencode in tmux split
+# Usage: ide [file] [--vertical] [--size=30]
+
+set -e
+
+# Default options
+SPLIT_DIRECTION="-h"  # horizontal (side by side)
+SPLIT_SIZE=""
+VIM_TARGET="."
+OPENCODE_PANE=""
+
+# Parse arguments
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        --vertical|-v)
+            SPLIT_DIRECTION="-v"
+            shift
+            ;;
+        --size=*)
+            SPLIT_SIZE="-p ${1#*=}"
+            shift
+            ;;
+        --help|-h)
+            echo "Usage: ide [file] [--vertical] [--size=30]"
+            echo "  file        File to open in nvim (default: current directory)"
+            echo "  --vertical  Split vertically instead of horizontally"
+            echo "  --size=N    Set split size percentage (default: 50%)"
+            exit 0
+            ;;
+        *)
+            VIM_TARGET="$1"
+            shift
+            ;;
+    esac
+done
+
+# Check if we're in a tmux session
+if [ -z "$TMUX" ]; then
+    echo "Error: This script requires tmux. Please run from within a tmux session."
+    exit 1
+fi
+
+# Check if opencode is available
+if ! command -v opencode &> /dev/null; then
+    echo "Error: opencode command not found. Please install opencode first."
+    exit 1
+fi
+
+# Get the current directory
+CURRENT_DIR=$(pwd)
+
+# Check if opencode is already running in another pane
+if tmux list-panes -F '#{pane_current_command}' | grep -q "opencode"; then
+    echo "OpenCode already running in this session. Focusing on nvim..."
+    # Find the pane without opencode and focus it
+    NVIM_PANE=$(tmux list-panes -F '#{pane_index}:#{pane_current_command}' | grep -v opencode | head -1 | cut -d: -f1)
+    if [ -n "$NVIM_PANE" ]; then
+        tmux select-pane -t "$NVIM_PANE"
+        tmux send-keys "nvim $VIM_TARGET" Enter
+    fi
+    exit 0
+fi
+
+# Split the current pane
+tmux split-window $SPLIT_DIRECTION $SPLIT_SIZE -c "$CURRENT_DIR"
+
+# Start opencode in the new pane
+OPENCODE_PANE=$(tmux display-message -p '#{pane_index}')
+tmux send-keys -t "$OPENCODE_PANE" "opencode" Enter
+
+# Focus back to the original pane and start nvim
+tmux select-pane -t 0
+tmux send-keys "nvim $VIM_TARGET" Enter
+
+# Set pane titles for clarity
+tmux select-pane -t 0 -T "nvim"
+tmux select-pane -t "$OPENCODE_PANE" -T "opencode"
+
+echo "IDE setup complete: nvim in main pane, opencode in split pane"

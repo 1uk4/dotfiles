@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+
+# OpenCode Session Manager Quick Reference
+# Usage: oc-help
+
+cat << 'EOF'
+╭─────────────────────────────────────────────────────────────────╮
+│                    OpenCode Session Manager                     │
+│                         Quick Reference                         │
+╰─────────────────────────────────────────────────────────────────╯
+
+🚀 QUICK START
+  oc start                    # Start session (auto-named)
+  oc list                     # List all sessions
+  oc status                   # Check current status
+
+📋 SESSION MANAGEMENT
+  oc start myproject ~/code   # Start named session in directory
+  oc switch e97702d0          # Switch to session (partial ID)
+  oc new "bug-fix" "Fix auth" # Create new with context
+  oc stop                     # Stop current session
+
+💾 CONTEXT MANAGEMENT  
+  oc save current-work        # Save session context
+  oc load current-work        # Load session context
+  oc cleanup 14               # Clean up old contexts
+
+📊 ANALYTICS
+  oc stats                    # Usage statistics
+  oc list                     # Recent sessions with message counts
+
+⌨️  NEOVIM KEYBINDINGS
+  <leader>ol                  # List sessions
+  <leader>oS                  # Save context
+  <leader>ox                  # Stop session
+  <leader>oN                  # New session (prompt)
+  <leader>oT                  # Show stats
+
+🔧 INTEGRATION
+  • Works with existing 'ide' script
+  • Auto-detects tmux sessions
+  • Generates smart session names
+  • Saves project context automatically
+
+📁 FILES
+  ~/.opencode/sessions/       # Saved contexts
+  ~/.opencode/opencode.db     # Session database
+
+Run 'oc help' for detailed documentation.
+EOF

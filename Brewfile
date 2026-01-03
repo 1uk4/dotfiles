@@ -34,6 +34,7 @@ brew "ripgrep"
 brew "tmuxinator"
 brew "yt-dlp" # Youtube MP4 Downloader
 brew "bat" # better cat
+brew "bun" # Fast JavaScript runtime
 brew "cloc" # lines of code counter
 brew "lazygit" # Terminal UI for git
 brew "git-delta" # a better git diff

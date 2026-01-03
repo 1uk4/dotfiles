@@ -106,8 +106,16 @@ fi
 bindkey "^A" vi-beginning-of-line
 bindkey -M viins "^F" vi-forward-word               # [Ctrl-f] - move to next word
 bindkey -M viins "^E" vi-add-eol                    # [Ctrl-e] - move to end of line
-bindkey "^J" history-beginning-search-forward
-bindkey "^K" history-beginning-search-backward
+
+# Terminal navigation with Ctrl+hjkl (vim-style)
+bindkey "^H" backward-char                          # [Ctrl-h] - move cursor left
+bindkey "^J" down-line-or-history                   # [Ctrl-j] - move cursor down
+bindkey "^K" up-line-or-history                     # [Ctrl-k] - move cursor up
+bindkey "^L" forward-char                           # [Ctrl-l] - move cursor right 
+
+# Original history search bindings (commented out)
+# bindkey "^J" history-beginning-search-forward
+# bindkey "^K" history-beginning-search-backward
 
 # matches case insensitive for lowercase
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
@@ -268,3 +276,10 @@ unset __conda_setup
 if [[ -f ~/.localenv ]]; then
     source ~/.localenv
 fi
+
+# bun completions
+[ -s "/Users/lukaflores/.bun/_bun" ] && source "/Users/lukaflores/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"

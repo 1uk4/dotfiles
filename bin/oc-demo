@@ -1,0 +1,58 @@
+#!/usr/bin/env bash
+
+# OpenCode Session Manager Demo
+# Creates some sample sessions for testing the oc script
+
+set -e
+
+OPENCODE_DB="$HOME/.opencode/opencode.db"
+
+# Colors
+GREEN='\033[0;32m'
+BLUE='\033[0;34m'
+NC='\033[0m'
+
+log_info() { echo -e "${BLUE}ℹ${NC} $1"; }
+log_success() { echo -e "${GREEN}✓${NC} $1"; }
+
+# Check if database exists
+if [ ! -f "$OPENCODE_DB" ]; then
+    echo "OpenCode database not found. Please run opencode first to initialize it."
+    exit 1
+fi
+
+# Function to create a sample session
+create_sample_session() {
+    local title="$1"
+    local message_count="$2"
+    local days_ago="$3"
+    
+    # Generate a random session ID (similar to OpenCode's format)
+    local session_id=$(openssl rand -hex 16 2>/dev/null || echo "$(date +%s)$(shuf -i 1000-9999 -n 1)")
+    
+    # Calculate timestamp (current time minus days_ago)
+    local timestamp=$(($(date +%s) - (days_ago * 24 * 3600)))
+    local timestamp_ms=$((timestamp * 1000))
+    
+    # Insert into database
+    sqlite3 "$OPENCODE_DB" "
+        INSERT INTO sessions (id, title, message_count, created_at, updated_at) 
+        VALUES ('$session_id', '$title', $message_count, $timestamp_ms, $timestamp_ms);
+    "
+    
+    log_success "Created session: $title"
+}
+
+log_info "Creating sample OpenCode sessions for testing..."
+
+# Create some sample sessions
+create_sample_session "Fix authentication bug in login system" 8 0
+create_sample_session "Implement user dashboard analytics" 15 1
+create_sample_session "Optimize database queries for performance" 12 2
+create_sample_session "Add TypeScript types for API responses" 6 3
+create_sample_session "Refactor settlement calculation algorithm" 20 5
+create_sample_session "Debug tmux integration issues" 4 7
+create_sample_session "Create automated testing pipeline" 18 10
+create_sample_session "Design new component architecture" 9 14
+
+log_success "Sample sessions created! Try running: oc list"

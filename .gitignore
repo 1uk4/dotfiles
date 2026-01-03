@@ -12,3 +12,4 @@ Brewfile.lock.json
 # Local environment files
 .localenv
 *.local
+.opencode/

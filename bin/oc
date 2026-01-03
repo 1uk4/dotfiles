@@ -1,0 +1,444 @@
+#!/usr/bin/env bash
+
+# OpenCode Session Manager
+# Integrates with tmux workflow and provides session management utilities
+# Usage: oc [command] [options]
+
+set -e
+
+# Configuration
+OPENCODE_DB="$HOME/.opencode/opencode.db"
+SESSIONS_DIR="$HOME/.opencode/sessions"
+DEFAULT_SESSION_PREFIX="dev"
+
+# Colors for output (using printf for better compatibility)
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+PURPLE='\033[0;35m'
+CYAN='\033[0;36m'
+NC='\033[0m' # No Color
+
+# Check if terminal supports colors
+if [ -t 1 ] && command -v tput >/dev/null 2>&1 && tput colors >/dev/null 2>&1; then
+    # Terminal supports colors
+    USE_COLORS=true
+else
+    # Disable colors
+    RED=''
+    GREEN=''
+    YELLOW=''
+    BLUE=''
+    PURPLE=''
+    CYAN=''
+    NC=''
+    USE_COLORS=false
+fi
+
+# Utility functions
+log_info() { printf "${BLUE}ℹ${NC} %s\n" "$1"; }
+log_success() { printf "${GREEN}✓${NC} %s\n" "$1"; }
+log_warning() { printf "${YELLOW}⚠${NC} %s\n" "$1"; }
+log_error() { printf "${RED}✗${NC} %s\n" "$1"; }
+
+# Check dependencies
+check_dependencies() {
+    local missing=()
+    
+    if ! command -v opencode &> /dev/null; then
+        missing+=("opencode")
+    fi
+    
+    if ! command -v sqlite3 &> /dev/null; then
+        missing+=("sqlite3")
+    fi
+    
+    if [ ${#missing[@]} -ne 0 ]; then
+        log_error "Missing dependencies: ${missing[*]}"
+        exit 1
+    fi
+}
+
+# Create sessions directory if it doesn't exist
+ensure_sessions_dir() {
+    mkdir -p "$SESSIONS_DIR"
+}
+
+# Get current tmux session name
+get_tmux_session() {
+    if [ -n "$TMUX" ]; then
+        tmux display-message -p '#S'
+    else
+        echo ""
+    fi
+}
+
+# Get current working directory basename
+get_project_name() {
+    basename "$(pwd)"
+}
+
+# Generate session name based on context
+generate_session_name() {
+    local prefix="${1:-$DEFAULT_SESSION_PREFIX}"
+    local tmux_session=$(get_tmux_session)
+    local project=$(get_project_name)
+    
+    if [ -n "$tmux_session" ]; then
+        echo "${prefix}-${tmux_session}-${project}"
+    else
+        echo "${prefix}-${project}"
+    fi
+}
+
+# List all OpenCode sessions from database
+list_sessions() {
+    if [ ! -f "$OPENCODE_DB" ]; then
+        log_warning "No OpenCode database found"
+        return 1
+    fi
+    
+    printf "${CYAN}OpenCode Sessions:${NC}\n"
+    echo "===================="
+    
+    # Query the database for sessions
+    sqlite3 "$OPENCODE_DB" "
+        SELECT 
+            substr(id, 1, 8) as short_id,
+            datetime(created_at/1000, 'unixepoch', 'localtime') as created_at,
+            CASE 
+                WHEN length(title) > 50 THEN substr(title, 1, 47) || '...'
+                ELSE title
+            END as title,
+            message_count
+        FROM sessions 
+        ORDER BY created_at DESC 
+        LIMIT 20;
+    " 2>/dev/null | while IFS='|' read -r short_id created_at title message_count; do
+        if [ -n "$short_id" ]; then
+            # Format the date
+            local date_formatted=$(date -j -f "%Y-%m-%d %H:%M:%S" "$created_at" "+%m/%d %H:%M" 2>/dev/null || echo "$created_at")
+            printf "${GREEN}%8s${NC} ${YELLOW}%s${NC} ${PURPLE}(%2s msgs)${NC} %s\n" "$short_id" "$date_formatted" "$message_count" "$title"
+        fi
+    done
+    
+    echo ""
+}
+
+# Get active OpenCode session info
+get_active_session() {
+    if pgrep -f "opencode" > /dev/null; then
+        log_info "OpenCode is currently running"
+        if [ -n "$TMUX" ]; then
+            local opencode_pane=$(TERM=screen-256color tmux list-panes -F '#{pane_index}:#{pane_current_command}' 2>/dev/null | grep opencode | cut -d: -f1 | head -1)
+            if [ -n "$opencode_pane" ]; then
+                log_info "Found in tmux pane: $opencode_pane"
+                local pane_title=$(TERM=screen-256color tmux display-message -p -t "$opencode_pane" '#{pane_title}' 2>/dev/null)
+                if [ -n "$pane_title" ] && [ "$pane_title" != "opencode" ]; then
+                    log_info "Session: $pane_title"
+                fi
+            fi
+        fi
+        return 0
+    else
+        log_warning "No active OpenCode session found"
+        return 1
+    fi
+}
+
+# Start a new OpenCode session
+start_session() {
+    local session_name="${1:-$(generate_session_name)}"
+    local context_dir="${2:-$(pwd)}"
+    
+    log_info "Starting OpenCode session: $session_name"
+    log_info "Context directory: $context_dir"
+    
+    # Check if we're in tmux
+    if [ -n "$TMUX" ]; then
+        # Check if opencode is already running
+        if tmux list-panes -F '#{pane_current_command}' 2>/dev/null | grep -q "opencode"; then
+            log_warning "OpenCode already running in this tmux session"
+            log_info "Use 'oc stop' to stop the current session first, or 'oc status' to see details"
+            return 1
+        fi
+        
+        # Use the existing ide script logic but with session context
+        local current_dir=$(pwd)
+        cd "$context_dir"
+        
+        # Split and start opencode (suppress terminfo warnings)
+        TERM=screen-256color tmux split-window -h -c "$context_dir" 2>/dev/null
+        local opencode_pane=$(TERM=screen-256color tmux display-message -p '#{pane_index}' 2>/dev/null)
+        TERM=screen-256color tmux send-keys -t "$opencode_pane" "cd '$context_dir' && opencode" Enter 2>/dev/null
+        
+        # Focus back to original pane
+        TERM=screen-256color tmux select-pane -t 0 2>/dev/null
+        TERM=screen-256color tmux select-pane -t 0 -T "nvim" 2>/dev/null
+        TERM=screen-256color tmux select-pane -t "$opencode_pane" -T "opencode-$session_name" 2>/dev/null
+        
+        cd "$current_dir"
+        log_success "OpenCode session started in tmux pane $opencode_pane"
+    else
+        # Start in background
+        cd "$context_dir"
+        nohup opencode > /dev/null 2>&1 &
+        log_success "OpenCode session started in background"
+    fi
+}
+
+# Stop OpenCode session
+stop_session() {
+    if [ -n "$TMUX" ]; then
+        local opencode_pane=$(TERM=screen-256color tmux list-panes -F '#{pane_index}:#{pane_current_command}' 2>/dev/null | grep opencode | cut -d: -f1 | head -1)
+        if [ -n "$opencode_pane" ]; then
+            TERM=screen-256color tmux send-keys -t "$opencode_pane" C-c 2>/dev/null
+            sleep 1
+            TERM=screen-256color tmux kill-pane -t "$opencode_pane" 2>/dev/null
+            log_success "Stopped OpenCode session in tmux pane $opencode_pane"
+        else
+            log_warning "No OpenCode pane found in current tmux session"
+        fi
+    else
+        pkill -f "opencode" && log_success "Stopped OpenCode session" || log_warning "No OpenCode process found"
+    fi
+}
+
+# Switch to a specific session by ID
+switch_session() {
+    local session_id="$1"
+    
+    if [ -z "$session_id" ]; then
+        log_error "Session ID required"
+        return 1
+    fi
+    
+    # Check if session exists (using LIKE for partial ID matching)
+    if ! sqlite3 "$OPENCODE_DB" "SELECT id FROM sessions WHERE id LIKE '$session_id%';" 2>/dev/null | grep -q "$session_id"; then
+        log_error "Session $session_id not found"
+        return 1
+    fi
+    
+    # Get full session ID
+    local full_id=$(sqlite3 "$OPENCODE_DB" "SELECT id FROM sessions WHERE id LIKE '$session_id%' LIMIT 1;" 2>/dev/null)
+    
+    # Send command to switch session (this depends on OpenCode's command interface)
+    if [ -n "$TMUX" ]; then
+        local opencode_pane=$(tmux list-panes -F '#{pane_index}:#{pane_current_command}' | grep opencode | cut -d: -f1 | head -1)
+        if [ -n "$opencode_pane" ]; then
+            tmux send-keys -t "$opencode_pane" "/switch $full_id" Enter
+            log_success "Switched to session $session_id"
+        else
+            log_error "No active OpenCode session found"
+            return 1
+        fi
+    else
+        log_warning "Session switching works best in tmux environment"
+    fi
+}
+
+# Create a new session with specific context
+new_session() {
+    local session_name="$1"
+    local context="$2"
+    
+    if [ -z "$session_name" ]; then
+        session_name=$(generate_session_name)
+    fi
+    
+    # Send new session command
+    if [ -n "$TMUX" ]; then
+        local opencode_pane=$(tmux list-panes -F '#{pane_index}:#{pane_current_command}' | grep opencode | cut -d: -f1 | head -1)
+        if [ -n "$opencode_pane" ]; then
+            tmux send-keys -t "$opencode_pane" "/new" Enter
+            if [ -n "$context" ]; then
+                sleep 1
+                tmux send-keys -t "$opencode_pane" "$context" Enter
+            fi
+            log_success "Created new session: $session_name"
+        else
+            log_error "No active OpenCode session found"
+            return 1
+        fi
+    fi
+}
+
+# Save current session context
+save_session_context() {
+    local session_name="${1:-$(generate_session_name)}"
+    local context_file="$SESSIONS_DIR/${session_name}.ctx"
+    
+    {
+        echo "# OpenCode Session Context: $session_name"
+        echo "# Created: $(date)"
+        echo "# Working Directory: $(pwd)"
+        echo "# Tmux Session: $(get_tmux_session)"
+        echo ""
+        echo "## Project Structure"
+        find . -type f -name "*.ts" -o -name "*.js" -o -name "*.tsx" -o -name "*.jsx" -o -name "*.py" -o -name "*.go" -o -name "*.rs" | head -20
+        echo ""
+        echo "## Recent Git Activity"
+        git log --oneline -10 2>/dev/null || echo "No git repository"
+    } > "$context_file"
+    
+    log_success "Session context saved to: $context_file"
+}
+
+# Load session context
+load_session_context() {
+    local session_name="$1"
+    local context_file="$SESSIONS_DIR/${session_name}.ctx"
+    
+    if [ ! -f "$context_file" ]; then
+        log_error "Context file not found: $context_file"
+        return 1
+    fi
+    
+    log_info "Loading session context: $session_name"
+    cat "$context_file"
+}
+
+# Clean up old sessions
+cleanup_sessions() {
+    local days="${1:-7}"
+    
+    log_info "Cleaning up sessions older than $days days..."
+    
+    # Clean up context files
+    find "$SESSIONS_DIR" -name "*.ctx" -mtime +$days -delete 2>/dev/null || true
+    
+    # Note: Database cleanup would require more careful consideration
+    # as it might affect OpenCode's internal state
+    
+    log_success "Cleanup completed"
+}
+
+# Show session statistics
+show_stats() {
+    if [ ! -f "$OPENCODE_DB" ]; then
+        log_warning "No OpenCode database found"
+        return 1
+    fi
+    
+    printf "${CYAN}OpenCode Session Statistics:${NC}\n"
+    echo "============================"
+    
+    local total_sessions=$(sqlite3 "$OPENCODE_DB" "SELECT COUNT(*) FROM sessions;" 2>/dev/null || echo "0")
+    local today_sessions=$(sqlite3 "$OPENCODE_DB" "SELECT COUNT(*) FROM sessions WHERE date(created_at/1000, 'unixepoch', 'localtime') = date('now', 'localtime');" 2>/dev/null || echo "0")
+    local week_sessions=$(sqlite3 "$OPENCODE_DB" "SELECT COUNT(*) FROM sessions WHERE created_at >= (strftime('%s', 'now', '-7 days') * 1000);" 2>/dev/null || echo "0")
+    
+    echo "Total sessions: $total_sessions"
+    echo "Today: $today_sessions"
+    echo "This week: $week_sessions"
+    echo ""
+    
+    # Show most active days
+    echo "Most active days:"
+    sqlite3 "$OPENCODE_DB" "
+        SELECT 
+            date(created_at/1000, 'unixepoch', 'localtime') as day,
+            COUNT(*) as sessions
+        FROM sessions 
+        WHERE created_at >= (strftime('%s', 'now', '-30 days') * 1000)
+        GROUP BY date(created_at/1000, 'unixepoch', 'localtime')
+        ORDER BY sessions DESC
+        LIMIT 5;
+    " 2>/dev/null | while IFS='|' read -r day sessions; do
+        if [ -n "$day" ]; then
+            echo "  $day: $sessions sessions"
+        fi
+    done
+    
+    echo ""
+    echo "Total messages: $(sqlite3 "$OPENCODE_DB" "SELECT SUM(message_count) FROM sessions;" 2>/dev/null || echo "0")"
+    echo "Average messages per session: $(sqlite3 "$OPENCODE_DB" "SELECT ROUND(AVG(message_count), 1) FROM sessions WHERE message_count > 0;" 2>/dev/null || echo "0")"
+}
+
+# Show help
+show_help() {
+    printf "${CYAN}OpenCode Session Manager${NC}\n\n"
+    printf "${YELLOW}Usage:${NC}\n"
+    printf "  oc [command] [options]\n\n"
+    printf "${YELLOW}Commands:${NC}\n"
+    printf "  ${GREEN}start [name] [dir]${NC}     Start new OpenCode session\n"
+    printf "  ${GREEN}stop${NC}                  Stop current OpenCode session\n"
+    printf "  ${GREEN}list${NC}                  List all sessions\n"
+    printf "  ${GREEN}switch <id>${NC}           Switch to session by ID\n"
+    printf "  ${GREEN}new [name] [context]${NC}  Create new session with context\n"
+    printf "  ${GREEN}status${NC}                Show current session status\n"
+    printf "  ${GREEN}save [name]${NC}           Save current session context\n"
+    printf "  ${GREEN}load <name>${NC}           Load session context\n"
+    printf "  ${GREEN}cleanup [days]${NC}        Clean up old sessions (default: 7 days)\n"
+    printf "  ${GREEN}stats${NC}                 Show session statistics\n"
+    printf "  ${GREEN}help${NC}                  Show this help\n\n"
+    printf "${YELLOW}Examples:${NC}\n"
+    printf "  oc start                    # Start session with auto-generated name\n"
+    printf "  oc start myproject ~/code   # Start session in specific directory\n"
+    printf "  oc list                     # List all sessions\n"
+    printf "  oc switch 42               # Switch to session ID 42\n"
+    printf "  oc new \"bug-fix\" \"Fix the login issue\"\n"
+    printf "  oc save current-work       # Save context for later\n"
+    printf "  oc cleanup 14              # Clean up sessions older than 14 days\n\n"
+    printf "${YELLOW}Integration:${NC}\n"
+    printf "  - Works seamlessly with your existing 'ide' script\n"
+    printf "  - Integrates with tmux sessions and pane management\n"
+    printf "  - Automatically generates session names based on tmux session and project\n"
+    printf "  - Saves session context for easy restoration\n\n"
+    printf "${YELLOW}Keybindings (add to nvim):${NC}\n"
+    printf "  <leader>ol  - List sessions\n"
+    printf "  <leader>os  - Show session status\n"
+    printf "  <leader>oS  - Save current session context\n"
+    printf "  <leader>ox  - Stop current session\n"
+}
+
+# Main command dispatcher
+main() {
+    check_dependencies
+    ensure_sessions_dir
+    
+    case "${1:-help}" in
+        "start"|"s")
+            start_session "$2" "$3"
+            ;;
+        "stop"|"x")
+            stop_session
+            ;;
+        "list"|"ls"|"l")
+            list_sessions
+            ;;
+        "switch"|"sw")
+            switch_session "$2"
+            ;;
+        "new"|"n")
+            new_session "$2" "$3"
+            ;;
+        "status"|"st")
+            get_active_session
+            ;;
+        "save")
+            save_session_context "$2"
+            ;;
+        "load")
+            load_session_context "$2"
+            ;;
+        "cleanup"|"clean")
+            cleanup_sessions "$2"
+            ;;
+        "stats")
+            show_stats
+            ;;
+        "help"|"h"|"-h"|"--help")
+            show_help
+            ;;
+        *)
+            log_error "Unknown command: $1"
+            echo ""
+            show_help
+            exit 1
+            ;;
+    esac
+}
+
+# Run main function with all arguments
+main "$@"
