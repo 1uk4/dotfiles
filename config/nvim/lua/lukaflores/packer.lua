@@ -33,6 +33,24 @@ return require('packer').startup(function(use)
     -- Gitsigns - show git changes in gutter
     use('lewis6991/gitsigns.nvim')
 
+    -- Lualine - pretty statusline
+    use {
+        'nvim-lualine/lualine.nvim',
+        requires = { 'nvim-tree/nvim-web-devicons', opt = true }
+    }
+
+    -- Which-key - show keybindings popup
+    use('folke/which-key.nvim')
+
+    -- Better escape - jk to exit insert mode
+    use('max397574/better-escape.nvim')
+
+    -- Auto-pairs - auto close brackets
+    use('windwp/nvim-autopairs')
+
+    -- Comment.nvim - toggle comments with gcc
+    use('numToStr/Comment.nvim')
+
     -- Trouble
     use {
       "folke/trouble.nvim",
