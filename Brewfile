@@ -50,12 +50,11 @@ brew "htop" # a top alternative
 brew "jq" # work with JSON files in shell scripts
 brew "vim" # Vim (latest)
 brew "wget" # internet file retriever
-brew "htop" # a top alternative
 brew "neofetch" # pretty system info
 brew "neovim" # A better vim
 brew "python" # python (latest)
 brew "zsh" # zsh (latest)
-brew "z" # switch between most used directories	
+brew "zoxide" # smarter cd - tracks frecency, replaces z
 brew "fswatch" #For Inkscape Watcher
 brew "ffmpeg"
 

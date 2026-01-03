@@ -44,9 +44,28 @@ NODE_MODULES=$HOME/.npm
 NPM_PACKAGES=$HOME/.npm-packages/bin                           
 export PATH=$PATH:$HOME/bin:$NODE_MODULES:$NPM_PACKAGES         
 
-#NVM ENABLE                                                 
-export NVM_DIR="$HOME/.nvm"                                   
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" # This loads nvm
+# NVM - Lazy loading for faster shell startup
+export NVM_DIR="$HOME/.nvm"
+nvm() {
+    unset -f nvm node npm npx
+    [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+    nvm "$@"
+}
+node() {
+    unset -f nvm node npm npx
+    [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+    node "$@"
+}
+npm() {
+    unset -f nvm node npm npx
+    [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+    npm "$@"
+}
+npx() {
+    unset -f nvm node npm npx
+    [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+    npx "$@"
+}
 
 
 
@@ -77,12 +96,13 @@ setopt PROMPT_SUBST
 
 # history
 HISTFILE=~/.zsh_history
-HISTSIZE=10000
-SAVEHIST=10000
+HISTSIZE=50000
+SAVEHIST=50000
 setopt EXTENDED_HISTORY          # write the history file in the ":start:elapsed;command" format.
 setopt HIST_REDUCE_BLANKS        # remove superfluous blanks before recording entry.
 setopt SHARE_HISTORY             # share history between all sessions.
 setopt HIST_IGNORE_ALL_DUPS      # delete old recorded entry if new entry is a duplicate.
+setopt HIST_IGNORE_SPACE         # don't record commands starting with space (useful for secrets)
 
 setopt COMPLETE_ALIASES
 
@@ -171,11 +191,10 @@ export LESS_TERMCAP_ue=$(tput rmul; tput sgr0)
 export LESS_TERMCAP_mr=$(tput rev)
 export LESS_TERMCAP_mh=$(tput dim)
 
-# source z.sh if it exists
-#zpath="$(brew --prefix)/etc/profile.d/z.sh"
-#if [ -f "$zpath" ]; then
-#    source "$zpath"
-#fi
+# zoxide - smarter cd command (replaces z)
+if command -v zoxide &> /dev/null; then
+    eval "$(zoxide init zsh)"
+fi
 
 ########################################################
 # Aliases
@@ -268,7 +287,7 @@ fi
 unset __conda_setup
 # <<< conda initialize <<<
 
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+# nvm bash_completion loaded lazily with nvm
 
 # Load local environment variables from ~/.localenv if it exists
 # This file should contain sensitive environment variables like API keys
