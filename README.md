@@ -2,12 +2,6 @@
 
 > A terminal-first development environment for macOS
 
-<p align="center"> 
-  <img src="/resources/images/workspace.png" alt="Workspace" width="700">
-  <br />
-  <img src="/resources/images/lazygit.png" alt="Lazygit" width="700">
-</p>
-
 ## What's Included
 
 | Category | Tools |
@@ -131,12 +125,6 @@ dotfiles/
 - **zoxide** - Smart `cd` that learns your habits (`z project` jumps to most used match)
 - **fzf** - Fuzzy finder for files and history (`Ctrl+R`)
 - **50k history** - Large searchable command history
-
-## Acknowledgments
-
-- [Nick Nisi's Dotfiles](https://github.com/nicknisi/dotfiles) - Original inspiration
-
----
 
 <p align="center">
   <a href="https://github.com/lukaflores/dotfiles/issues">Report Bug</a>
