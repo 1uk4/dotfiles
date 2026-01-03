@@ -64,5 +64,19 @@ vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><
 ---- Run build and output script
 --vim.keymap.set("n", "<leader>b", "<cmd>! ./build.sh %:t:r && ./output.sh %:t:r<CR>")
 
+-- OpenCode Integration
+vim.keymap.set("n", "<leader>oo", function() require('opencode').toggle() end, { desc = "Toggle OpenCode" })
+vim.keymap.set({"n", "v"}, "<leader>oa", function()
+  -- Toggle between panes (works both ways: Neovim <-> OpenCode)
+  vim.fn.system("tmux last-pane")
+end, { desc = "Toggle OpenCode pane" })
+vim.keymap.set({"n", "v"}, "<leader>of", function() require('opencode').ask('@file ') end, { desc = "Ask OpenCode about file" })
+vim.keymap.set("n", "<leader>on", function() require('opencode').command('/new') end, { desc = "New OpenCode session" })
+vim.keymap.set("n", "<leader>oe", function() require('opencode').prompt('Explain @cursor and its context') end, { desc = "Explain code at cursor" })
+vim.keymap.set("n", "<leader>or", function() require('opencode').prompt('Review @file for correctness and readability') end, { desc = "Review current file" })
+vim.keymap.set("v", "<leader>od", function() require('opencode').prompt('Add documentation comments for @selection') end, { desc = "Document selection" })
+
+
+
 --
 vim.keymap.set("n", "<leader>vpp", "<cmd>e ~/Dotfiles/nvim/config/nvim/lua/lukaflores/packer.lua<CR>");

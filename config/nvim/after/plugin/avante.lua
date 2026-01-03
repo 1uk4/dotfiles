@@ -38,7 +38,7 @@ local avante_config = vim.tbl_deep_extend("force", {
     behaviour = {
         auto_suggestions = false,
         auto_set_highlight_group = true,
-        auto_set_keymaps = true,
+        auto_set_keymaps = false,
         auto_apply_diff_after_generation = false,
         support_paste_from_clipboard = false,
     },

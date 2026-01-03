@@ -30,6 +30,9 @@ return require('packer').startup(function(use)
     -- Vim Fugitive
     use('tpope/vim-fugitive')
 
+    -- Gitsigns - show git changes in gutter
+    use('lewis6991/gitsigns.nvim')
+
     -- Trouble
     use {
       "folke/trouble.nvim",
@@ -88,6 +91,39 @@ return require('packer').startup(function(use)
             { 'nvim-tree/nvim-web-devicons' },
             { 'HakonHarnes/img-clip.nvim' },
         }
+    }
+
+    -- Claude Code
+    use {
+        'greggh/claude-code.nvim',
+        requires = {
+            'nvim-lua/plenary.nvim', -- Required for git operations
+        },
+        config = function()
+            require('claude-code').setup()
+        end
+    }
+
+
+
+    -- OpenCode Integration
+    use {
+      'NickvanDyke/opencode.nvim',
+      requires = { 
+        { 'folke/snacks.nvim', opts = { input = {}, picker = {}, terminal = {} } }
+      },
+      config = function()
+        -- Enable autoread for file reloading
+        vim.o.autoread = true
+        
+        -- Set global configuration using the working format
+        vim.g.opencode_opts = {
+          provider = {
+            enabled = "tmux",
+            cmd = "opencode"
+          }
+        }
+      end
     }
 
 

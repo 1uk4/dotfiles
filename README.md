@@ -5,10 +5,10 @@
 <!-- PROJECT LOGO -->
 
 <div>
-  <h2 align="center">Dotfiles (README not up to date)</h2>
+  <h2 align="center">Dotfiles</h2>
   
   <p align="center"> 
-    My life inside the terminal 💻 
+    My life inside the terminal
   </p>
     <br />
   <p align="center"> 
@@ -84,54 +84,120 @@ The easiest way to install the XCode Command Line Tools in OSX 10.9+ is to open 
 <!-- USAGE EXAMPLES -->
 ## Usage
 
+### IDE Setup
+
+Start a full IDE environment with Neovim + OpenCode side by side:
+```sh
+ide [file] [--vertical] [--size=30]
+```
+
 ### Tmux
 
-To start a tmux session you can use the script: In Terminal `tm`
-  or 
-Use my Workspace template: In Terminal `tmuxinator ide`
+Start a tmux session: `tm`
 
-#### Keybindings
-Tmux Bind: `ctrl a`
+**Prefix:** `Ctrl+a`
 
-In order to use following commands it must be prefaced by Tmux Bind
-e.g `ctrl a + g`
+| Key | Action |
+|-----|--------|
+| `prefix + Tab` | Toggle between panes |
+| `prefix + z` | Zoom pane fullscreen |
+| `prefix + g` | Open Lazygit |
+| `prefix + i` | Open Calcurse |
+| `prefix + h/j/k/l` | Move between panes |
+| `prefix + H/J/K/L` | Resize panes |
+| `prefix + \|` | Split horizontal |
+| `prefix + -` | Split vertical |
+| `prefix + r` | Reload config |
 
-- Open Lazy Git: `Tmux Bind + g`
-- Move between Panes: `Tmux Bind + (h,j,k,l)` 
-- Open Calcurse: `Tmux Bind + j`
+### Neovim
 
-### Nvim
-The follwing commands are inside nvim, which can be enter through `vim .`
+**Leader:** `Space`
 
-Initially you should install vim plugins with `:PlugInstall<cr>` inside vim
-or 
-In terminal with `vimu`
+Install plugins with `:PackerSync`
 
-- Open File Drawer : `,k`
-- Find Word Buffer : `,fg`
-- Find File Buffer : `,ff` 
-- Find File (FZF) : `,t`
-- Find Recent File : `,fo`
+#### File Navigation
+| Key | Action |
+|-----|--------|
+| `<leader>pv` | Open file explorer |
+| `<leader>pf` | Find files (Telescope) |
+| `<C-p>` | Git files |
+| `<leader>ps` | Grep search |
+| `<C-e>` | Harpoon menu |
+| `<C-h/t/n/s>` | Harpoon files 1-4 |
+| `<leader>a` | Add file to Harpoon |
 
+#### Editing
+| Key | Action |
+|-----|--------|
+| `<leader>y` / `<leader>Y` | Yank to system clipboard |
+| `<leader>d` | Delete to void register |
+| `<leader>p` | Paste without losing clipboard |
+| `<leader>s` | Search/replace word under cursor |
+| `<leader>f` | Format file |
 
-### Latex
+#### LSP
+| Key | Action |
+|-----|--------|
+| `gd` | Go to definition |
+| `K` | Hover info |
+| `<leader>vd` | Diagnostics float |
+| `<leader>vca` | Code action |
+| `<leader>vrr` | References |
+| `<leader>vrn` | Rename |
 
-- Compile Latex File: `\ll`
-- Open PDF viewer (Skim): `\lv`
-- Open Error Buffer: `\le`
+#### Git (Fugitive + Gitsigns + Telescope)
+| Key | Action |
+|-----|--------|
+| `<leader>gs` | Git status (Fugitive) |
+| `<leader>gd` | Diff current file vs HEAD |
+| `<leader>gt` | Git status - changed files (Telescope) |
+| `<leader>gc` | Git commits (Telescope) |
+| `<leader>gB` | Git branches (Telescope) |
+| `]c` / `[c` | Next/prev change |
+| `<leader>gp` | Preview hunk |
+| `<leader>gr` | Reset hunk |
+| `<leader>gR` | Reset buffer |
+| `<leader>gb` | Blame line |
 
-### Markdown
+#### OpenCode Integration
+| Key | Action |
+|-----|--------|
+| `<leader>oo` | Toggle OpenCode |
+| `<leader>oa` | Toggle Neovim / OpenCode pane |
+| `<leader>of` | Ask about file |
+| `<leader>on` | New session |
+| `<leader>oe` | Explain cursor |
+| `<leader>or` | Review file |
+| `<leader>od` | Document selection (visual) |
 
-- Open Markdown Server: `,m `
+#### Code Review Workflow
+1. `<leader>gt` - See all changed files
+2. Select file to open
+3. `]c` / `[c` - Jump between changes
+4. `<leader>gp` - Preview hunk inline
+5. `<leader>gd` - Full side-by-side diff
+6. `<C-a> z` - Zoom fullscreen to read
+7. `<leader>gr` - Reset unwanted changes
 
+#### Other
+| Key | Action |
+|-----|--------|
+| `<leader>u` | Undotree |
+| `<leader>zz` | Zen mode |
+| `<leader>xq` | Trouble quickfix |
+| `<C-d>` / `<C-u>` | Half-page jump (centered) |
+
+### LaTeX
+
+| Key | Action |
+|-----|--------|
+| `\ll` | Compile |
+| `\lv` | Open PDF viewer |
+| `\le` | Error buffer |
+| `<C-f>` | Create Inkscape figure |
+| `<C-l>` | Edit Inkscape figures |
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-### FreshRss
-
-``
-docker run -d --restart unless-stopped --log-opt max-size=10m -p 9090:80 -e TZ=America/Los_Angeles -e 'CRON_MIN=1,31' -v freshrss_data:/var/www/FreshRSS/data -v freshrss_extensions:/var/www/FreshRSS/extensions --name freshrss freshrss/freshrss
-``
 
 
 

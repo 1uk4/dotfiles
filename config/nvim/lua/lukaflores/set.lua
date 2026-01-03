@@ -40,3 +40,9 @@ vim.opt.colorcolumn = "80"
 
 vim.g.mapleader = " "
 
+-- Auto-reload files when changed externally (e.g., by OpenCode)
+vim.opt.autoread = true
+vim.api.nvim_create_autocmd({"FocusGained", "BufEnter", "CursorHold"}, {
+  command = "checktime"
+})
+
