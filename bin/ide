@@ -63,6 +63,9 @@ if tmux list-panes -F '#{pane_current_command}' | grep -q "opencode"; then
     exit 0
 fi
 
+# Store the current pane before splitting
+ORIGINAL_PANE=$(tmux display-message -p '#{pane_index}')
+
 # Split the current pane
 tmux split-window $SPLIT_DIRECTION $SPLIT_SIZE -c "$CURRENT_DIR"
 
@@ -71,11 +74,11 @@ OPENCODE_PANE=$(tmux display-message -p '#{pane_index}')
 tmux send-keys -t "$OPENCODE_PANE" "opencode" Enter
 
 # Focus back to the original pane and start nvim
-tmux select-pane -t 0
+tmux select-pane -t "$ORIGINAL_PANE"
 tmux send-keys "nvim $VIM_TARGET" Enter
 
 # Set pane titles for clarity
-tmux select-pane -t 0 -T "nvim"
+tmux select-pane -t "$ORIGINAL_PANE" -T "nvim"
 tmux select-pane -t "$OPENCODE_PANE" -T "opencode"
 
 echo "IDE setup complete: nvim in main pane, opencode in split pane"
