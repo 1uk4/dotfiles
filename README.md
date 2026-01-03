@@ -1,99 +1,64 @@
-<!-- Improved compatibility of back to top link: See: https://github.com/othneildrew/Best-README-Template/pull/73 -->
-<a name="readme-top"></a>
+# Dotfiles
 
+> A terminal-first development environment for macOS
 
-<!-- PROJECT LOGO -->
+<p align="center"> 
+  <img src="/resources/images/workspace.png" alt="Workspace" width="700">
+  <br />
+  <img src="/resources/images/lazygit.png" alt="Lazygit" width="700">
+</p>
 
-<div>
-  <h2 align="center">Dotfiles</h2>
-  
-  <p align="center"> 
-    My life inside the terminal
-  </p>
-    <br />
-  <p align="center"> 
-    <img src="/resources/images/workspace.png" alt="Logo" width="700" height="450">
-    <br />
-    <img src="/resources/images/lazygit.png" alt="logo" width="700" height="450">
-    <br />
-  </p>
+## What's Included
 
-  <p align="center">
-    <br />
-    <a href="https://github.com/lukaflores/dotfiles/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/lukaflores/dotfiles/issues">Request Feature</a>
-  </p>
-</div>
+| Category | Tools |
+|----------|-------|
+| **Shell** | Zsh + custom prompt, lazy-loaded NVM, zoxide, fzf |
+| **Editor** | Neovim with LSP, Treesitter, Telescope, Harpoon |
+| **Terminal** | Kitty (primary), Alacritty, iTerm2 |
+| **Multiplexer** | Tmux with vim-style bindings |
+| **Git** | Lazygit, git-delta, gitsigns |
+| **AI** | OpenCode integration in Neovim + tmux |
+| **Fonts** | Hack Nerd Font, JetBrains Mono, Fira Code |
 
-
-<!-- ABOUT THE PROJECT -->
-## About The Project
-
-Dotfiles are highly personalized to the individual. I encourage anyone who is starting the process of creating dotfiles to find inspiration in the others whilst starting from scratch. 
-
-Note: Before installing, please look through the code and understand. It will alter prexisting configurations.
-
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-<!-- GETTING STARTED -->
-## Getting Started
-
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
+## Quick Start
 
 ### Prerequisites
 
-You need to have [XCode](https://developer.apple.com/downloads/index.action?=xcode) or, at the very minimum, the [XCode Command Line Tools](https://developer.apple.com/downloads/index.action?=command%20line%20tools), which are available as a much smaller download.
-
-The easiest way to install the XCode Command Line Tools in OSX 10.9+ is to open up a terminal, type 
-  ```sh
-    xcode-select --install
-  ``` 
+```sh
+xcode-select --install
+```
 
 ### Installation
 
-1. Clone the repo
-   ```sh
-   git clone https://github.com/lukaflores/dotfiles.git
-   ```
-2. Move Repository to `~/code` 
-   ```sh
-    mv dotfiles ~/code 
-   ```
-3. Use install script (Don't provide a parameter to see options) 
-   ```sh
-   ./install.sh all
-   ```
-
-4. Set up your local environment variables
-   ```sh
-   # Copy the template file to your home directory
-   cp localenv.template ~/.localenv
-   
-   # Edit the file with your API keys and other sensitive information
-   vim ~/.localenv
-   ```
-   
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-<!-- USAGE EXAMPLES -->
-## Usage
-
-### IDE Setup
-
-Start a full IDE environment with Neovim + OpenCode side by side:
 ```sh
-ide [file] [--vertical] [--size=30]
+# Clone
+git clone https://github.com/lukaflores/dotfiles.git ~/dotfiles
+cd ~/dotfiles
+
+# Install everything
+./install.sh all
+
+# Or see available options
+./install.sh
 ```
 
-### Tmux
+### Post-Install
 
-Start a tmux session: `tm`
+```sh
+# Set up local environment variables (API keys, etc.)
+cp localenv.template ~/.localenv
+vim ~/.localenv
+
+# Install Homebrew packages
+brew bundle install
+
+# Reload shell
+source ~/.zshrc
+```
+
+## Key Bindings
+
+### Tmux
 
 **Prefix:** `Ctrl+a`
 
@@ -102,119 +67,79 @@ Start a tmux session: `tm`
 | `prefix + Tab` | Toggle between panes |
 | `prefix + z` | Zoom pane fullscreen |
 | `prefix + g` | Open Lazygit |
-| `prefix + i` | Open Calcurse |
-| `prefix + h/j/k/l` | Move between panes |
+| `prefix + h/j/k/l` | Navigate panes |
 | `prefix + H/J/K/L` | Resize panes |
 | `prefix + \|` | Split horizontal |
 | `prefix + -` | Split vertical |
-| `prefix + r` | Reload config |
 
 ### Neovim
 
 **Leader:** `Space`
 
-Install plugins with `:PackerSync`
-
-#### File Navigation
 | Key | Action |
 |-----|--------|
-| `<leader>pv` | Open file explorer |
-| `<leader>pf` | Find files (Telescope) |
-| `<C-p>` | Git files |
+| `<leader>pf` | Find files |
 | `<leader>ps` | Grep search |
 | `<C-e>` | Harpoon menu |
-| `<C-h/t/n/s>` | Harpoon files 1-4 |
-| `<leader>a` | Add file to Harpoon |
-
-#### Editing
-| Key | Action |
-|-----|--------|
-| `<leader>y` / `<leader>Y` | Yank to system clipboard |
-| `<leader>d` | Delete to void register |
-| `<leader>p` | Paste without losing clipboard |
-| `<leader>s` | Search/replace word under cursor |
-| `<leader>f` | Format file |
-
-#### LSP
-| Key | Action |
-|-----|--------|
+| `<leader>a` | Add to Harpoon |
 | `gd` | Go to definition |
-| `K` | Hover info |
-| `<leader>vd` | Diagnostics float |
-| `<leader>vca` | Code action |
-| `<leader>vrr` | References |
-| `<leader>vrn` | Rename |
+| `<leader>f` | Format file |
+| `<leader>gs` | Git status |
+| `<leader>y` | Yank to clipboard |
 
-#### Git (Fugitive + Gitsigns + Telescope)
-| Key | Action |
-|-----|--------|
-| `<leader>gs` | Git status (Fugitive) |
-| `<leader>gd` | Diff current file vs HEAD |
-| `<leader>gt` | Git status - changed files (Telescope) |
-| `<leader>gc` | Git commits (Telescope) |
-| `<leader>gB` | Git branches (Telescope) |
-| `]c` / `[c` | Next/prev change |
-| `<leader>gp` | Preview hunk |
-| `<leader>gr` | Reset hunk |
-| `<leader>gR` | Reset buffer |
-| `<leader>gb` | Blame line |
+### IDE Mode
 
-#### OpenCode Integration
-| Key | Action |
-|-----|--------|
-| `<leader>oo` | Toggle OpenCode |
-| `<leader>oa` | Toggle Neovim / OpenCode pane |
-| `<leader>of` | Ask about file |
-| `<leader>on` | New session |
-| `<leader>oe` | Explain cursor |
-| `<leader>or` | Review file |
-| `<leader>od` | Document selection (visual) |
+Launch Neovim + OpenCode side by side:
 
-#### Code Review Workflow
-1. `<leader>gt` - See all changed files
-2. Select file to open
-3. `]c` / `[c` - Jump between changes
-4. `<leader>gp` - Preview hunk inline
-5. `<leader>gd` - Full side-by-side diff
-6. `<C-a> z` - Zoom fullscreen to read
-7. `<leader>gr` - Reset unwanted changes
+```sh
+ide [file] [--vertical] [--size=30]
+```
 
-#### Other
-| Key | Action |
-|-----|--------|
-| `<leader>u` | Undotree |
-| `<leader>zz` | Zen mode |
-| `<leader>xq` | Trouble quickfix |
-| `<C-d>` / `<C-u>` | Half-page jump (centered) |
+## Directory Structure
 
-### LaTeX
+```
+dotfiles/
+├── bin/              # Custom scripts (added to PATH)
+├── config/
+│   ├── nvim/         # Neovim configuration
+│   ├── kitty/        # Kitty terminal config
+│   └── ...
+├── tmux/             # Tmux configuration
+├── zsh/              # Zsh configuration
+├── installscripts/   # Setup scripts
+├── Brewfile          # Homebrew packages
+└── install.sh        # Main installer
+```
 
-| Key | Action |
-|-----|--------|
-| `\ll` | Compile |
-| `\lv` | Open PDF viewer |
-| `\le` | Error buffer |
-| `<C-f>` | Create Inkscape figure |
-| `<C-l>` | Edit Inkscape figures |
+## Customization
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+### Local Overrides
 
+- `~/.zshrc.local` - Local shell customizations (not tracked)
+- `~/.localenv` - Environment variables & API keys (not tracked)
 
+### Forking
 
+1. Fork this repo
+2. Search and replace existing username references with your own
+3. Rename the `config/nvim/lua/` subdirectory to match your setup
+4. Modify configurations to your liking
 
-<!-- CONTACT -->
-## Contact
+## Shell Features
 
-Luka Flores - [@LukaFlores12](https://twitter.com/LukaFlores12)
+- **Lazy NVM** - Node version manager loads on first use (faster startup)
+- **zoxide** - Smart `cd` that learns your habits (`z project` jumps to most used match)
+- **fzf** - Fuzzy finder for files and history (`Ctrl+R`)
+- **50k history** - Large searchable command history
 
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-<!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
 
-* Inspiration [Niki Nisi Dotfiles](https://github.com/nicknisi/dotfiles)
+- [Nick Nisi's Dotfiles](https://github.com/nicknisi/dotfiles) - Original inspiration
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+---
 
+<p align="center">
+  <a href="https://github.com/lukaflores/dotfiles/issues">Report Bug</a>
+  ·
+  <a href="https://github.com/lukaflores/dotfiles/issues">Request Feature</a>
+</p>
