@@ -28,7 +28,7 @@ else
 		    else 
 				docker run -d --name=firefox-$1 \
 					-p $1:5800 \
-		    		-v /Users/lukaflores/datas:/config:rw \
+		    		-v $HOME/datas:/config:rw \
 		    		--shm-size 2g \
 		    		jlesage/firefox 
 				echo "http://localhost:$1"

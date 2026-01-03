@@ -297,7 +297,7 @@ if [[ -f ~/.localenv ]]; then
 fi
 
 # bun completions
-[ -s "/Users/lukaflores/.bun/_bun" ] && source "/Users/lukaflores/.bun/_bun"
+[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 
 # bun
 export BUN_INSTALL="$HOME/.bun"

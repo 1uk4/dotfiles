@@ -17,7 +17,7 @@ if [ -z "$1" ]; then
 \input{~/.config/latex_template/letterfonts.tex}
 
 \title{\Huge{{INSERT CLASS NAME}}}
-\author{\huge{Luka Flores}}
+\author{\huge{Luka}}
 \date{}
 
 \begin{document}
