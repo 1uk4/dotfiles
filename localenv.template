@@ -5,6 +5,15 @@
 # Avante.nvim API key
 export AVANTE_API_KEY="your-api-key-here"
 
+# OpenCode / Oh-My-OpenCode API Keys
+# Get your keys from:
+# - Anthropic: https://console.anthropic.com/settings/keys
+# - OpenAI: https://platform.openai.com/api-keys
+# - Google: https://aistudio.google.com/apikey
+export ANTHROPIC_API_KEY="sk-ant-YOUR_KEY_HERE"
+export OPENAI_API_KEY="sk-proj-YOUR_KEY_HERE"
+export GOOGLE_GENERATIVE_AI_API_KEY="AIzaYOUR_KEY_HERE"
+
 # Add other sensitive environment variables below
 # export GITHUB_TOKEN="your-github-token"
 # export AWS_ACCESS_KEY_ID="your-aws-access-key"
