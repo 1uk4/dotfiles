@@ -1,6 +1,6 @@
-require("lukaflores.remap")
-require("lukaflores.set")
-require("lukaflores.packer")
+require("1uk4.remap")
+require("1uk4.set")
+require("1uk4.packer")
 
 vim.api.nvim_create_autocmd("TermOpen", {
   callback = function()

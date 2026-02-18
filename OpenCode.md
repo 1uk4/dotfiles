@@ -86,8 +86,8 @@ A comprehensive session management tool that integrates with your tmux + neovim 
    ```
 
 ### Files Created
-- `/Users/lukaflores/dotfiles/bin/oc` - Main session manager script
-- `/Users/lukaflores/dotfiles/bin/oc-demo` - Demo data generator
+- `/Users/1uk4/dotfiles/bin/oc` - Main session manager script
+- `/Users/1uk4/dotfiles/bin/oc-demo` - Demo data generator
 - `~/.opencode/sessions/*.ctx` - Saved session contexts
 
 ## Code Style Guidelines

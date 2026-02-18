@@ -1,6 +1,6 @@
 # Dotfiles
 
-> A terminal-first development environment for macOS
+> A terminal-first development environment for macOS and Linux
 
 ## What's Included
 
@@ -11,7 +11,7 @@
 | **Terminal** | Kitty (primary), Alacritty, iTerm2 |
 | **Multiplexer** | Tmux with vim-style bindings |
 | **Git** | Lazygit, git-delta, gitsigns |
-| **AI** | OpenCode integration in Neovim + tmux |
+| **AI** | OpenCode in Neovim + tmux, OpenClaw assistant |
 | **Fonts** | Hack Nerd Font, JetBrains Mono, Fira Code |
 
 ## Quick Start
@@ -26,7 +26,7 @@ xcode-select --install
 
 ```sh
 # Clone
-git clone https://github.com/lukaflores/dotfiles.git ~/dotfiles
+git clone https://github.com/1uk4/dotfiles.git ~/dotfiles
 cd ~/dotfiles
 
 # Install everything
@@ -127,7 +127,7 @@ dotfiles/
 - **50k history** - Large searchable command history
 
 <p align="center">
-  <a href="https://github.com/lukaflores/dotfiles/issues">Report Bug</a>
+  <a href="https://github.com/1uk4/dotfiles/issues">Report Bug</a>
   ·
-  <a href="https://github.com/lukaflores/dotfiles/issues">Request Feature</a>
+  <a href="https://github.com/1uk4/dotfiles/issues">Request Feature</a>
 </p>

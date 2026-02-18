@@ -79,4 +79,4 @@ vim.keymap.set("v", "<leader>od", function() require('opencode').prompt('Add doc
 
 
 --
-vim.keymap.set("n", "<leader>vpp", "<cmd>e ~/Dotfiles/nvim/config/nvim/lua/lukaflores/packer.lua<CR>");
+vim.keymap.set("n", "<leader>vpp", "<cmd>e ~/Dotfiles/nvim/config/nvim/lua/1uk4/packer.lua<CR>");
