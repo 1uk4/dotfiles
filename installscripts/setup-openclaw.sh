@@ -138,7 +138,8 @@ Type=simple
 User=${OPENCLAW_USER}
 Group=${OPENCLAW_USER}
 WorkingDirectory=${OPENCLAW_HOME}/.openclaw/workspace
-ExecStart=$(which openclaw) gateway start --foreground
+EnvironmentFile=${OPENCLAW_HOME}/.env
+ExecStart=$(which openclaw) gateway run
 Restart=on-failure
 RestartSec=10
 StandardOutput=journal
@@ -148,7 +149,7 @@ StandardError=journal
 NoNewPrivileges=true
 ProtectSystem=strict
 ProtectHome=read-only
-ReadWritePaths=${OPENCLAW_HOME}/.openclaw
+ReadWritePaths=${OPENCLAW_HOME}/.openclaw ${OPENCLAW_HOME}/.ssh ${OPENCLAW_HOME}/dotfiles
 PrivateTmp=true
 
 [Install]
