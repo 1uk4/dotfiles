@@ -19,3 +19,6 @@ export GOOGLE_GENERATIVE_AI_API_KEY="AIzaYOUR_KEY_HERE"
 # export AWS_ACCESS_KEY_ID="your-aws-access-key"
 # export AWS_SECRET_ACCESS_KEY="your-aws-secret-key"
 
+# OpenClaw - AI assistant (https://docs.openclaw.ai)
+# export OPENCLAW_TELEGRAM_BOT_TOKEN="your-telegram-bot-token"
+

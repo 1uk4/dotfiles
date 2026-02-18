@@ -14,3 +14,11 @@ Brewfile.lock.json
 *.local
 .opencode/
 .crush/
+.openclaw/
+
+# History
+.zsh_history
+*.history
+
+# Misc
+completedFile

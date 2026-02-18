@@ -37,6 +37,10 @@ setup_localenv(){
 	bash ${DOTFILES}/installscripts/setup-localenv.sh
 }
 
+setup_openclaw(){
+	bash ${DOTFILES}/installscripts/setup-openclaw.sh
+}
+
 
 case "$1" in
     macos)
@@ -63,6 +67,9 @@ case "$1" in
     localenv)
 	setup_localenv
 	;;
+    openclaw)
+	setup_openclaw
+	;;
     all)
 	setup_macos
 	setup_homebrew
@@ -72,9 +79,10 @@ case "$1" in
 	setup_hosts
 	setup_git
 	setup_localenv
+	setup_openclaw
         ;;
     *)
-        echo -e $"\nUsage: $(basename "$0") {link|brew|shell|terminfo|macos|hosts|git|localenv|all}\n"
+        echo -e $"\nUsage: $(basename "$0") {link|brew|shell|terminfo|macos|hosts|git|localenv|openclaw|all}\n"
         exit 1
         ;;
 esac

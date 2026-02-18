@@ -3,29 +3,9 @@
 # setup-git.sh
 # This script configures git with the user's name, email, and GitHub username.
 # It also sets up the appropriate git credential helper based on the platform.
-#
-# Prerequisites:
-# - git must be installed
-# - ./installscripts/shell-variables.sh must exist and define the "title" function
 
 # Include variables
 source ./installscripts/shell-variables.sh
-
-# Function to configure git credential helper on macOS
-configure_macos_credential_helper() {
-  git config --global credential.helper "osxkeychain"
-}
-
-# Function to configure git credential helper on Linux/other platforms
-configure_other_credential_helper() {
-  read -rp "Save user and password to an unencrypted file to avoid writing? [y/N] " save_credentials
-
-  if [[ $save_credentials =~ ^([Yy])$ ]]; then
-    git config --global credential.helper "store"
-  else
-    git config --global credential.helper "cache --timeout 3600"
-  fi
-}
 
 # Main function
 main() {
@@ -43,12 +23,17 @@ main() {
   git config -f ~/.gitconfig-local user.email "${email:-$default_email}"
   git config -f ~/.gitconfig-local github.user "${github_username:-$default_github_username}"
 
+  # Credential helper: keychain on macOS, cache on Linux (never plaintext)
   if [[ "$(uname)" == "Darwin" ]]; then
-    configure_macos_credential_helper
+    git config --global credential.helper "osxkeychain"
   else
-    configure_other_credential_helper
+    git config --global credential.helper "cache --timeout 3600"
   fi
+
+  # Security hardening
+  git config --global transfer.fsckObjects true
+  git config --global fetch.fsckObjects true
+  git config --global receive.fsckObjects true
 }
 
-# Run the main function
 main
