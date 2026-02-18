@@ -134,11 +134,11 @@ return require('packer').startup(function(use)
         -- Enable autoread for file reloading
         vim.o.autoread = true
         
-        -- Set global configuration using the working format
+        -- Set global configuration
         vim.g.opencode_opts = {
           provider = {
             enabled = "tmux",
-            cmd = "opencode"
+            tmux = {}
           }
         }
       end

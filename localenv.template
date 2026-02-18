@@ -7,10 +7,11 @@ export AVANTE_API_KEY="your-api-key-here"
 
 # OpenCode / Oh-My-OpenCode API Keys
 # Get your keys from:
-# - Anthropic: https://console.anthropic.com/settings/keys
 # - OpenAI: https://platform.openai.com/api-keys
 # - Google: https://aistudio.google.com/apikey
-export ANTHROPIC_API_KEY="sk-ant-YOUR_KEY_HERE"
+#
+# NOTE: Anthropic uses Max subscription via opencode-anthropic-auth plugin.
+# No ANTHROPIC_API_KEY needed — authenticate with `/connect` in OpenCode TUI.
 export OPENAI_API_KEY="sk-proj-YOUR_KEY_HERE"
 export GOOGLE_GENERATIVE_AI_API_KEY="AIzaYOUR_KEY_HERE"
 

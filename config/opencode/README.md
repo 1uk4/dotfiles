@@ -21,9 +21,19 @@ Configs are automatically symlinked when you run:
 
 This creates: `./config/opencode/` → `~/.config/opencode/`
 
-### 2. Add API Keys
+### 2. Authenticate Anthropic (Max Subscription)
 
-API keys are stored in `~/.localenv` (sourced automatically by zshrc):
+Anthropic models use the Max subscription via the `opencode-anthropic-auth` plugin (configured in `opencode.json`). No API key needed.
+
+```bash
+# In the OpenCode TUI, run:
+/connect
+# Select "Anthropic" and follow the OAuth login flow
+```
+
+### 3. Add Other API Keys
+
+Non-Anthropic API keys are stored in `~/.localenv` (sourced automatically by zshrc):
 
 ```bash
 # If you haven't already, create from template
@@ -35,17 +45,15 @@ vim ~/.localenv
 
 Required keys:
 ```bash
-export ANTHROPIC_API_KEY="sk-ant-..."
 export OPENAI_API_KEY="sk-proj-..."
 export GOOGLE_GENERATIVE_AI_API_KEY="AIza..."
 ```
 
 **Get API keys:**
-- Anthropic: https://console.anthropic.com/settings/keys
 - OpenAI: https://platform.openai.com/api-keys
 - Google: https://aistudio.google.com/apikey
 
-### 3. Install OpenCode
+### 4. Install OpenCode
 
 ```bash
 # Install OpenCode globally
@@ -65,7 +73,7 @@ Expected output:
 ```
 ✓ Configuration Validity → Valid JSON config
 ✓ Model Resolution → 8 agents, 7 categories configured
-✓ Anthropic (Claude) Auth → Authenticated
+✓ Anthropic (Claude) Auth → Authenticated (Max subscription via opencode-anthropic-auth)
 ✓ OpenAI (ChatGPT) Auth → Authenticated  
 ✓ Google (Gemini) Auth → Authenticated
 ```
@@ -76,14 +84,14 @@ Expected output:
 
 | Agent | Model | Purpose | Cost |
 |-------|-------|---------|------|
-| sisyphus | Claude Sonnet 4.5 | Main orchestrator | 💰💰 |
-| librarian | Claude Sonnet 4.5 | Documentation/research | 💰💰 |
+| sisyphus | Claude Opus 4.6 | Main orchestrator | Max sub |
+| librarian | Claude Sonnet 4.5 | Documentation/research | Max sub |
 | explore | Gemini 2.0 Flash | Codebase exploration | 💰 Free |
 | oracle | GPT-5.2 | High-IQ reasoning/architecture | 💰💰💰💰 |
 | frontend-ui-ux-engineer | Gemini 2.5 Pro | UI/frontend work | 💰💰💰 |
 | document-writer | Gemini 2.0 Flash | Documentation | 💰 Free |
 | multimodal-looker | Gemini 2.0 Flash | Image/PDF analysis | 💰 Free |
-| prometheus | Claude Sonnet 4.5 | Work planning | 💰💰 |
+| prometheus | Claude Opus 4.6 | Work planning | Max sub |
 
 ### Categories (Task-Based Model Selection)
 
@@ -91,13 +99,13 @@ When using `delegate_task(category="X")`:
 
 | Category | Model | Use Case |
 |----------|-------|----------|
-| visual-engineering | Gemini 2.5 Pro | UI/frontend implementation |
-| quick | Gemini 2.0 Flash | Trivial fixes, simple changes |
-| ultrabrain | Claude Opus 4.5 | Complex architecture, hard problems |
+| visual-engineering | Claude Sonnet 4.5 | UI/frontend implementation |
+| quick | Claude Sonnet 4.5 | Trivial fixes, simple changes |
+| ultrabrain | Claude Sonnet 4.5 | Complex architecture, hard problems |
 | unspecified-low | Claude Sonnet 4.5 | General low-effort tasks |
-| unspecified-high | Claude Opus 4.5 | General high-effort tasks |
-| artistry | Gemini 2.5 Pro | Creative/design work |
-| writing | Gemini 2.0 Flash | Documentation, prose |
+| unspecified-high | Claude Sonnet 4.5 | General high-effort tasks |
+| artistry | Claude Sonnet 4.5 | Creative/design work |
+| writing | Claude Sonnet 4.5 | Documentation, prose |
 
 ### Background Task Limits (Cost Protection)
 
@@ -110,7 +118,7 @@ Prevents cost spikes from running too many expensive models in parallel:
 | google | 10 | Gemini is cheaper/free |
 | openai | 3 | GPT-5.2 rate limit |
 | gpt-5.2 | 2 | Extra protection (expensive) |
-| opus-4-5 | 2 | Extra protection (expensive) |
+| opus-4-6 | 2 | Extra protection (expensive) |
 
 ## Maintenance
 
@@ -142,6 +150,12 @@ opencode models | grep openai
 ### Rotate API Keys
 
 ```bash
+# For Anthropic: Re-authenticate via Max subscription
+# In OpenCode TUI:
+/connect
+# Select Anthropic and re-login
+
+# For other providers:
 # 1. Generate new keys from provider websites
 # 2. Update ~/.localenv
 vim ~/.localenv
@@ -158,11 +172,16 @@ bunx oh-my-opencode doctor
 ### "API key is missing"
 
 ```bash
-# Check if environment variables are set
-env | grep -E "ANTHROPIC|OPENAI|GOOGLE"
+# For Anthropic: Re-authenticate via Max subscription
+# In OpenCode TUI:
+/connect
+# Select Anthropic and re-login
+
+# For other providers, check environment variables:
+env | grep -E "OPENAI|GOOGLE"
 
 # If empty, verify ~/.localenv exists and is sourced
-cat ~/.localenv | grep -E "ANTHROPIC|OPENAI|GOOGLE"
+cat ~/.localenv | grep -E "OPENAI|GOOGLE"
 
 # Reload shell config
 source ~/.zshrc
@@ -192,15 +211,16 @@ vim ~/dotfiles/config/opencode/oh-my-opencode.json
 
 | Strategy | Savings |
 |----------|---------|
-| Use Gemini Flash for exploration/quick tasks | ~90% vs Claude |
-| Use Sonnet instead of Opus for planning | ~60% cost reduction |
-| Set background task limits | Prevents parallel cost spikes |
+| Anthropic models use Max subscription | Flat rate, no per-token cost |
+| Use Gemini Flash for exploration/quick tasks | Free tier |
+| Set background task limits | Prevents rate limit issues |
 | Use category-based routing | Right model for right task |
 
 ## Security Notes
 
 ✅ **DO**:
-- Store keys in `~/.localenv` (sourced by zshrc)
+- Authenticate Anthropic via Max subscription (`/connect` in OpenCode)
+- Store non-Anthropic keys in `~/.localenv` (sourced by zshrc)
 - Use environment variables (never hardcode)
 - Add `~/.localenv` to `.gitignore` (already done)
 - Rotate keys periodically
