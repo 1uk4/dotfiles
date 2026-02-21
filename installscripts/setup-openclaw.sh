@@ -122,6 +122,48 @@ install_audit_script() {
 }
 
 # ──────────────────────────────────────────────
+# IPv6 Fix (Linux)
+# ──────────────────────────────────────────────
+# Many consumer routers (Google Wifi, etc.) advertise IPv6 ULA addresses
+# without providing actual IPv6 internet connectivity. Node.js 22+ tries
+# IPv6 first (autoSelectFamily), and when it can't route to the internet
+# over IPv6, outbound connections (like Telegram API) fail or timeout.
+#
+# This is especially problematic on laptops that move between networks,
+# since some networks have working IPv6 and some don't.
+#
+# Fix: disable IPv6 at both the sysctl and NetworkManager level to ensure
+# Node.js always uses IPv4.
+setup_disable_ipv6() {
+  info "Disabling IPv6 (prevents Node.js connection failures on networks without full IPv6)..."
+
+  # Sysctl: kernel-level IPv6 disable
+  SYSCTL_CONF="/etc/sysctl.d/99-disable-ipv6.conf"
+  cat > "$SYSCTL_CONF" <<EOF
+# Disable IPv6 — many networks advertise IPv6 ULA addresses without
+# actual IPv6 internet connectivity, causing Node.js connection failures.
+net.ipv6.conf.all.disable_ipv6=1
+net.ipv6.conf.default.disable_ipv6=1
+EOF
+  /sbin/sysctl --system > /dev/null 2>&1
+  info "sysctl IPv6 disabled."
+
+  # NetworkManager: prevent it from re-enabling IPv6 on new connections
+  if command -v nmcli &>/dev/null; then
+    NM_CONF="/etc/NetworkManager/conf.d/disable-ipv6.conf"
+    mkdir -p "$(dirname "$NM_CONF")"
+    cat > "$NM_CONF" <<EOF
+# Disable IPv6 on all NetworkManager connections.
+# Prevents routers from assigning IPv6 addresses that can't route to the internet.
+[connection]
+ipv6.method=disabled
+EOF
+    systemctl restart NetworkManager 2>/dev/null || true
+    info "NetworkManager IPv6 disabled."
+  fi
+}
+
+# ──────────────────────────────────────────────
 # Systemd Service (Linux)
 # ──────────────────────────────────────────────
 setup_systemd_service() {
@@ -188,6 +230,7 @@ main() {
 
   create_user
   install_openclaw
+  setup_disable_ipv6
   setup_firewall
   setup_fail2ban
   install_audit_script
