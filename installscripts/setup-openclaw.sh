@@ -137,7 +137,7 @@ install_audit_script() {
 setup_disable_ipv6() {
   info "Disabling IPv6 (prevents Node.js connection failures on networks without full IPv6)..."
 
-  # Sysctl: kernel-level IPv6 disable
+  # Sysctl: kernel-level IPv6 disable (baseline, but NetworkManager can override)
   SYSCTL_CONF="/etc/sysctl.d/99-disable-ipv6.conf"
   cat > "$SYSCTL_CONF" <<EOF
 # Disable IPv6 — many networks advertise IPv6 ULA addresses without
@@ -148,8 +148,12 @@ EOF
   /sbin/sysctl --system > /dev/null 2>&1
   info "sysctl IPv6 disabled."
 
-  # NetworkManager: prevent it from re-enabling IPv6 on new connections
+  # NetworkManager: disable IPv6 on all existing connection profiles.
+  # The sysctl alone is NOT enough — NetworkManager manages connections
+  # independently and will re-enable IPv6 per-interface regardless of sysctl.
+  # We must modify each connection profile directly via nmcli.
   if command -v nmcli &>/dev/null; then
+    # Also drop a conf file for any connections created outside nmcli
     NM_CONF="/etc/NetworkManager/conf.d/disable-ipv6.conf"
     mkdir -p "$(dirname "$NM_CONF")"
     cat > "$NM_CONF" <<EOF
@@ -158,8 +162,25 @@ EOF
 [connection]
 ipv6.method=disabled
 EOF
-    systemctl restart NetworkManager 2>/dev/null || true
-    info "NetworkManager IPv6 disabled."
+
+    # Disable IPv6 on every existing connection profile
+    while IFS=: read -r name uuid type device; do
+      name="$(echo "$name" | xargs)"  # trim whitespace
+      if [ -n "$name" ] && [ "$name" != "NAME" ]; then
+        nmcli connection modify "$name" ipv6.method disabled 2>/dev/null && \
+          info "  IPv6 disabled on connection: $name"
+      fi
+    done < <(nmcli -t -f NAME,UUID,TYPE,DEVICE connection show)
+
+    # Reconnect active WiFi/ethernet to apply immediately
+    ACTIVE_CONN="$(nmcli -t -f NAME,DEVICE connection show --active | head -1 | cut -d: -f1)"
+    if [ -n "$ACTIVE_CONN" ]; then
+      nmcli connection down "$ACTIVE_CONN" 2>/dev/null
+      nmcli connection up "$ACTIVE_CONN" 2>/dev/null
+      info "  Reconnected '$ACTIVE_CONN' with IPv6 disabled."
+    fi
+
+    info "NetworkManager IPv6 disabled on all connections."
   fi
 }
 
