@@ -185,6 +185,23 @@ EOF
 }
 
 # ──────────────────────────────────────────────
+# Force IPv4 Preload (Node.js)
+# ──────────────────────────────────────────────
+# Node 22's undici (fetch) uses autoSelectFamily which tries IPv6 sockets
+# even when IPv6 is disabled at the kernel level. AAAA DNS records still
+# resolve, and the failed IPv6 attempts cause the whole request to fail.
+# --dns-result-order=ipv4first is NOT enough. We must patch dns.lookup
+# to only return IPv4 results.
+install_force_ipv4() {
+  info "Installing force-ipv4.js preload script..."
+
+  PRELOAD="${OPENCLAW_HOME}/.openclaw/force-ipv4.js"
+  cp "${DOTFILES}/config/openclaw/force-ipv4.js" "$PRELOAD"
+  chown ${OPENCLAW_USER}:${OPENCLAW_USER} "$PRELOAD"
+  info "Installed $PRELOAD"
+}
+
+# ──────────────────────────────────────────────
 # Systemd Service (Linux)
 # ──────────────────────────────────────────────
 setup_systemd_service() {
@@ -201,7 +218,7 @@ Type=simple
 User=${OPENCLAW_USER}
 Group=${OPENCLAW_USER}
 WorkingDirectory=${OPENCLAW_HOME}/.openclaw/workspace
-EnvironmentFile=${OPENCLAW_HOME}/.env
+Environment="NODE_OPTIONS=--dns-result-order=ipv4first -r ${OPENCLAW_HOME}/.openclaw/force-ipv4.js"
 ExecStart=$(which openclaw) gateway run
 Restart=on-failure
 RestartSec=10
@@ -252,6 +269,7 @@ main() {
   create_user
   install_openclaw
   setup_disable_ipv6
+  install_force_ipv4
   setup_firewall
   setup_fail2ban
   install_audit_script
