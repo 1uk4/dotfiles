@@ -1,36 +1,25 @@
 #!/usr/bin/env bash
 
-# IDE Script - Opens nvim with opencode in tmux split
-# Usage: ide [file] [--vertical] [--size=30]
+# IDE Script - Opens diffview on top (full width), opencode on bottom (1/3 height)
+# Usage: ide [--size=33]
 
 set -e
 
-# Default options
-SPLIT_DIRECTION="-h"  # horizontal (side by side)
-SPLIT_SIZE=""
-VIM_TARGET="."
-OPENCODE_PANE=""
+SPLIT_SIZE=33
 
 # Parse arguments
 while [[ $# -gt 0 ]]; do
     case $1 in
-        --vertical|-v)
-            SPLIT_DIRECTION="-v"
-            shift
-            ;;
         --size=*)
-            SPLIT_SIZE="-p ${1#*=}"
+            SPLIT_SIZE="${1#*=}"
             shift
             ;;
         --help|-h)
-            echo "Usage: ide [file] [--vertical] [--size=30]"
-            echo "  file        File to open in nvim (default: current directory)"
-            echo "  --vertical  Split vertically instead of horizontally"
-            echo "  --size=N    Set split size percentage (default: 50%)"
+            echo "Usage: ide [--size=N]"
+            echo "  --size=N    Set bottom pane height percentage for opencode (default: 33%)"
             exit 0
             ;;
         *)
-            VIM_TARGET="$1"
             shift
             ;;
     esac
@@ -48,37 +37,20 @@ if ! command -v opencode &> /dev/null; then
     exit 1
 fi
 
-# Get the current directory
 CURRENT_DIR=$(pwd)
 
-# Check if opencode is already running in another pane
-if tmux list-panes -F '#{pane_current_command}' | grep -q "opencode"; then
-    echo "OpenCode already running in this session. Focusing on nvim..."
-    # Find the pane without opencode and focus it
-    NVIM_PANE=$(tmux list-panes -F '#{pane_index}:#{pane_current_command}' | grep -v opencode | head -1 | cut -d: -f1)
-    if [ -n "$NVIM_PANE" ]; then
-        tmux select-pane -t "$NVIM_PANE"
-        tmux send-keys "nvim $VIM_TARGET" Enter
-    fi
-    exit 0
-fi
-
-# Store the current pane before splitting
+# Top pane (full width): diffview
 ORIGINAL_PANE=$(tmux display-message -p '#{pane_index}')
+tmux send-keys "nvim -c 'set autoread' -c 'autocmd FocusGained,BufEnter * checktime' -c 'DiffviewOpen'" Enter
+tmux select-pane -t "$ORIGINAL_PANE" -T "diffview"
 
-# Split the current pane
-tmux split-window $SPLIT_DIRECTION $SPLIT_SIZE -c "$CURRENT_DIR"
-
-# Start opencode in the new pane
+# Bottom pane (1/3 height): opencode
+tmux split-window -v -p "$SPLIT_SIZE" -c "$CURRENT_DIR"
 OPENCODE_PANE=$(tmux display-message -p '#{pane_index}')
 tmux send-keys -t "$OPENCODE_PANE" "opencode" Enter
-
-# Focus back to the original pane and start nvim
-tmux select-pane -t "$ORIGINAL_PANE"
-tmux send-keys "nvim $VIM_TARGET" Enter
-
-# Set pane titles for clarity
-tmux select-pane -t "$ORIGINAL_PANE" -T "nvim"
 tmux select-pane -t "$OPENCODE_PANE" -T "opencode"
 
-echo "IDE setup complete: nvim in main pane, opencode in split pane"
+# Focus back to diffview
+tmux select-pane -t "$ORIGINAL_PANE"
+
+echo "IDE setup complete: diffview (top) | opencode (bottom)"

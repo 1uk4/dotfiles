@@ -69,6 +69,9 @@ bind l select-pane -R
 # Quick toggle between panes (Neovim <-> OpenCode)
 bind Tab last-pane
 
+# Exit IDE: kill all other panes, return to single terminal
+bind q run-shell 'tmux list-panes -F "#{pane_index}:#{pane_current_command}" | grep -i nvim | cut -d: -f1 | xargs -I{} tmux send-keys -t {} ":qa!" Enter' \; kill-pane -a \; display "IDE closed — back to terminal"
+
 bind -r C-h select-window -t :-
 bind -r C-l select-window -t :+
 

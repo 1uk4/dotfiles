@@ -4,6 +4,7 @@ vim.cmd.packadd('packer.nvim')
 return require('packer').startup(function(use)
     -- Packer can manage itself
     use 'wbthomason/packer.nvim'
+    use 'nvim-tree/nvim-web-devicons'
 
     -- Telescope for file navigation
     use {
@@ -66,28 +67,21 @@ return require('packer').startup(function(use)
 
 
     -- LSP
-    use {
-        'VonHeikemen/lsp-zero.nvim',
-        branch = 'v2.x', -- Specify version 2.x
-        requires = {
-            -- LSP Support
-            { 'neovim/nvim-lspconfig' },
-            { 'williamboman/mason.nvim' },
-            { 'williamboman/mason-lspconfig.nvim' },
+    use('neovim/nvim-lspconfig')
+    use('williamboman/mason.nvim')
+    use('williamboman/mason-lspconfig.nvim')
 
-            -- Autocompletion
-            { 'hrsh7th/nvim-cmp' },
-            { 'hrsh7th/cmp-buffer' },
-            { 'hrsh7th/cmp-path' },
-            { 'saadparwaiz1/cmp_luasnip' },
-            { 'hrsh7th/cmp-nvim-lsp' },
-            { 'hrsh7th/cmp-nvim-lua' },
+    -- Autocompletion
+    use('hrsh7th/nvim-cmp')
+    use('hrsh7th/cmp-buffer')
+    use('hrsh7th/cmp-path')
+    use('saadparwaiz1/cmp_luasnip')
+    use('hrsh7th/cmp-nvim-lsp')
+    use('hrsh7th/cmp-nvim-lua')
 
-            -- Snippets
-            { 'L3MON4D3/LuaSnip' },
-            { 'rafamadriz/friendly-snippets' },
-        }
-    }
+    -- Snippets
+    use('L3MON4D3/LuaSnip')
+    use('rafamadriz/friendly-snippets')
     -- Latex
     use('lervag/vimtex')
 
@@ -95,21 +89,12 @@ return require('packer').startup(function(use)
    -- Zen Mode
     use("folke/zen-mode.nvim")
 
-    -- Avante
+    -- Diffview - file tree + side-by-side diff viewer
     use {
-        'yetone/avante.nvim',
-        branch = 'main',
-        run = 'make',
-        requires = {
-            { 'nvim-treesitter/nvim-treesitter' },
-            { 'stevearc/dressing.nvim' },
-            { 'MunifTanjim/nui.nvim' },
-            { 'MeanderingProgrammer/render-markdown.nvim' },
-            { 'hrsh7th/nvim-cmp' },
-            { 'nvim-tree/nvim-web-devicons' },
-            { 'HakonHarnes/img-clip.nvim' },
-        }
+        'sindrets/diffview.nvim',
+        requires = { 'nvim-lua/plenary.nvim' }
     }
+
 
     -- Claude Code
     use {
@@ -136,10 +121,7 @@ return require('packer').startup(function(use)
         
         -- Set global configuration
         vim.g.opencode_opts = {
-          provider = {
-            enabled = "tmux",
-            tmux = {}
-          }
+          server = {}
         }
       end
     }

@@ -76,6 +76,12 @@ vim.keymap.set("n", "<leader>oe", function() require('opencode').prompt('Explain
 vim.keymap.set("n", "<leader>or", function() require('opencode').prompt('Review @file for correctness and readability') end, { desc = "Review current file" })
 vim.keymap.set("v", "<leader>od", function() require('opencode').prompt('Add documentation comments for @selection') end, { desc = "Document selection" })
 
+-- Diffview - live git diff file tree
+vim.keymap.set("n", "<leader>gd", "<cmd>DiffviewOpen<CR>", { desc = "Open diffview" })
+vim.keymap.set("n", "<leader>gD", "<cmd>DiffviewClose<CR>", { desc = "Close diffview" })
+vim.keymap.set("n", "<leader>gf", "<C-w>h", { desc = "Focus diffview file tree" })
+vim.keymap.set("n", "<leader>gh", "<cmd>DiffviewFileHistory %<CR>", { desc = "File history" })
+
 
 
 --
