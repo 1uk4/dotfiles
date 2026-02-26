@@ -5,7 +5,29 @@
 
 set -e
 
-OPENCODE_DB="$HOME/.opencode/opencode.db"
+OPENCODE_DB=""
+
+resolve_opencode_db() {
+    local candidates=(
+        "$HOME/.local/share/opencode/opencode.db"
+        "$HOME/.opencode/opencode.db"
+    )
+
+    for p in "${candidates[@]}"; do
+        if [ -f "$p" ]; then
+            OPENCODE_DB="$p"
+            return 0
+        fi
+    done
+
+    OPENCODE_DB="$HOME/.local/share/opencode/opencode.db"
+}
+
+resolve_opencode_db
+
+has_new_schema() {
+    sqlite3 "$OPENCODE_DB" "SELECT 1 FROM sqlite_master WHERE type='table' AND name='session' LIMIT 1;" 2>/dev/null | grep -q 1
+}
 
 # Colors
 GREEN='\033[0;32m'
@@ -18,6 +40,12 @@ log_success() { echo -e "${GREEN}✓${NC} $1"; }
 # Check if database exists
 if [ ! -f "$OPENCODE_DB" ]; then
     echo "OpenCode database not found. Please run opencode first to initialize it."
+    exit 1
+fi
+
+if has_new_schema; then
+    echo "This demo script targets a legacy OpenCode DB schema and won't modify the current 1.x database." >&2
+    echo "If you want a demo dataset, it's safer to use a separate OPENCODE_DATA_DIR / profile." >&2
     exit 1
 fi
 

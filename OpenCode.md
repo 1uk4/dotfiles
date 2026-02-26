@@ -58,6 +58,8 @@ A comprehensive session management tool that integrates with your tmux + neovim 
 - **Tmux integration**: Seamlessly works with existing `ide` script and pane management
 - **Database queries**: Direct SQLite access to OpenCode's session database
 
+> Note: OpenCode 1.x stores its database at `~/.local/share/opencode/opencode.db` (older installs used `~/.opencode/opencode.db`).
+
 #### Example Workflows
 
 1. **Start a focused coding session**:

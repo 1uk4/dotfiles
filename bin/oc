@@ -7,9 +7,34 @@
 set -e
 
 # Configuration
-OPENCODE_DB="$HOME/.opencode/opencode.db"
+OPENCODE_DB=""
 SESSIONS_DIR="$HOME/.opencode/sessions"
 DEFAULT_SESSION_PREFIX="dev"
+
+# Resolve OpenCode DB location (OpenCode 1.x stores data under ~/.local/share/opencode)
+resolve_opencode_db() {
+    local candidates=(
+        "$HOME/.local/share/opencode/opencode.db"
+        "$HOME/.opencode/opencode.db"
+        "$HOME/.opencode/opencode.db" # legacy (kept for clarity)
+    )
+
+    for p in "${candidates[@]}"; do
+        if [ -f "$p" ]; then
+            OPENCODE_DB="$p"
+            return 0
+        fi
+    done
+
+    # Default to the current OpenCode path even if it doesn't exist yet
+    OPENCODE_DB="$HOME/.local/share/opencode/opencode.db"
+    return 0
+}
+
+db_has_new_schema() {
+    # OpenCode 1.x uses `session` and `message` tables
+    sqlite3 "$OPENCODE_DB" "SELECT 1 FROM sqlite_master WHERE type='table' AND name='session' LIMIT 1;" 2>/dev/null | grep -q 1
+}
 
 # Colors for output (using printf for better compatibility)
 RED='\033[0;31m'
@@ -60,6 +85,10 @@ check_dependencies() {
     fi
 }
 
+init_config() {
+    resolve_opencode_db
+}
+
 # Create sessions directory if it doesn't exist
 ensure_sessions_dir() {
     mkdir -p "$SESSIONS_DIR"
@@ -102,26 +131,46 @@ list_sessions() {
     printf "${CYAN}OpenCode Sessions:${NC}\n"
     echo "===================="
     
-    # Query the database for sessions
-    sqlite3 "$OPENCODE_DB" "
-        SELECT 
-            substr(id, 1, 8) as short_id,
-            datetime(created_at/1000, 'unixepoch', 'localtime') as created_at,
-            CASE 
-                WHEN length(title) > 50 THEN substr(title, 1, 47) || '...'
-                ELSE title
-            END as title,
-            message_count
-        FROM sessions 
-        ORDER BY created_at DESC 
-        LIMIT 20;
-    " 2>/dev/null | while IFS='|' read -r short_id created_at title message_count; do
-        if [ -n "$short_id" ]; then
-            # Format the date
-            local date_formatted=$(date -j -f "%Y-%m-%d %H:%M:%S" "$created_at" "+%m/%d %H:%M" 2>/dev/null || echo "$created_at")
-            printf "${GREEN}%8s${NC} ${YELLOW}%s${NC} ${PURPLE}(%2s msgs)${NC} %s\n" "$short_id" "$date_formatted" "$message_count" "$title"
-        fi
-    done
+    if db_has_new_schema; then
+        sqlite3 "$OPENCODE_DB" "
+            SELECT 
+                substr(s.id, 1, 8) as short_id,
+                datetime(s.time_created/1000, 'unixepoch', 'localtime') as created_at,
+                CASE 
+                    WHEN length(s.title) > 50 THEN substr(s.title, 1, 47) || '...'
+                    ELSE s.title
+                END as title,
+                (SELECT COUNT(1) FROM message m WHERE m.session_id = s.id) as message_count
+            FROM session s
+            ORDER BY s.time_created DESC
+            LIMIT 20;
+        " 2>/dev/null | while IFS='|' read -r short_id created_at title message_count; do
+            if [ -n "$short_id" ]; then
+                local date_formatted=$(date -j -f "%Y-%m-%d %H:%M:%S" "$created_at" "+%m/%d %H:%M" 2>/dev/null || echo "$created_at")
+                printf "${GREEN}%8s${NC} ${YELLOW}%s${NC} ${PURPLE}(%2s msgs)${NC} %s\n" "$short_id" "$date_formatted" "$message_count" "$title"
+            fi
+        done
+    else
+        # Legacy schema fallback
+        sqlite3 "$OPENCODE_DB" "
+            SELECT 
+                substr(id, 1, 8) as short_id,
+                datetime(created_at/1000, 'unixepoch', 'localtime') as created_at,
+                CASE 
+                    WHEN length(title) > 50 THEN substr(title, 1, 47) || '...'
+                    ELSE title
+                END as title,
+                message_count
+            FROM sessions 
+            ORDER BY created_at DESC 
+            LIMIT 20;
+        " 2>/dev/null | while IFS='|' read -r short_id created_at title message_count; do
+            if [ -n "$short_id" ]; then
+                local date_formatted=$(date -j -f "%Y-%m-%d %H:%M:%S" "$created_at" "+%m/%d %H:%M" 2>/dev/null || echo "$created_at")
+                printf "${GREEN}%8s${NC} ${YELLOW}%s${NC} ${PURPLE}(%2s msgs)${NC} %s\n" "$short_id" "$date_formatted" "$message_count" "$title"
+            fi
+        done
+    fi
     
     echo ""
 }
@@ -324,9 +373,16 @@ show_stats() {
     printf "${CYAN}OpenCode Session Statistics:${NC}\n"
     echo "============================"
     
-    local total_sessions=$(sqlite3 "$OPENCODE_DB" "SELECT COUNT(*) FROM sessions;" 2>/dev/null || echo "0")
-    local today_sessions=$(sqlite3 "$OPENCODE_DB" "SELECT COUNT(*) FROM sessions WHERE date(created_at/1000, 'unixepoch', 'localtime') = date('now', 'localtime');" 2>/dev/null || echo "0")
-    local week_sessions=$(sqlite3 "$OPENCODE_DB" "SELECT COUNT(*) FROM sessions WHERE created_at >= (strftime('%s', 'now', '-7 days') * 1000);" 2>/dev/null || echo "0")
+    local total_sessions today_sessions week_sessions
+    if db_has_new_schema; then
+        total_sessions=$(sqlite3 "$OPENCODE_DB" "SELECT COUNT(*) FROM session;" 2>/dev/null || echo "0")
+        today_sessions=$(sqlite3 "$OPENCODE_DB" "SELECT COUNT(*) FROM session WHERE date(time_created/1000, 'unixepoch', 'localtime') = date('now', 'localtime');" 2>/dev/null || echo "0")
+        week_sessions=$(sqlite3 "$OPENCODE_DB" "SELECT COUNT(*) FROM session WHERE time_created >= (strftime('%s', 'now', '-7 days') * 1000);" 2>/dev/null || echo "0")
+    else
+        total_sessions=$(sqlite3 "$OPENCODE_DB" "SELECT COUNT(*) FROM sessions;" 2>/dev/null || echo "0")
+        today_sessions=$(sqlite3 "$OPENCODE_DB" "SELECT COUNT(*) FROM sessions WHERE date(created_at/1000, 'unixepoch', 'localtime') = date('now', 'localtime');" 2>/dev/null || echo "0")
+        week_sessions=$(sqlite3 "$OPENCODE_DB" "SELECT COUNT(*) FROM sessions WHERE created_at >= (strftime('%s', 'now', '-7 days') * 1000);" 2>/dev/null || echo "0")
+    fi
     
     echo "Total sessions: $total_sessions"
     echo "Today: $today_sessions"
@@ -335,24 +391,46 @@ show_stats() {
     
     # Show most active days
     echo "Most active days:"
-    sqlite3 "$OPENCODE_DB" "
-        SELECT 
-            date(created_at/1000, 'unixepoch', 'localtime') as day,
-            COUNT(*) as sessions
-        FROM sessions 
-        WHERE created_at >= (strftime('%s', 'now', '-30 days') * 1000)
-        GROUP BY date(created_at/1000, 'unixepoch', 'localtime')
-        ORDER BY sessions DESC
-        LIMIT 5;
-    " 2>/dev/null | while IFS='|' read -r day sessions; do
-        if [ -n "$day" ]; then
-            echo "  $day: $sessions sessions"
-        fi
-    done
+    if db_has_new_schema; then
+        sqlite3 "$OPENCODE_DB" "
+            SELECT 
+                date(time_created/1000, 'unixepoch', 'localtime') as day,
+                COUNT(*) as sessions
+            FROM session
+            WHERE time_created >= (strftime('%s', 'now', '-30 days') * 1000)
+            GROUP BY date(time_created/1000, 'unixepoch', 'localtime')
+            ORDER BY sessions DESC
+            LIMIT 5;
+        " 2>/dev/null | while IFS='|' read -r day sessions; do
+            if [ -n "$day" ]; then
+                echo "  $day: $sessions sessions"
+            fi
+        done
+    else
+        sqlite3 "$OPENCODE_DB" "
+            SELECT 
+                date(created_at/1000, 'unixepoch', 'localtime') as day,
+                COUNT(*) as sessions
+            FROM sessions 
+            WHERE created_at >= (strftime('%s', 'now', '-30 days') * 1000)
+            GROUP BY date(created_at/1000, 'unixepoch', 'localtime')
+            ORDER BY sessions DESC
+            LIMIT 5;
+        " 2>/dev/null | while IFS='|' read -r day sessions; do
+            if [ -n "$day" ]; then
+                echo "  $day: $sessions sessions"
+            fi
+        done
+    fi
     
     echo ""
-    echo "Total messages: $(sqlite3 "$OPENCODE_DB" "SELECT SUM(message_count) FROM sessions;" 2>/dev/null || echo "0")"
-    echo "Average messages per session: $(sqlite3 "$OPENCODE_DB" "SELECT ROUND(AVG(message_count), 1) FROM sessions WHERE message_count > 0;" 2>/dev/null || echo "0")"
+    if db_has_new_schema; then
+        echo "Total messages: $(sqlite3 "$OPENCODE_DB" "SELECT COUNT(*) FROM message;" 2>/dev/null || echo "0")"
+        echo "Average messages per session: $(sqlite3 "$OPENCODE_DB" "SELECT ROUND(AVG(cnt), 1) FROM (SELECT COUNT(*) AS cnt FROM message GROUP BY session_id);" 2>/dev/null || echo "0")"
+    else
+        echo "Total messages: $(sqlite3 "$OPENCODE_DB" "SELECT SUM(message_count) FROM sessions;" 2>/dev/null || echo "0")"
+        echo "Average messages per session: $(sqlite3 "$OPENCODE_DB" "SELECT ROUND(AVG(message_count), 1) FROM sessions WHERE message_count > 0;" 2>/dev/null || echo "0")"
+    fi
 }
 
 # Show help
@@ -395,6 +473,7 @@ show_help() {
 # Main command dispatcher
 main() {
     check_dependencies
+    init_config
     ensure_sessions_dir
     
     case "${1:-help}" in

@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+# Shim for Oh-My-OpenCode's comment-checker hook.
+# The npm package ships a standalone binary, but it isn't always linked into PATH.
+
+pick_bin() {
+  local p
+
+  # Common npm-global install locations (nvm)
+  for p in "$HOME/.nvm/versions/node"/*/lib/node_modules/@code-yeongyu/comment-checker/bin/comment-checker; do
+    if [ -x "$p" ]; then
+      echo "$p"
+      return 0
+    fi
+  done
+
+  # Fallback: ask npm (if available)
+  if command -v npm >/dev/null 2>&1; then
+    local root
+    root=$(npm root -g 2>/dev/null || true)
+    if [ -n "$root" ] && [ -x "$root/@code-yeongyu/comment-checker/bin/comment-checker" ]; then
+      echo "$root/@code-yeongyu/comment-checker/bin/comment-checker"
+      return 0
+    fi
+  fi
+
+  return 1
+}
+
+bin=$(pick_bin) || {
+  echo "comment-checker: binary not found; install with: npm i -g @code-yeongyu/comment-checker" >&2
+  exit 127
+}
+
+exec "$bin" "$@"

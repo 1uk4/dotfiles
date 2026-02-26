@@ -1,0 +1,51 @@
+# Launch opencode with Opus as the Sisyphus/Prometheus model
+# Usage: oc-opus [opencode args...]
+#
+# Default: opencode runs with Sonnet (fast, daily driver)
+# oc-opus: temporarily swaps to Opus for heavy dev sessions
+
+emulate -L zsh
+setopt errexit nounset pipefail
+
+local config="$HOME/.config/opencode/oh-my-opencode.json"
+local opus_model="anthropic/claude-opus-4-6"
+
+if [[ ! -f "$config" ]]; then
+  print -u2 "oc-opus: config not found: $config"
+  return 1
+fi
+
+if ! command -v jq >/dev/null 2>&1; then
+  print -u2 "oc-opus: jq is required (found: none)"
+  return 1
+fi
+
+local orig_sisyphus orig_prometheus
+orig_sisyphus=$(jq -r '.agents.sisyphus.model // empty' "$config")
+orig_prometheus=$(jq -r '.agents.prometheus.model // empty' "$config")
+
+if [[ -z "$orig_sisyphus" || -z "$orig_prometheus" ]]; then
+  print -u2 "oc-opus: missing agents.sisyphus.model or agents.prometheus.model in $config"
+  return 1
+fi
+
+local tmp
+tmp=$(mktemp "${config}.tmp.XXXXXX")
+
+restore_models() {
+  jq --arg sis "$orig_sisyphus" --arg pro "$orig_prometheus" '
+    .agents.sisyphus.model = $sis |
+    .agents.prometheus.model = $pro
+  ' "$config" > "$tmp" && mv "$tmp" "$config"
+}
+
+trap 'restore_models' EXIT INT TERM
+
+# Swap Sisyphus + Prometheus to Opus
+jq --arg opus "$opus_model" '
+  .agents.sisyphus.model = $opus |
+  .agents.prometheus.model = $opus
+' "$config" > "$tmp" && mv "$tmp" "$config"
+
+# Run opencode (pass through all args)
+opencode "$@"
