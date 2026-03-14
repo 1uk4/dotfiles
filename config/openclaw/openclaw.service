@@ -1,26 +1,27 @@
+# OpenClaw Gateway systemd user service
+# NOTE: OpenClaw auto-generates this at ~/.config/systemd/user/openclaw-gateway.service
+# This is a reference template — don't symlink directly (contains no secrets).
+# 
+# Override file for IPv4 fix:
+#   ~/.config/systemd/user/openclaw-gateway.service.d/ipv4.conf
+#   [Service]
+#   Environment=NODE_OPTIONS="--dns-result-order=ipv4first"
+#
+# Restart script for hal-admin:
+#   ~/scripts/restart-hal.sh
+
 [Unit]
 Description=OpenClaw Gateway
 After=network-online.target
 Wants=network-online.target
 
 [Service]
-Type=simple
-User=hal
-Group=hal
-WorkingDirectory=/home/hal/.openclaw/workspace
-Environment="NODE_OPTIONS=--dns-result-order=ipv4first -r /home/hal/.openclaw/force-ipv4.js"
-ExecStart=/usr/bin/openclaw gateway run
-Restart=on-failure
-RestartSec=10
-StandardOutput=journal
-StandardError=journal
-
-# Security hardening
-NoNewPrivileges=true
-ProtectSystem=strict
-ProtectHome=read-only
-ReadWritePaths=/home/hal/.openclaw
-PrivateTmp=true
+ExecStartPre=/bin/sleep 10
+ExecStart="/usr/bin/node" "/usr/lib/node_modules/openclaw/dist/index.js" gateway --port 18789
+Restart=always
+RestartSec=5
+KillMode=process
+Environment=HOME=/home/hal
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=default.target
