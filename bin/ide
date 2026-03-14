@@ -40,15 +40,35 @@ fi
 CURRENT_DIR=$(pwd)
 
 # Top pane (full width): diffview
-ORIGINAL_PANE=$(tmux display-message -p '#{pane_index}')
-tmux send-keys "nvim -c 'set autoread' -c 'autocmd FocusGained,BufEnter * checktime' -c 'DiffviewOpen'" Enter
+ORIGINAL_PANE=$(tmux display-message -p '#{pane_id}')
+tmux send-keys "nvim -c 'lua require(\"1uk4.ide-watcher\")' -c 'DiffviewOpen'" Enter
 tmux select-pane -t "$ORIGINAL_PANE" -T "diffview"
 
 # Bottom pane (1/3 height): opencode
 tmux split-window -v -p "$SPLIT_SIZE" -c "$CURRENT_DIR"
-OPENCODE_PANE=$(tmux display-message -p '#{pane_index}')
+OPENCODE_PANE=$(tmux display-message -p '#{pane_id}')
 tmux send-keys -t "$OPENCODE_PANE" "opencode" Enter
 tmux select-pane -t "$OPENCODE_PANE" -T "opencode"
+
+# Background watcher: polls git state every 2s and refreshes diffview
+# via tmux send-keys when something changes (commits, staging, file edits).
+(
+    sleep 4  # let nvim + diffview fully start
+    last_state=""
+    while tmux has-session 2>/dev/null && tmux list-panes -F '#{pane_id}' 2>/dev/null | grep -q "$ORIGINAL_PANE"; do
+        state="$(git -C "$CURRENT_DIR" rev-parse HEAD 2>/dev/null)$(git -C "$CURRENT_DIR" status --porcelain 2>/dev/null)"
+        if [ -n "$last_state" ] && [ "$state" != "$last_state" ]; then
+            tmux send-keys -t "$ORIGINAL_PANE" Escape
+            tmux send-keys -t "$ORIGINAL_PANE" ":DiffviewClose" Enter
+            sleep 0.3
+            tmux send-keys -t "$ORIGINAL_PANE" ":DiffviewOpen" Enter
+        fi
+        last_state="$state"
+        sleep 2
+    done
+) &
+WATCHER_PID=$!
+disown $WATCHER_PID
 
 # Focus back to diffview
 tmux select-pane -t "$ORIGINAL_PANE"
