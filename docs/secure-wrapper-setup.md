@@ -134,7 +134,52 @@ sudo chmod 440 /etc/sudoers.d/hal-scripts
 sudo visudo -cf /etc/sudoers.d/hal-scripts  # should say "parsed OK"
 ```
 
-### Step 5: SystemD override (as hal-admin with sudo)
+### Step 5: Permissions for git repos (as hal-admin with sudo)
+```bash
+# hal-admin needs to traverse hal's home for git operations
+sudo chmod 711 /home/hal
+
+# hal-admin needs to write git metadata in hal's repos
+sudo usermod -aG hal hal-admin
+newgrp hal  # apply without logout
+sudo chmod -R g+w /home/hal/dotfiles/.git
+sudo chmod -R g+w /home/hal/snapjack-repo/.git
+
+# hal-admin needs safe.directory exceptions
+git config --global --add safe.directory /home/hal/dotfiles
+git config --global --add safe.directory /home/hal/snapjack-repo
+```
+
+### Step 6: hal-admin SSH config (as hal-admin)
+```bash
+mkdir -p ~/.ssh
+cat >> ~/.ssh/config << 'EOF'
+Host github-dotfiles
+  HostName github.com
+  User git
+  IdentityFile /home/hal-admin/credentials/id_dotfiles
+
+Host github-snapjack
+  HostName github.com
+  User git
+  IdentityFile /home/hal-admin/credentials/id_snapjack
+EOF
+chmod 600 ~/.ssh/config
+```
+
+### Step 7: Remove deploy keys from hal (as hal-admin with sudo)
+```bash
+sudo rm /home/hal/.ssh/id_snapjack /home/hal/.ssh/id_dotfiles
+sudo rm /home/hal/.ssh/id_snapjack.pub /home/hal/.ssh/id_dotfiles.pub 2>/dev/null
+# Keep hal's ~/.ssh/config — harmless, SSH requires user ownership
+```
+
+### Step 8: Remove GITHUB_TOKEN from workspace (as hal-admin with sudo)
+```bash
+sudo rm /home/hal/.openclaw/workspace/.env
+```
+
+### Step 9: SystemD override (as hal-admin with sudo)
 ```bash
 sudo mkdir -p /etc/systemd/system/openclaw.service.d
 sudo tee /etc/systemd/system/openclaw.service.d/sudo.conf << 'EOF'
@@ -145,7 +190,7 @@ sudo systemctl daemon-reload
 sudo systemctl restart openclaw
 ```
 
-### Step 6: Verify (from hal's OpenClaw session)
+### Step 10: Verify (from hal's OpenClaw session)
 ```bash
 # Should work:
 sudo -u hal-admin /home/hal-admin/scripts/gcal.sh help
