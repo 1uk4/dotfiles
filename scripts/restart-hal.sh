@@ -2,27 +2,26 @@
 # Restart OpenClaw gateway (run as hal-admin)
 # Usage: ~/scripts/restart-hal.sh [status|start|stop|restart|logs]
 
-HAL_UID=$(id -u hal)
-CMD="sudo -u hal XDG_RUNTIME_DIR=/run/user/$HAL_UID systemctl --user"
+SVC=openclaw.service
 
 case "${1:-restart}" in
   status)
-    $CMD status openclaw-gateway
+    sudo systemctl status "$SVC"
     ;;
   start)
-    $CMD start openclaw-gateway
+    sudo systemctl start "$SVC"
     echo "Started."
     ;;
   stop)
-    $CMD stop openclaw-gateway
+    sudo systemctl stop "$SVC"
     echo "Stopped."
     ;;
   restart)
-    $CMD restart openclaw-gateway
+    sudo systemctl restart "$SVC"
     echo "Restarted."
     ;;
   logs)
-    sudo -u hal XDG_RUNTIME_DIR=/run/user/$HAL_UID journalctl --user -u openclaw-gateway -n "${2:-50}" -f
+    sudo journalctl -u "$SVC" -n "${2:-50}" -f
     ;;
   *)
     echo "Usage: $0 [status|start|stop|restart|logs]"
