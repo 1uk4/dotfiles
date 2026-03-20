@@ -18,9 +18,9 @@ shift || true
 
 case "$CMD" in
   list-events)
-    # Args: [date] (default: today)
+    # Args: [date] [end-date]
     DATE="${1:-$(date +%Y-%m-%d)}"
-    node "$SCRIPT_DIR/gcal-helper.js" list "$CREDS" "$DATE"
+    node "$SCRIPT_DIR/gcal-helper.js" list "$CREDS" "$DATE" "${2:-}"
     ;;
   add-event)
     # Args: <title> <start> <end> [description]
@@ -46,8 +46,16 @@ case "$CMD" in
     fi
     node "$SCRIPT_DIR/gcal-helper.js" update "$CREDS" "$1" "$2" "$3"
     ;;
+  move-event)
+    # Args: <event-id> <new-start> <new-end>
+    if [[ $# -lt 3 ]]; then
+      echo "Usage: gcal.sh move-event <event-id> <new-start-iso> <new-end-iso>" >&2
+      exit 1
+    fi
+    node "$SCRIPT_DIR/gcal-helper.js" move "$CREDS" "$1" "$2" "$3"
+    ;;
   help)
-    echo "Commands: list-events [date], add-event <title> <start> <end> [desc], delete-event <id>, update-event <id> <field> <value>"
+    echo "Commands: list-events [date] [end-date], add-event <title> <start> <end> [desc], delete-event <id>, update-event <id> <field> <value>, move-event <id> <start> <end>"
     ;;
   *)
     echo "Unknown command: $CMD" >&2
